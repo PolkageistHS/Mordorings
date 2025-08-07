@@ -54,4 +54,6 @@ public class Item
     public short SpellLvl { get; set; }
 
     public short ClassRestricted { get; set; }
+
+    public override string ToString() => Name;
 }

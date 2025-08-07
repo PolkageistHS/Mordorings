@@ -45,7 +45,7 @@ public class Monster
 
     public short[] Stats { get; set; } = new short[7];
 
-    public short MonsterType { get; set; }
+    public short MonsterSubtype { get; set; }
 
     public float DamageMod { get; set; }
 
@@ -66,4 +66,32 @@ public class Monster
     public short ItemDropLevel { get; set; }
 
     public short ItemChance { get; set; }
+
+    public override string ToString() => Name;
+
+    public class MonsterComparable : IEqualityComparer<Monster>
+    {
+        public bool Equals(Monster? x, Monster? y)
+        {
+            if (ReferenceEquals(x, y))
+            {
+                return true;
+            }
+            if (x is null)
+            {
+                return false;
+            }
+            if (y is null)
+            {
+                return false;
+            }
+            if (x.GetType() != y.GetType())
+            {
+                return false;
+            }
+            return x.Name == y.Name && x.ID == y.ID;
+        }
+
+        public int GetHashCode(Monster obj) => HashCode.Combine(obj.Name, obj.ID);
+    }
 }

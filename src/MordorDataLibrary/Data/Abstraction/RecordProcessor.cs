@@ -4,9 +4,9 @@ public abstract class RecordProcessor
 {
     protected readonly IFilePathStrategy _filePathStrategy;
 
-    protected RecordProcessor(string outputFolder)
+    protected RecordProcessor(string folder)
     {
-        _filePathStrategy = new FolderBasedFilePathStrategy(outputFolder);
+        _filePathStrategy = new FolderBasedFilePathStrategy(folder);
     }
 
     protected RecordProcessor(IFilePathStrategy filePathStrategy)

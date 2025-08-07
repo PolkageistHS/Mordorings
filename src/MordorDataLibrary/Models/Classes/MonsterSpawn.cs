@@ -1,5 +1,6 @@
 ﻿namespace MordorDataLibrary.Models;
 
+[Serializable]
 public class MonsterSpawn
 {
     public short Atk { get; set; }

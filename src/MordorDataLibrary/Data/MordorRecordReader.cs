@@ -6,7 +6,7 @@ namespace MordorDataLibrary.Data;
 
 public class MordorRecordReader : RecordProcessor
 {
-    public MordorRecordReader(string outputFolder) : base(outputFolder) { }
+    public MordorRecordReader(string sourceFolder) : base(sourceFolder) { }
 
     public MordorRecordReader(IFilePathStrategy filePathStrategy) : base(filePathStrategy) { }
 

@@ -6,4 +6,6 @@ public class MonsterType
     public string Name { get; set; } = null!;
 
     public short Unused { get; set; }
+
+    public override string ToString() => Name;
 }

@@ -62,10 +62,10 @@ public class DungeonManipulation
             treasure.MonsterID = monster.ID;
             treasure.ChestType = ChestTypes.None;
             treasure.Gold = 0;
-            treasure.Locked = LockedState.Unknown;
+            treasure.Locked = LockedStates.Unknown;
             treasure.TrapID = 0;
-            _primaryMonsterSet = true;
         });
+        _primaryMonsterSet = true;
         return this;
     }
 
@@ -168,9 +168,7 @@ public class DungeonManipulation
     public void BuildAndSave(string outputFolder)
     {
         if (!_primaryMonsterSet)
-        {
             throw new InvalidOperationException("Primary monster must be set before building.");
-        }
         DATA10DungeonState dungeonState = _reader.GetMordorRecord<DATA10DungeonState>();
         foreach (AreaSpawn areaSpawn in dungeonState.AreaSpawns)
         {

@@ -28,7 +28,7 @@ public static class CreatureIdentified
     public const short Barely = 3;
 }
 
-public static class LockedState
+public static class LockedStates
 {
     public const short Unknown = -1;
     public const short NotLocked = 0;

@@ -1,0 +1,91 @@
+﻿<Window x:Class="Mordorings.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Mordorings.ViewModels"
+        Title="MainWindow" 
+        Height="450" Width="800"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <!--
+        <Menu Grid.Row="0" VerticalAlignment="Center">
+             <MenuItem Header="Configure..." />
+             <MenuItem Header="_Edit">
+                 <MenuItem Header="Characters" />
+                 <MenuItem Header="Monsters" />
+                 <MenuItem Header="Races" />
+                 <MenuItem Header="Guilds...">
+                     <MenuItem Header="Guilds" />
+                     <MenuItem Header="Guild Logs" />
+                     <MenuItem Header="Guildmasters" />
+                     <MenuItem Header="Library" />
+                 </MenuItem>
+                 <MenuItem Header="Items" />
+                 <MenuItem Header="Spells" />
+                 <MenuItem Header="General Store" />
+                 <MenuItem Header="Confinement" />
+                 <MenuItem Header="Hall of Records" />
+             </MenuItem>
+             <MenuItem Header="_Map">
+                 <MenuItem Header="Edit Map" />
+                 <MenuItem Header="Edit Dungeon State" />
+                 <MenuItem Header="Reveal Automap" />
+                 <MenuItem Header="Monster Heatmap" />
+                 <MenuItem Header="Item Heatmap" />
+             </MenuItem>
+             <MenuItem Header="_Simulations">
+                 <MenuItem Header="Weapon Damage" />
+                 <MenuItem Header="Monster Damage" />
+                 <MenuItem Header="Spell Damage" />
+                 <MenuItem Header="XP per Monster Kill" />
+             </MenuItem>
+             <MenuItem Header="_Calculations">
+                 <MenuItem Header="Experience for Level" />
+                 <MenuItem Header="Gold for Level" />
+                 <MenuItem Header="Spell Cost" />
+             </MenuItem>
+         </Menu>
+        -->
+        <DockPanel Grid.Row="1">
+            <Grid DockPanel.Dock="Left">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Button Content="Edit"
+                        Grid.Row="0" Grid.Column="0"
+                        Command="{Binding Path=OpenEditMenuCommand}" />
+                <Button Content="Map"
+                        Grid.Row="1" Grid.Column="0"
+                        Command="{Binding Path=OpenMapMenuCommand}" />
+                <Button Content="Simulations"
+                        Grid.Row="2" Grid.Column="0"
+                        Command="{Binding Path=OpenSimulationsMenuCommand}" />
+                <Button Content="Calculations"
+                        Grid.Row="3" Grid.Column="0"
+                        Command="{Binding Path=OpenCalculationsMenuCommand}" />
+                <ContentControl Grid.Row="0" Grid.RowSpan="4" Grid.Column="1"
+                                Content="{Binding Path=SubMenu}" />
+            </Grid>
+            <TextBlock DockPanel.Dock="Top"
+                       Margin="5" TextWrapping="WrapWithOverflow">
+                <TextBlock.Text>
+                    <Binding Path="ViewModel.Instructions" FallbackValue="" />
+                </TextBlock.Text>
+            </TextBlock>
+            <ContentControl Content="{Binding Path=ViewModel}" />
+        </DockPanel>
+    </Grid>
+</Window>

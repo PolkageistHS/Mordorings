@@ -9,11 +9,9 @@ public enum MonsterAlignment
 
 public enum LockedState
 {
-    NotLocked = 0,
+    NotLocked = -1,
+    Unlocked = 0,
     Locked = 1,
-    Unlocked = 2,
-    Three = 3,
-    NegativeOne = -1
 }
 
 public enum ChestType
@@ -24,7 +22,7 @@ public enum ChestType
 
 public enum TrapType
 {
-    None = -1,
+    None = 0,
     Poison,
     Disease,
     Exploding,

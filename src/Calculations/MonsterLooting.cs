@@ -5,6 +5,18 @@ namespace Calculations;
 
 public class MonsterLooting
 {
+    public static int CalculateGoldForMonster(Monster currentMonster, int groupSize)
+    {
+        int goldFactor = currentMonster.GoldFactor;
+        int totalGold = (int)(goldFactor * Math.Pow(10, goldFactor - 0.5) / 4);
+        totalGold = (int)(totalGold / 4.0 + (Random.Shared.NextDouble() * (totalGold / 2.0) + Random.Shared.NextDouble() * (totalGold / 2.0)) * Math.Log((currentMonster.LevelFound + 1) / Math.Log(2)));
+        if (totalGold < 500)
+        {
+            totalGold = (int)(Random.Shared.NextDouble() * 500 + 2);
+        }
+        return (int)(totalGold * Math.Log(groupSize + 1) * (Math.Log(groupSize + 1) / 2));
+    }
+
     private record ItemsWithWeights(int Weight, Dictionary<Item, int> ItemsWithRarity);
 
     private record MonsterLoot(Item? Item, int? ItemSubtypeId, int Weight)

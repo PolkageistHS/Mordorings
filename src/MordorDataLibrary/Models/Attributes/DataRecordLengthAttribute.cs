@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace MordorDataLibrary.Models;
+﻿namespace MordorDataLibrary.Models;
 
 [AttributeUsage(AttributeTargets.Class)]
 [method: DebuggerStepThrough]

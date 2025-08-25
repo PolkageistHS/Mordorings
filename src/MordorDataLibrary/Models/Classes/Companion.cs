@@ -1,8 +1,9 @@
 ﻿namespace MordorDataLibrary.Models;
 
+[Serializable]
 public class Companion
 {
-    [FixedLengthString(Length = 15)]
+    [FixedLengthString(15)]
     public string Name { get; set; } = null!;
 
     public short MonsterID { get; set; }

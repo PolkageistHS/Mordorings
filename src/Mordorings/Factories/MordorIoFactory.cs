@@ -1,6 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using MordorDataLibrary.Data;
-using Mordorings.Configs;
 
 namespace Mordorings.Factories;
 

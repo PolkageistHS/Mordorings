@@ -1,5 +1,6 @@
 ﻿namespace MordorDataLibrary.Models;
 
+[Serializable]
 public class GuildStatus
 {
     public short CurrentLevel { get; set; }

@@ -1,6 +1,7 @@
 ﻿namespace MordorDataLibrary.Models;
 
 [DataRecordLength(StaticValues.Data09RecordLength)]
+[Serializable]
 public class DATA09GuildLogs : IMordorDataFile
 {
     private short _count;

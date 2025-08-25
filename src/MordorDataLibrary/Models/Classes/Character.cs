@@ -1,9 +1,10 @@
 ﻿namespace MordorDataLibrary.Models;
 
+[Serializable]
 public class Character
 {
     [NewRecord]
-    [FixedLengthString(Length = 30)]
+    [FixedLengthString(30)]
     public string Name { get; set; } = null!;
 
     public short Race { get; set; }
@@ -68,7 +69,7 @@ public class Character
 
     public short RezChance { get; set; }
 
-    [FixedLengthString(Length = 30)]
+    [FixedLengthString(30)]
     public string CharacterPerformingRez { get; set; } = "";
 
     public long[] MiscCharacterInfo { get; set; } = new long[9];
@@ -87,7 +88,7 @@ public class Character
 
     public short CarriedCorpseID { get; set; }
 
-    [FixedLengthString(Length = 10)]
+    [FixedLengthString(10)]
     public string Password { get; set; } = null!;
 
     public SavedWindowState[] SavedWindowStates { get; set; } = new SavedWindowState[21];

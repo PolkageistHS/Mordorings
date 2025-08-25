@@ -1,5 +1,6 @@
 ﻿namespace MordorDataLibrary.Models;
 
+[Serializable]
 public class TreasureSpawn
 {
     public short ChestType { get; set; }

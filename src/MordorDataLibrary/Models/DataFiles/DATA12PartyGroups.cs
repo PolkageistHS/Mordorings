@@ -1,6 +1,7 @@
 ﻿namespace MordorDataLibrary.Models;
 
 [DataRecordLength(StaticValues.Data12RecordLength)]
+[Serializable]
 public class DATA12PartyGroups : IMordorDataFile
 {
     [NewRecord]

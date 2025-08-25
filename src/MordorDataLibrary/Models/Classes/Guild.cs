@@ -1,5 +1,6 @@
 ﻿namespace MordorDataLibrary.Models;
 
+[Serializable]
 public class Guild
 {
     [NewRecord]
@@ -27,9 +28,9 @@ public class Guild
 
     public short QuestPercentage { get; set; }
 
-    public float[] SpellLevelCaps { get; set; } = new float[19];
+    public float[] SpellGuildMods { get; set; } = new float[19];
 
-    public float[] SpellCategories { get; set; } = new float[19];
+    public float[] SpellCaps { get; set; } = new float[19];
 
     public int RaceMask { get; set; }
 
@@ -48,4 +49,6 @@ public class Guild
     public short Unused3 { get; set; }
 
     public short Unused4 { get; set; }
+
+    public override string ToString() => Name;
 }

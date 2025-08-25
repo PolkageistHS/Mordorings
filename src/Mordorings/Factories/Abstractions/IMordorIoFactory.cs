@@ -1,6 +1,4 @@
-﻿using MordorDataLibrary.Data;
-
-namespace Mordorings.Factories;
+﻿namespace Mordorings.Factories;
 
 public interface IMordorIoFactory
 {

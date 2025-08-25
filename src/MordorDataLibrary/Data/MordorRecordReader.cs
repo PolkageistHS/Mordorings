@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Reflection;
-using MordorDataLibrary.Models;
-
-namespace MordorDataLibrary.Data;
+﻿namespace MordorDataLibrary.Data;
 
 public class MordorRecordReader : RecordProcessor
 {
@@ -13,7 +9,7 @@ public class MordorRecordReader : RecordProcessor
     public TDataFile GetMordorRecord<TDataFile>() where TDataFile : IMordorDataFile
     {
         using MdrReader reader = GetReader<TDataFile>();
-        TDataFile instance = Activator.CreateInstance<TDataFile>();
+        var instance = Activator.CreateInstance<TDataFile>();
         ProcessRecursive(typeof(TDataFile), instance, reader, false);
         return instance;
     }
@@ -28,7 +24,7 @@ public class MordorRecordReader : RecordProcessor
     protected override void ProcessPropertyByType(object instance, MdrBase readerOrWriter, PropertyAccessor propertyAccessor)
     {
         Type propertyType = propertyAccessor.PropertyType;
-        MdrReader reader = (MdrReader)readerOrWriter;
+        var reader = (MdrReader)readerOrWriter;
         if (TypeHandlers.TryGetHandler(propertyType, out ITypeHandler? handler))
         {
             object value = handler.ReadValue(reader, propertyAccessor.PropertyInfo);
@@ -50,7 +46,7 @@ public class MordorRecordReader : RecordProcessor
 
     private void ProcessArray(object instance, MdrReader reader, PropertyAccessor propertyAccessor)
     {
-        Array array = (Array)propertyAccessor.GetValue(instance);
+        var array = (Array)propertyAccessor.GetValue(instance);
         Type elementType = GetArrayElementType(propertyAccessor);
         bool hasNewRecord = HasNewRecordAttribute(propertyAccessor);
         for (int i = 0; i < array.Length; i++)

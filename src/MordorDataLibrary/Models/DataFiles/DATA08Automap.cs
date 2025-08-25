@@ -1,6 +1,7 @@
 ﻿namespace MordorDataLibrary.Models;
 
 [DataRecordLength(StaticValues.Data08RecordLength)]
+[Serializable]
 public class DATA08Automap : IMordorDataFile
 {
     [NewRecord]

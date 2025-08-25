@@ -1,6 +1,7 @@
 ﻿namespace MordorDataLibrary.Models;
 
 [DataRecordLength(StaticValues.Data07RecordLength)]
+[Serializable]
 public class DATA07Guildmasters : IMordorDataFile
 {
     [NewRecord]

@@ -1,6 +1,4 @@
-﻿using MordorDataLibrary.Models;
-
-namespace MordorDataLibrary.Data;
+﻿namespace MordorDataLibrary.Data;
 
 public interface IFilePathStrategy
 {

@@ -1,5 +1,6 @@
 ﻿namespace MordorDataLibrary.Models;
 
+[Serializable]
 public class Spell
 {
     [NewRecord]
@@ -30,4 +31,6 @@ public class Spell
     public short[] RequiredStats { get; set; } = new short[7];
 
     public short ResistedBy { get; set; }
+
+    public override string ToString() => Name;
 }

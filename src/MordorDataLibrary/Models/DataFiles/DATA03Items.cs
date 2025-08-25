@@ -1,6 +1,7 @@
 ﻿namespace MordorDataLibrary.Models;
 
 [DataRecordLength(StaticValues.Data03RecordLength)]
+[Serializable]
 public class DATA03Items : IMordorDataFile
 {
     [NewRecord]

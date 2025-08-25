@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using MordorDataLibrary.Models;
-
-namespace MordorDataLibrary.Data;
+﻿namespace MordorDataLibrary.Data;
 
 public class MordorRecordWriter : RecordProcessor
 {

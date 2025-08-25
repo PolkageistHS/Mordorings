@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <BitmapImage x:Key="FaceNorth" UriSource="pack://application:,,,/Assets/FaceNorth.bmp" />
+    <BitmapImage x:Key="FaceEast" UriSource="pack://application:,,,/Assets/FaceEast.bmp" />
+    <BitmapImage x:Key="FaceSouth" UriSource="pack://application:,,,/Assets/FaceSouth.bmp" />
+    <BitmapImage x:Key="FaceWest" UriSource="pack://application:,,,/Assets/FaceWest.bmp" />
+    <BitmapImage x:Key="Extinguisher" UriSource="pack://application:,,,/Assets/Extinguisher.bmp" />
+    <BitmapImage x:Key="Pit" UriSource="pack://application:,,,/Assets/Pit.bmp" />
+    <BitmapImage x:Key="StairsUp" UriSource="pack://application:,,,/Assets/StairsUp.bmp" />
+    <BitmapImage x:Key="StairsDown" UriSource="pack://application:,,,/Assets/StairsDown.bmp" />
+    <BitmapImage x:Key="Teleporter" UriSource="pack://application:,,,/Assets/Teleporter.bmp" />
+    <BitmapImage x:Key="Water" UriSource="pack://application:,,,/Assets/Water.bmp" />
+    <BitmapImage x:Key="Quicksand" UriSource="pack://application:,,,/Assets/Quicksand.bmp" />
+    <BitmapImage x:Key="Rotator" UriSource="pack://application:,,,/Assets/Rotator.bmp" />
+    <BitmapImage x:Key="Antimagic" UriSource="pack://application:,,,/Assets/Antimagic.bmp" />
+    <BitmapImage x:Key="Rock" UriSource="pack://application:,,,/Assets/Rock.bmp" />
+    <BitmapImage x:Key="Fog" UriSource="pack://application:,,,/Assets/Fog.bmp" />
+    <BitmapImage x:Key="Chute" UriSource="pack://application:,,,/Assets/Chute.bmp" />
+    <BitmapImage x:Key="Stud" UriSource="pack://application:,,,/Assets/Stud.bmp" />
+    
+</ResourceDictionary>

@@ -1,10 +1,10 @@
-﻿using MordorDataLibrary.Data;
-using MordorDataLibrary.Models;
-
-namespace Examples;
+﻿namespace Examples;
 
 public class DungeonManipulation
 {
+    private const short Friendly = 0;
+    private const short Hostile = 1;
+
     private readonly MordorRecordReader _reader;
     private readonly List<Action<AreaSpawn>> _actions = [];
     private bool _doNotSpawnMonster;
@@ -37,7 +37,7 @@ public class DungeonManipulation
     /// <item>Trap: None</item>
     /// </list>
     /// </remarks>
-    public DungeonManipulation SetPrimaryMonster(string monsterName, short idLevel = CreatureIdentified.Completely)
+    public DungeonManipulation SetPrimaryMonster(string monsterName, CreatureIdentityLevel idLevel = CreatureIdentityLevel.Completely)
     {
         Monster? monster = _reader.GetMordorRecord<DATA05Monsters>().MonstersList.FirstOrDefault(monster => string.Equals(monster.Name, monsterName, StringComparison.OrdinalIgnoreCase));
         if (monster == null)
@@ -50,7 +50,7 @@ public class DungeonManipulation
             TreasureSpawn treasure = areaSpawn.Treasure;
             spawn.MonsterID = monster.ID;
             spawn.OtherMonsterID = monster.ID;
-            spawn.IdentificationLevel = idLevel;
+            spawn.IdentificationLevel = (short)idLevel;
             spawn.Alignment = monster.Alignment;
             spawn.Atk = monster.Attack;
             spawn.Def = monster.Defense;
@@ -58,11 +58,11 @@ public class DungeonManipulation
             spawn.MaxHP = monster.Hits;
             spawn.GroupSize = monster.GroupSize;
             spawn.NumberWhoWantToJoin = 0;
-            spawn.Hostility = Hostility.Hostile;
+            spawn.Hostility = Hostile;
             treasure.MonsterID = monster.ID;
-            treasure.ChestType = ChestTypes.None;
+            treasure.ChestType = (short)ChestType.None;
             treasure.Gold = 0;
-            treasure.Locked = LockedStates.Unknown;
+            treasure.Locked = (short)LockedState.NotLocked;
             treasure.TrapID = 0;
         });
         _primaryMonsterSet = true;
@@ -111,11 +111,11 @@ public class DungeonManipulation
         _actions.Add(areaSpawn =>
         {
             MonsterSpawn spawn = areaSpawn.MonsterSpawnGroup1;
-            if (alignment is >= Alignments.Good and <= Alignments.Evil)
+            if (alignment is >= (short)MonsterAlignment.Good and <= (short)MonsterAlignment.Evil)
             {
                 spawn.Alignment = alignment;
             }
-            if (hostility is Hostility.Friendly or Hostility.Hostile)
+            if (hostility is Friendly or Hostile)
             {
                 spawn.Hostility = hostility;
             }
@@ -169,7 +169,7 @@ public class DungeonManipulation
     {
         if (!_primaryMonsterSet)
             throw new InvalidOperationException("Primary monster must be set before building.");
-        DATA10DungeonState dungeonState = _reader.GetMordorRecord<DATA10DungeonState>();
+        var dungeonState = _reader.GetMordorRecord<DATA10DungeonState>();
         foreach (AreaSpawn areaSpawn in dungeonState.AreaSpawns)
         {
             foreach (Action<AreaSpawn> action in _actions)
@@ -188,11 +188,11 @@ public class DungeonManipulation
         spawn.Def = 1;
         spawn.CurrentHP = 0;
         spawn.MaxHP = 1;
-        spawn.Alignment = Alignments.Evil;
+        spawn.Alignment = (short)MonsterAlignment.Evil;
         spawn.Hostility = 0;
         spawn.MonsterID = -1;
         spawn.GroupSize = 0;
-        spawn.IdentificationLevel = CreatureIdentified.Completely;
+        spawn.IdentificationLevel = (short)CreatureIdentityLevel.Completely;
         spawn.SpawnTime = (float)(DateTime.Now - DateTime.Today).TotalSeconds;
         spawn.NumberWhoWantToJoin = 0;
         spawn.OtherMonsterID = -1;
@@ -215,7 +215,7 @@ public class DungeonManipulation
         {
             spawn.GroupSize = 0;
         }
-        if (spawn is { Hostility: Hostility.Hostile, NumberWhoWantToJoin: > 0 })
+        if (spawn is { Hostility: Hostile, NumberWhoWantToJoin: > 0 })
         {
             spawn.NumberWhoWantToJoin = 0;
         }

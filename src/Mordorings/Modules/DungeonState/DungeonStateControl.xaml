@@ -3,129 +3,136 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:dungeonState="clr-namespace:Mordorings.Modules.DungeonState"
+             xmlns:local="clr-namespace:Mordorings.Modules.DungeonState"
+             xmlns:controls="clr-namespace:Mordorings.UserControls"
              mc:Ignorable="d"
              d:DesignWidth="400" d:DesignHeight="270"
-             d:DataContext="{d:DesignInstance dungeonState:DungeonStateViewModel}">
-	<UserControl.Resources>
-		<Style TargetType="Label">
-			<Setter Property="Padding" Value="0" />
-		</Style>
-	</UserControl.Resources>
-	<Canvas>
-		<Label Content="Monster"
+             d:DataContext="{d:DesignInstance local:DungeonStateViewModel}">
+    <UserControl.Resources>
+        <Style TargetType="Label" BasedOn="{StaticResource ResourceKey=LabelNoPadding}" />
+    </UserControl.Resources>
+    <Canvas>
+        <Label Content="Monster"
                Canvas.Left="14" Canvas.Top="13" />
-		<ComboBox Canvas.Left="63" Canvas.Top="10"
+        <ComboBox Canvas.Left="63" Canvas.Top="10"
                   Width="200"
-                  ItemsSource="{Binding Path=Factory.Monsters}"
-                  SelectedItem="{Binding Path=Factory.Model.SelectedMonster}" />
-		<CheckBox Content="Spawn Monster"
+                  ItemsSource="{Binding Path=Monsters}"
+                  SelectedItem="{Binding Path=Model.SelectedMonster}" />
+        <CheckBox Content="Spawn Monster"
                   Canvas.Left="36" Canvas.Top="50"
-                  d:IsChecked="True"
-                  IsChecked="{Binding Path=Factory.SpawnMonster}" />
-		<Canvas Name="CanvasMonster"
+                  IsChecked="{Binding Path=SpawnMonster}"
+                  d:IsChecked="True" />
+        <Canvas Name="CanvasMonster"
                 Width="160" Height="180"
                 Canvas.Left="14" Canvas.Top="69"
-                IsEnabled="{Binding Path=Factory.SpawnMonster}">
-			<Border BorderBrush="Silver" BorderThickness="1"
-                                        Height="{Binding Path=Height, ElementName=CanvasMonster}"
-                                        Width="{Binding Path=Width, ElementName=CanvasMonster}" />
-			<Label Content="Hits"
+                IsEnabled="{Binding Path=SpawnMonster}">
+            <Border BorderBrush="Silver"
+                    BorderThickness="1"
+                    Height="{Binding Path=Height, ElementName=CanvasMonster}"
+                    Width="{Binding Path=Width, ElementName=CanvasMonster}" />
+            <Label Content="Hits"
                    Canvas.Left="64" Canvas.Top="6" />
-			<Label Content="Current"
+            <Label Content="Current"
                    Canvas.Left="5" Canvas.Top="28" />
-			<TextBox Canvas.Left="50" Canvas.Top="27"
+            <TextBox Text="{Binding Path=Model.CurrentHits, Converter={StaticResource ResourceKey=StringToInt0}}"
+                     Canvas.Left="50" Canvas.Top="27"
                      Width="34" Height="18"
-                     d:Text="25"
                      HorizontalContentAlignment="Right"
-                     Text="{Binding Path=Factory.Model.CurrentHits}" />
-			<Label Content="Max" Canvas.Left="94" Canvas.Top="28" />
-			<TextBox Canvas.Left="118" Canvas.Top="27"
+                     controls:NumericOnly.Enabled="True"
+                     d:Text="25" />
+            <Label Content="Max" Canvas.Left="94" Canvas.Top="28" />
+            <TextBox Text="{Binding Path=Model.MaxHits, Converter={StaticResource ResourceKey=StringToInt0}}"
+                     Canvas.Left="118" Canvas.Top="27"
                      Width="34" Height="18"
-                     d:Text="1200"
                      HorizontalContentAlignment="Right"
-                     Text="{Binding Path=Factory.Model.MaxHits}" />
-			<Label Content="Atk"
+                     controls:NumericOnly.Enabled="True"
+                     d:Text="1200" />
+            <Label Content="Atk"
                    Canvas.Left="27" Canvas.Top="52" />
-			<TextBox Canvas.Left="50" Canvas.Top="51"
+            <TextBox Text="{Binding Path=Model.Attack, Converter={StaticResource ResourceKey=StringToInt0}}"
+                     Canvas.Left="50" Canvas.Top="51"
                      Width="34" Height="18"
-                     d:Text="1500"
                      HorizontalContentAlignment="Right"
-                     Text="{Binding Path=Factory.Model.Attack}" />
-			<Label Content="Def"
+                     controls:NumericOnly.Enabled="True"
+                     d:Text="1500" />
+            <Label Content="Def"
                    Canvas.Left="95" Canvas.Top="52" />
-			<TextBox Canvas.Left="118" Canvas.Top="51"
+            <TextBox Text="{Binding Path=Model.Defense, Converter={StaticResource ResourceKey=StringToInt0}}"
+                     Canvas.Left="118" Canvas.Top="51"
                      Width="34" Height="18"
-                     d:Text="100"
                      HorizontalContentAlignment="Right"
-                     Text="{Binding Path=Factory.Model.Defense}" />
-			<Label Content="Group Size"
+                     controls:NumericOnly.Enabled="True"
+                     d:Text="100" />
+            <Label Content="Group Size"
                    Canvas.Left="3" Canvas.Top="78" />
-			<TextBox Canvas.Left="66" Canvas.Top="77"
+            <TextBox Canvas.Left="66" Canvas.Top="77"
                      Width="24" Height="18"
                      d:Text="6"
                      HorizontalContentAlignment="Right"
-                     Text="{Binding Path=Factory.Model.GroupSize}" />
-			<Label Content="Alignment"
+                     controls:NumericOnly.Enabled="True"
+                     Text="{Binding Path=Model.GroupSize, Converter={StaticResource ResourceKey=StringToInt0}}" />
+            <Label Content="Alignment"
                    Canvas.Left="3" Canvas.Top="108" />
-			<ComboBox Canvas.Left="68" Canvas.Top="105"
+            <ComboBox Canvas.Left="68" Canvas.Top="105"
                       Width="84"
-                      ItemsSource="{Binding Path=Factory.Model.Alignments}"
-                      SelectedItem="{Binding Path=Factory.Model.Alignment}" />
-			<CheckBox Content="Friendly"
+                      ItemsSource="{Binding Path=Model.Alignments}"
+                      SelectedItem="{Binding Path=Model.Alignment}" />
+            <CheckBox Content="Friendly"
                       Canvas.Left="3" Canvas.Top="133"
+                      IsChecked="{Binding Path=Model.Friendly}"
                       Height="16"
-                      d:IsChecked="True"
-                      IsChecked="{Binding Path=Factory.Model.Friendly}" />
-			<Label Canvas.Left="4" Canvas.Top="156"
-                   Content="Number to Join"
+                      d:IsChecked="True" />
+            <Label Content="Number to Join"
+                   Canvas.Left="4" Canvas.Top="156"
                    Height="16" />
-			<TextBox Canvas.Left="91" Canvas.Top="155"
+            <TextBox Text="{Binding Path=Model.NumToJoin}"
+                     Canvas.Left="91" Canvas.Top="155"
                      Width="15" Height="18"
-                     d:Text="2"
                      HorizontalContentAlignment="Center"
-                     IsEnabled="{Binding Path=Factory.Model.Friendly}"
-                     Text="{Binding Path=Factory.Model.NumToJoin}" />
-		</Canvas>
-		<CheckBox Content="Spawn Treasure"
+                     controls:NumericOnly.Enabled="True"
+                     IsEnabled="{Binding Path=Model.Friendly}"
+                     d:Text="2" />
+        </Canvas>
+        <CheckBox Content="Spawn Treasure"
                   Canvas.Left="220" Canvas.Top="50"
                   d:IsChecked="True"
-                  IsChecked="{Binding Path=Factory.SpawnTreasure}" />
-		<Canvas Name="CanvasTreasure"
+                  IsChecked="{Binding Path=SpawnTreasure}" />
+        <Canvas Name="CanvasTreasure"
                 Height="96" Width="183"
                 Canvas.Left="201" Canvas.Top="69"
-                IsEnabled="{Binding Path=Factory.SpawnTreasure}">
-			<Border BorderBrush="Silver" BorderThickness="1"
+                IsEnabled="{Binding Path=SpawnTreasure}">
+            <Border BorderBrush="Silver" BorderThickness="1"
                     Height="{Binding Path=Height, ElementName=CanvasTreasure}"
                     Width="{Binding Path=Width, ElementName=CanvasTreasure}" />
-			<Label Content="Chest Type"
+            <Label Content="Chest Type"
                    Canvas.Left="16" Canvas.Top="13" />
-			<ComboBox Canvas.Left="81" Canvas.Top="10"
+            <ComboBox Canvas.Left="81" Canvas.Top="10"
                       Width="84"
-                      ItemsSource="{Binding Path=Factory.Model.ChestTypes}"
-                      SelectedItem="{Binding Path=Factory.Model.ChestType}" />
-			<Label Content="Locked"
+                      ItemsSource="{Binding Path=Model.ChestTypes}"
+                      SelectedItem="{Binding Path=Model.ChestType}" />
+            <Label Content="Locked"
                    Canvas.Left="36" Canvas.Top="40" />
-			<ComboBox Canvas.Left="81" Canvas.Top="37"
+            <ComboBox Canvas.Left="81" Canvas.Top="37"
                       Width="84"
-                      ItemsSource="{Binding Path=Factory.Model.LockedTypes}"
-                      SelectedItem="{Binding Path=Factory.Model.LockedType}" />
-			<Label Content="Trap Type"
+                      ItemsSource="{Binding Path=Model.LockedTypes}"
+                      SelectedItem="{Binding Path=Model.LockedType}" />
+            <Label Content="Trap Type"
                    Canvas.Left="23" Canvas.Top="67" />
-			<ComboBox Canvas.Left="81" Canvas.Top="64"
+            <ComboBox Canvas.Left="81" Canvas.Top="64"
                       Width="84"
-                      ItemsSource="{Binding Path=Factory.Model.TrapTypes}"
-                      SelectedItem="{Binding Path=Factory.Model.TrapType}" />
-		</Canvas>
-		<Label Content="Gold" Canvas.Top="170" Canvas.Left="220" />
-		<TextBox Canvas.Left="250" Canvas.Top="169"
-                     Width="84" Height="18"
-                     Text="{Binding Factory.Model.Gold}"
-                     d:Text="47,004" />
-		<Button Content="Apply"
+                      ItemsSource="{Binding Path=Model.TrapTypes}"
+                      SelectedItem="{Binding Path=Model.TrapType}" />
+        </Canvas>
+        <Label Content="Gold" Canvas.Top="170" Canvas.Left="220" />
+        <TextBox Canvas.Left="250" Canvas.Top="169"
+                 Width="84" Height="18"
+                 Text="{Binding Path=Model.Gold, Converter={StaticResource ResourceKey=StringToInt0}}"
+                 controls:NumericOnly.Enabled="True"
+                 d:Text="47,004" />
+        <Button Content="Apply"
                 Canvas.Left="230" Canvas.Top="214"
                 Width="48"
-                Command="{Binding Path=Factory.WriteMonsterStateCommand}"
-                IsEnabled="{Binding Path=Factory.IsReady}"/>
-	</Canvas>
+                Command="{Binding Path=WriteMonsterStateCommand}"
+                IsEnabled="{Binding Path=IsReady}" />
+    </Canvas>
 </UserControl>

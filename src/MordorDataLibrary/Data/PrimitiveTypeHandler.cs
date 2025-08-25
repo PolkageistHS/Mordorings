@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace MordorDataLibrary.Data;
+﻿namespace MordorDataLibrary.Data;
 
 public class PrimitiveTypeHandler<T>(Func<MdrReader, T> reader, Action<MdrWriter, T> writer) : ITypeHandler where T : notnull
 {

@@ -1,8 +1,4 @@
-﻿using Calculations;
-using MordorDataLibrary.Data;
-using MordorDataLibrary.Models;
-
-namespace Examples;
+﻿namespace Examples;
 
 public static class AllMonsterLoot
 {
@@ -15,11 +11,15 @@ public static class AllMonsterLoot
     {
         MordorRecordReader reader = new(dataFileFolder);
         MonsterLooting looting = new(dataFileFolder);
-        DATA05Monsters monsters = reader.GetMordorRecord<DATA05Monsters>();
+        var monsters = reader.GetMordorRecord<DATA05Monsters>();
         foreach (Monster monster in monsters.MonstersList)
         {
-            List<ItemDropRate> items = looting.CalculateDropRatesFromMonster(monster).Select(itemDropRate => new ItemDropRate(itemDropRate.Item, itemDropRate.DropRate)).ToList();
+            List<ItemDropRate> items = looting.CalculateDropRatesFromMonster(monster)
+                                              .Select(itemDropRate => new ItemDropRate(itemDropRate.Item, itemDropRate.DropRate))
+                                              .ToList();
             yield return new MonsterLoots(monster.Name, items);
         }
     }
 }
+
+public record MonsterLoots(string MonsterName, List<ItemDropRate> Loot);

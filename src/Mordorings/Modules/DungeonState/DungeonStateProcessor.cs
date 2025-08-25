@@ -1,6 +1,4 @@
-﻿using MordorDataLibrary.Models;
-
-namespace Mordorings.Modules.DungeonState;
+﻿namespace Mordorings.Modules.DungeonState;
 
 public class DungeonStateProcessor(short monsterId, DungeonStateModel model, DATA10DungeonState data)
 {
@@ -26,9 +24,9 @@ public class DungeonStateProcessor(short monsterId, DungeonStateModel model, DAT
 
     private static void ClearTreasureSpawn(TreasureSpawn treasure)
     {
-        treasure.ChestType = ChestTypes.None;
+        treasure.ChestType = (short)ChestType.None;
         treasure.Gold = 0;
-        treasure.Locked = LockedStates.Unknown;
+        treasure.Locked = (short)LockedState.NotLocked;
         treasure.TrapID = 0;
     }
 
@@ -38,13 +36,13 @@ public class DungeonStateProcessor(short monsterId, DungeonStateModel model, DAT
         spawn.MonsterID = monsterId;
         spawn.OtherMonsterID = monsterId;
         spawn.Alignment = (short)model.Alignment;
-        spawn.CurrentHP = model.CurrentHitsVal!.Value;
-        spawn.MaxHP = model.MaxHitsVal!.Value;
-        spawn.Atk = model.AttackVal!.Value;
-        spawn.Def = model.DefenseVal!.Value;
-        spawn.GroupSize = model.GroupSizeVal!.Value;
+        spawn.CurrentHP = model.CurrentHits!.Value;
+        spawn.MaxHP = model.MaxHits!.Value;
+        spawn.Atk = model.Attack!.Value;
+        spawn.Def = model.Defense!.Value;
+        spawn.GroupSize = model.GroupSize!.Value;
         spawn.Hostility = (short)(model.Friendly ? 0 : 1);
-        spawn.NumberWhoWantToJoin = model.NumToJoinVal ?? 0;
+        spawn.NumberWhoWantToJoin = model.NumToJoin ?? 0;
         spawn.SpawnTime = (float)(DateTime.Now - DateTime.Today).TotalSeconds;
     }
 
@@ -54,7 +52,7 @@ public class DungeonStateProcessor(short monsterId, DungeonStateModel model, DAT
         area.Treasure.ChestType = (short)model.ChestType;
         area.Treasure.Locked = (short)model.LockedType;
         area.Treasure.TrapID = (short)model.TrapType;
-        area.Treasure.Gold = model.GoldVal!.Value;
+        area.Treasure.Gold = model.Gold;
     }
 
     private static void ClearMonsterSpawn(MonsterSpawn spawn)
@@ -63,11 +61,11 @@ public class DungeonStateProcessor(short monsterId, DungeonStateModel model, DAT
         spawn.Def = 1;
         spawn.CurrentHP = 0;
         spawn.MaxHP = 1;
-        spawn.Alignment = Alignments.Evil;
+        spawn.Alignment = (short)MonsterAlignment.Evil;
         spawn.Hostility = 0;
         spawn.MonsterID = -1;
         spawn.GroupSize = 0;
-        spawn.IdentificationLevel = CreatureIdentified.Completely;
+        spawn.IdentificationLevel = (short)CreatureIdentityLevel.Completely;
         spawn.SpawnTime = (float)(DateTime.Now - DateTime.Today).TotalSeconds;
         spawn.NumberWhoWantToJoin = 0;
         spawn.OtherMonsterID = -1;

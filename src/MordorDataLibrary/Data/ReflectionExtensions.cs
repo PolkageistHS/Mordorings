@@ -1,7 +1,4 @@
-﻿using System.Reflection;
-using MordorDataLibrary.Models;
-
-namespace MordorDataLibrary.Data;
+﻿namespace MordorDataLibrary.Data;
 
 public static class ReflectionExtensions
 {

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace MordorDataLibrary.Data;
+﻿namespace MordorDataLibrary.Data;
 
 public class BufferManager(int bufferLength)
 {

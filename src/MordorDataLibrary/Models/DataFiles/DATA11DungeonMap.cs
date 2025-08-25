@@ -1,6 +1,7 @@
 ﻿namespace MordorDataLibrary.Models;
 
 [DataRecordLength(StaticValues.Data11RecordLength)]
+[Serializable]
 public class DATA11DungeonMap : IMordorDataFile
 {
     [NewRecord]

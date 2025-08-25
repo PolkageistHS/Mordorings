@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using Mordorings.ViewModels.Abstractions;
 
 namespace Mordorings.Messages;
 

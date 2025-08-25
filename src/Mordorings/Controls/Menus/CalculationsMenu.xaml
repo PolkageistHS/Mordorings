@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="Mordorings.Controls.CalculationsMenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:Mordorings.ViewModels"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:CalculationsMenuViewModel}">
+    <DockPanel LastChildFill="False" Width="100">
+        <Button Content="Weapon Damage" DockPanel.Dock="Top" IsEnabled="False" />
+        <Button Content="Monster Damage" DockPanel.Dock="Top" IsEnabled="False" />
+        <Button Content="Spell Damage" DockPanel.Dock="Top" IsEnabled="False" />
+        <Button Content="XP per Kill" DockPanel.Dock="Top" IsEnabled="False" />
+        <Button Content="Gold per Kill" DockPanel.Dock="Top" IsEnabled="False" />
+        <Button Content="Reqs for Level" DockPanel.Dock="Top"
+                Command="{Binding Path=OpenReqsForLevelCommand}" />
+        <Button Content="Spell Cost" DockPanel.Dock="Top"
+                Command="{Binding Path=OpenSpellStatsCommand}" />
+    </DockPanel>
+</UserControl>

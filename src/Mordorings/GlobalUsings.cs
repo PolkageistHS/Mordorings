@@ -1,0 +1,9 @@
+﻿global using System.Collections.ObjectModel;
+global using Calculations;
+global using CommunityToolkit.Mvvm.ComponentModel;
+global using CommunityToolkit.Mvvm.Input;
+global using MordorDataLibrary.Data;
+global using MordorDataLibrary.Models;
+global using Mordorings.Configs;
+global using Mordorings.Factories;
+global using Mordorings.ViewModels.Abstractions;

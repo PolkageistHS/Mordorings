@@ -2,12 +2,14 @@
 using Config.Net;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Mordorings.Configs;
-using Mordorings.Factories;
 using Mordorings.Modules.DungeonState;
+using Mordorings.Modules.EditMap;
+using Mordorings.Modules.GuildSpells;
+using Mordorings.Modules.ReqsForLevel;
 using Mordorings.ViewModels;
 using Mordorings.Windows;
 
+// ReSharper disable AsyncVoidEventHandlerMethod
 namespace Mordorings;
 
 using DungeonStateViewModel = DungeonStateViewModel;
@@ -23,36 +25,23 @@ public partial class App
                                                                .AddUserControls()
                                                                .AddViewModels()
                                                                .AddFactories()
-                                                               .AddOtherServices())
+                                                               .AddOtherServices()
+                                                               )
                     .Build();
     }
 
     protected override async void OnStartup(StartupEventArgs e)
     {
-        try
-        {
-            await _host.StartAsync();
-            _host.Services.GetRequiredService<MainWindow>().Show();
-            base.OnStartup(e);
-        }
-        catch
-        {
-            // TODO handle exception
-        }
+        await _host.StartAsync();
+        _host.Services.GetRequiredService<MainWindow>().Show();
+        base.OnStartup(e);
     }
 
     protected override async void OnExit(ExitEventArgs e)
     {
-        try
-        {
-            await _host.StopAsync();
-            _host.Dispose();
-            base.OnExit(e);
-        }
-        catch
-        {
-            // TODO handle exception
-        }
+        await _host.StopAsync();
+        _host.Dispose();
+        base.OnExit(e);
     }
 }
 
@@ -66,14 +55,17 @@ public static class ServiceCollectionExtensions
                                                                                                 .AddSingleton<MapMenuViewModel>()
                                                                                                 .AddSingleton<EditMenuViewModel>()
                                                                                                 .AddSingleton<CalculationsMenuViewModel>()
-                                                                                                .AddSingleton<SimulationsMenuViewModel>()
+                                                                                                .AddTransient<LevelRequirementsViewModel>()
+                                                                                                .AddTransient<RaceGuildGraphViewModel>()
+                                                                                                .AddTransient<GuildSpellsViewModel>()
                                                                                                 .AddTransient<DungeonStateViewModel>()
+                                                                                                .AddTransient<EditMapViewModel>()
                                                                                                 ;
 
     public static IServiceCollection AddFactories(this IServiceCollection services) => services.AddSingleton<IViewModelFactory, ViewModelFactory>()
-                                                                                               .AddSingleton<IDungeonStateFactory, DungeonStateFactory>()
                                                                                                .AddSingleton<IDialogFactory, DialogFactory>()
                                                                                                .AddTransient<IMordorIoFactory, MordorIoFactory>()
+                                                                                               .AddTransient<IMapRenderFactory, MapRenderFactory>()
                                                                                                ;
 
     public static IServiceCollection AddOtherServices(this IServiceCollection services)

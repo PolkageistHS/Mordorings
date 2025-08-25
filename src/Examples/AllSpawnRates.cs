@@ -1,8 +1,4 @@
-﻿using Calculations;
-using MordorDataLibrary.Data;
-using MordorDataLibrary.Models;
-
-namespace Examples;
+﻿namespace Examples;
 
 public static class AllSpawnRates
 {
@@ -17,7 +13,7 @@ public static class AllSpawnRates
     {
         MordorRecordReader reader = new(dataFileFolder);
         MonsterSpawning spawning = new(dataFileFolder);
-        DATA11DungeonMap map = reader.GetMordorRecord<DATA11DungeonMap>();
+        var map = reader.GetMordorRecord<DATA11DungeonMap>();
         List<MonsterSpawnRates> monsterRates = [];
         for (int floor = 1; floor <= 15; floor++)
         {
@@ -62,3 +58,7 @@ public static class AllSpawnRates
                            });
     }
 }
+
+public record MonsterSpawnRates(string MonsterName, List<AreaSpawnChance> SpawnRates);
+
+public record AreaSpawnChance(int Floor, int AreaNum, double SpawnChance);

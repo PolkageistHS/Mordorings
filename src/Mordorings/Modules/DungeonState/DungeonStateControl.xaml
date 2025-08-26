@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Mordorings.Modules.DungeonState"
-             xmlns:controls="clr-namespace:Mordorings.UserControls"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:controls1="clr-namespace:Mordorings.Controls"
              mc:Ignorable="d"
              d:DesignWidth="400" d:DesignHeight="270"
              d:DataContext="{d:DesignInstance local:DungeonStateViewModel}">
@@ -38,39 +39,54 @@
                      Canvas.Left="50" Canvas.Top="27"
                      Width="34" Height="18"
                      HorizontalContentAlignment="Right"
-                     controls:NumericOnly.Enabled="True"
-                     d:Text="25" />
+                     d:Text="25">
+                <b:Interaction.Behaviors>
+                    <controls1:NumericOnlyBehavior />
+                </b:Interaction.Behaviors>
+            </TextBox>
             <Label Content="Max" Canvas.Left="94" Canvas.Top="28" />
             <TextBox Text="{Binding Path=Model.MaxHits, Converter={StaticResource ResourceKey=StringToInt0}}"
                      Canvas.Left="118" Canvas.Top="27"
                      Width="34" Height="18"
                      HorizontalContentAlignment="Right"
-                     controls:NumericOnly.Enabled="True"
-                     d:Text="1200" />
+                     d:Text="1200">
+                <b:Interaction.Behaviors>
+                    <controls1:NumericOnlyBehavior />
+                </b:Interaction.Behaviors>
+            </TextBox>
             <Label Content="Atk"
                    Canvas.Left="27" Canvas.Top="52" />
             <TextBox Text="{Binding Path=Model.Attack, Converter={StaticResource ResourceKey=StringToInt0}}"
                      Canvas.Left="50" Canvas.Top="51"
                      Width="34" Height="18"
                      HorizontalContentAlignment="Right"
-                     controls:NumericOnly.Enabled="True"
-                     d:Text="1500" />
+                     d:Text="1500">
+                <b:Interaction.Behaviors>
+                    <controls1:NumericOnlyBehavior />
+                </b:Interaction.Behaviors>
+            </TextBox>
             <Label Content="Def"
                    Canvas.Left="95" Canvas.Top="52" />
             <TextBox Text="{Binding Path=Model.Defense, Converter={StaticResource ResourceKey=StringToInt0}}"
                      Canvas.Left="118" Canvas.Top="51"
                      Width="34" Height="18"
                      HorizontalContentAlignment="Right"
-                     controls:NumericOnly.Enabled="True"
-                     d:Text="100" />
+                     d:Text="100">
+                <b:Interaction.Behaviors>
+                    <controls1:NumericOnlyBehavior />
+                </b:Interaction.Behaviors>
+            </TextBox>
             <Label Content="Group Size"
                    Canvas.Left="3" Canvas.Top="78" />
             <TextBox Canvas.Left="66" Canvas.Top="77"
                      Width="24" Height="18"
                      d:Text="6"
                      HorizontalContentAlignment="Right"
-                     controls:NumericOnly.Enabled="True"
-                     Text="{Binding Path=Model.GroupSize, Converter={StaticResource ResourceKey=StringToInt0}}" />
+                     Text="{Binding Path=Model.GroupSize, Converter={StaticResource ResourceKey=StringToInt0}}">
+                <b:Interaction.Behaviors>
+                    <controls1:NumericOnlyBehavior />
+                </b:Interaction.Behaviors>
+            </TextBox>
             <Label Content="Alignment"
                    Canvas.Left="3" Canvas.Top="108" />
             <ComboBox Canvas.Left="68" Canvas.Top="105"
@@ -89,9 +105,12 @@
                      Canvas.Left="91" Canvas.Top="155"
                      Width="15" Height="18"
                      HorizontalContentAlignment="Center"
-                     controls:NumericOnly.Enabled="True"
                      IsEnabled="{Binding Path=Model.Friendly}"
-                     d:Text="2" />
+                     d:Text="2">
+                <b:Interaction.Behaviors>
+                    <controls1:NumericOnlyBehavior />
+                </b:Interaction.Behaviors>
+            </TextBox>
         </Canvas>
         <CheckBox Content="Spawn Treasure"
                   Canvas.Left="220" Canvas.Top="50"
@@ -127,8 +146,11 @@
         <TextBox Canvas.Left="250" Canvas.Top="169"
                  Width="84" Height="18"
                  Text="{Binding Path=Model.Gold, Converter={StaticResource ResourceKey=StringToInt0}}"
-                 controls:NumericOnly.Enabled="True"
-                 d:Text="47,004" />
+                 d:Text="47,004">
+            <b:Interaction.Behaviors>
+                <controls1:NumericOnlyBehavior />
+            </b:Interaction.Behaviors>
+        </TextBox>
         <Button Content="Apply"
                 Canvas.Left="230" Canvas.Top="214"
                 Width="48"

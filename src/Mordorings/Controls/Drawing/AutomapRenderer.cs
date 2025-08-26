@@ -5,7 +5,7 @@ namespace Mordorings.Controls;
 
 public class AutomapRenderer : IAutomapRenderer
 {
-    private DungeonFloor? _floor;
+    private DungeonFloor? _dungeonFloor;
     private Bitmap? _spriteSheet;
     private Bitmap? _mapBuffer;
     private Graphics? _mapGraphics;
@@ -19,11 +19,11 @@ public class AutomapRenderer : IAutomapRenderer
 
     public static Size MapPixelSize => new(MapWidth * TileSize + 1, MapHeight * TileSize + 1);
 
-    public void Initialize(DungeonFloor? floor)
+    public void Initialize(DungeonFloor? dungeonFloor)
     {
-        ArgumentNullException.ThrowIfNull(floor);
-        _floor?.Dispose();
-        _floor = floor;
+        ArgumentNullException.ThrowIfNull(dungeonFloor);
+        _dungeonFloor?.Dispose();
+        _dungeonFloor = dungeonFloor;
         _mapBuffer?.Dispose();
         _mapGraphics?.Dispose();
         _mapBuffer = new Bitmap(MapPixelSize.Width, MapPixelSize.Height);
@@ -31,7 +31,7 @@ public class AutomapRenderer : IAutomapRenderer
         _mapGraphics.CompositingMode = CompositingMode.SourceOver;
         _mapGraphics.InterpolationMode = InterpolationMode.NearestNeighbor;
         _mapGraphics.Clear(Color.Black);
-        DrawMapBorders(Color.White);
+        DrawMapBorders();
     }
 
     public void LoadSpriteSheet(string? filePath)
@@ -50,15 +50,15 @@ public class AutomapRenderer : IAutomapRenderer
 
     public void DrawDungeonFloorMap()
     {
-        if (_floor is null || _mapGraphics is null || _mapBuffer is null)
+        if (_dungeonFloor is null || _mapGraphics is null || _mapBuffer is null)
             throw new InvalidOperationException($"Map not initialized. Call {nameof(Initialize)} first.");
         _mapGraphics.Clear(Color.Black);
-        DrawMapBorders(Color.White);
+        DrawMapBorders();
         for (int x = MapWidth - 1; x >= 0; x--)
         {
             for (int y = MapHeight - 1; y >= 0; y--)
             {
-                DrawTileToBuffer(x, y, _floor.Tiles[x, y]);
+                DrawTileToBuffer(x, y, _dungeonFloor.Tiles[x, y]);
             }
         }
         MapUpdated?.Invoke(this, EventArgs.Empty);
@@ -74,13 +74,27 @@ public class AutomapRenderer : IAutomapRenderer
     public bool UpdateTile(int x, int y, DungeonTileFlag newTileData)
     {
         long tileData = (long)newTileData;
-        if (_floor is null || !IsValidCoordinate(x, y))
+        if (_dungeonFloor is null || x is < 0 or >= MapWidth || y is < 0 or >= MapHeight)
             return false;
-        if (_floor.Tiles[x, y] == tileData)
+        if (_dungeonFloor.Tiles[x, y] == tileData)
             return false;
-        _floor.Tiles[x, y] = tileData;
+        _dungeonFloor.Tiles[x, y] = tileData;
         DrawDungeonFloorMap();
+        HighlightTile(x, y);
         return true;
+    }
+
+    private void DrawMapBorders()
+    {
+        Pen pen = new(Color.White, 1);
+        if (_mapBuffer == null || _mapGraphics == null)
+            return;
+        int x = _mapBuffer.Width;
+        int y = _mapBuffer.Height;
+        _mapGraphics.DrawLine(pen, 0, 0, 0, y);
+        _mapGraphics.DrawLine(pen, 0, 0, x, 0);
+        _mapGraphics.DrawLine(pen, x - 1, y - 1, x - 1, 0);
+        _mapGraphics.DrawLine(pen, x - 1, y - 1, 0, y - 1);
     }
 
     private void DrawTileToBuffer(int tileX, int tileY, long bitmask)
@@ -89,9 +103,9 @@ public class AutomapRenderer : IAutomapRenderer
             throw new InvalidOperationException("Sprite sheet has not been loaded.");
         if (_mapGraphics is null)
             return;
-        int screenTileY = MapHeight - 1 - tileY;
+        int imageTileY = MapHeight - 1 - tileY;
         int baseX = tileX * TileSize;
-        int baseY = screenTileY * TileSize;
+        int baseY = imageTileY * TileSize;
         _mapGraphics.FillRectangle(Brushes.Black, baseX, baseY, TileSize, TileSize);
         for (int i = 0; i <= 22; i++)
         {
@@ -118,26 +132,28 @@ public class AutomapRenderer : IAutomapRenderer
         graphics.DrawImage(_spriteSheet, destRect, sourceRect, GraphicsUnit.Pixel);
     }
 
-    private void DrawMapBorders(Color penColor)
+    public void HighlightTile(int tileX, int tileY)
     {
-        Pen pen = new(penColor, 1);
-        if (_mapBuffer == null || _mapGraphics == null)
+        if (_mapGraphics is null)
             return;
-        int x = _mapBuffer.Width;
-        int y = _mapBuffer.Height;
-        _mapGraphics.DrawLine(pen, 0, 0, 0, y);
-        _mapGraphics.DrawLine(pen, 0, 0, x, 0);
-        _mapGraphics.DrawLine(pen, x - 1, y - 1, x - 1, 0);
-        _mapGraphics.DrawLine(pen, x - 1, y - 1, 0, y - 1);
+        int screenTileY = MapHeight - 1 - tileY;
+        int baseX = tileX * TileSize;
+        int baseY = screenTileY * TileSize;
+        Brush brush = new SolidBrush(Color.FromArgb(120, Color.Magenta));
+        Pen pen = new(brush, 2);
+        _mapGraphics.DrawRectangle(pen, baseX, baseY, TileSize, TileSize);
+        MapUpdated?.Invoke(this, EventArgs.Empty);
     }
 
-    private static bool IsValidCoordinate(int x, int y) =>
-        x is >= 0 and < MapWidth && y is >= 0 and < MapHeight;
+    public void RemoveHighlight()
+    {
+        DrawDungeonFloorMap();
+    }
 
     public void Dispose()
     {
         _spriteSheet?.Dispose();
-        _floor?.Dispose();
+        _dungeonFloor?.Dispose();
         GC.SuppressFinalize(this);
     }
 }

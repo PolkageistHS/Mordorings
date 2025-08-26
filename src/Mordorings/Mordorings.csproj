@@ -30,20 +30,14 @@
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
-      <Page Update="Controls\Menus\CalculationsMenu.xaml">
+      <Page Update="UserControls\Menus\CalculationsMenu.xaml">
         <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
       </Page>
-      <Page Update="Controls\Menus\EditMenu.xaml">
+      <Page Update="UserControls\Menus\EditMenu.xaml">
         <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
       </Page>
-      <Page Update="Controls\Menus\MapMenu.xaml">
+      <Page Update="UserControls\Menus\MapMenu.xaml">
         <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
       </Page>
     </ItemGroup>
 
@@ -53,6 +47,7 @@
 
     <ItemGroup>
       <Folder Include="Assets\" />
+      <Folder Include="Controls\AttachedProperties\" />
     </ItemGroup>
 
     <ItemGroup>

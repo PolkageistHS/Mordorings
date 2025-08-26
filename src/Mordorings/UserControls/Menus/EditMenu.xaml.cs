@@ -1,4 +1,4 @@
-﻿namespace Mordorings.Controls;
+﻿namespace Mordorings.UserControls;
 
 public partial class EditMenu
 {

@@ -17,4 +17,8 @@ public interface IAutomapRenderer : IDisposable
     void DrawDungeonFloorMap();
 
     bool UpdateTile(int x, int y, DungeonTileFlag newTileData);
+
+    void HighlightTile(int tileX, int tileY);
+
+    void RemoveHighlight();
 }

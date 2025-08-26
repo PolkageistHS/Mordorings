@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
 
-namespace Mordorings.UserControls;
+namespace Mordorings.Controls;
 
 public class StringToIntConverter : IValueConverter
 {

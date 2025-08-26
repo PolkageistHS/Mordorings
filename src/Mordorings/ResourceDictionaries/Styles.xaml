@@ -1,11 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:userControls="clr-namespace:Mordorings.UserControls">
+                    xmlns:controls="clr-namespace:Mordorings.Controls">
 
     <Style x:Key="LabelNoPadding" TargetType="Label">
         <Setter Property="Padding" Value="0" />
     </Style>
 
-    <userControls:StringToIntConverter EmptyStringValue="0" x:Key="StringToInt0" />
+    <controls:StringToIntConverter EmptyStringValue="0" x:Key="StringToInt0" />
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
 </ResourceDictionary>

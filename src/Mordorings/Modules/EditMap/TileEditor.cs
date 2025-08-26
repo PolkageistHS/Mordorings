@@ -2,16 +2,42 @@
 
 public partial class TileEditor : ObservableObject
 {
+    public TileEditor()
+    {
+        MapObjects.ObjectsUpdated += (_, _) => NotifyTileChanged();
+    }
+
     private long? _originalFlags;
 
     public event EventHandler<TileFlagChangedEventArgs>? FlagChanged;
 
-    public void LoadTile(int x, int y, long flags)
+    public void LoadTile(int x, int y, long flags, Teleporter? teleporter, Chute? chute)
     {
-        TileX = x;
-        TileY = y;
+        TileX = x + 1;
+        TileY = y + 1;
         _originalFlags = flags;
         LoadTileFlags((DungeonTileFlag)flags);
+        if (teleporter is not null)
+        {
+            if (teleporter is { x2: 0, y2: 0 })
+            {
+                MapObjects.TeleporterRandom = true;
+                MapObjects.TeleporterX = null;
+                MapObjects.TeleporterY = null;
+                MapObjects.TeleporterZ = null;
+            }
+            else
+            {
+                MapObjects.TeleporterRandom = false;
+                MapObjects.TeleporterX = teleporter.x2;
+                MapObjects.TeleporterY = teleporter.y2;
+                MapObjects.TeleporterZ = teleporter.z2;
+            }
+        }
+        if (chute is not null)
+        {
+           MapObjects.ChuteDepth = chute.Depth;
+        }
     }
 
     public void Clear()
@@ -23,10 +49,7 @@ public partial class TileEditor : ObservableObject
 
     public void Reset()
     {
-        if (_originalFlags != null)
-        {
-            LoadTileFlags((DungeonTileFlag)_originalFlags);
-        }
+        LoadTileFlags((DungeonTileFlag?)_originalFlags ?? 0);
     }
 
     private void LoadTileFlags(DungeonTileFlag flags)
@@ -85,23 +108,12 @@ public partial class TileEditor : ObservableObject
         return flags;
     }
 
-    private void NotifyTileChanged(bool isAdded, DungeonTileFlag modifiedFlag)
+    private void NotifyTileChanged()
     {
         if (TileX == null || TileY == null)
             return;
-        DungeonTileFlag? addedFlag;
-        DungeonTileFlag? removedFlag;
-        if (isAdded)
-        {
-            addedFlag = modifiedFlag;
-            removedFlag = null;
-        }
-        else
-        {
-            removedFlag = modifiedFlag;
-            addedFlag = null;
-        }
-        FlagChanged?.Invoke(this, new TileFlagChangedEventArgs(TileX.Value, TileY.Value, addedFlag, removedFlag, GetTileFlag()));
+        var args = new TileFlagChangedEventArgs(TileX.Value - 1, TileY.Value - 1, GetTileFlag(), MapObjects);
+        FlagChanged?.Invoke(this, args);
     }
 
     [ObservableProperty]
@@ -113,117 +125,119 @@ public partial class TileEditor : ObservableObject
     [ObservableProperty]
     private bool _wallEast;
 
-    partial void OnWallEastChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.WallEast);
+    partial void OnWallEastChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _wallNorth;
 
-    partial void OnWallNorthChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.WallNorth);
+    partial void OnWallNorthChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _doorEast;
 
-    partial void OnDoorEastChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.DoorEast);
+    partial void OnDoorEastChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _doorNorth;
 
-    partial void OnDoorNorthChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.DoorNorth);
+    partial void OnDoorNorthChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _secretDoorEast;
 
-    partial void OnSecretDoorEastChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.SecretDoorEast);
+    partial void OnSecretDoorEastChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _secretDoorNorth;
 
-    partial void OnSecretDoorNorthChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.SecretDoorNorth);
+    partial void OnSecretDoorNorthChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _faceNorth;
 
-    partial void OnFaceNorthChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.FaceNorth);
+    partial void OnFaceNorthChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _faceEast;
 
-    partial void OnFaceEastChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.FaceEast);
+    partial void OnFaceEastChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _faceSouth;
 
-    partial void OnFaceSouthChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.FaceSouth);
+    partial void OnFaceSouthChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _faceWest;
 
-    partial void OnFaceWestChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.FaceWest);
+    partial void OnFaceWestChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _extinguisher;
 
-    partial void OnExtinguisherChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.Extinguisher);
+    partial void OnExtinguisherChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _pit;
 
-    partial void OnPitChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.Pit);
+    partial void OnPitChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _stairsUp;
 
-    partial void OnStairsUpChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.StairsUp);
+    partial void OnStairsUpChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _stairsDown;
 
-    partial void OnStairsDownChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.StairsDown);
+    partial void OnStairsDownChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _teleporter;
 
-    partial void OnTeleporterChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.Teleporter);
+    partial void OnTeleporterChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _water;
 
-    partial void OnWaterChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.Water);
+    partial void OnWaterChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _quicksand;
 
-    partial void OnQuicksandChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.Quicksand);
+    partial void OnQuicksandChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _rotator;
 
-    partial void OnRotatorChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.Rotator);
+    partial void OnRotatorChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _antimagic;
 
-    partial void OnAntimagicChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.Antimagic);
+    partial void OnAntimagicChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _rock;
 
-    partial void OnRockChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.Rock);
+    partial void OnRockChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _fog;
 
-    partial void OnFogChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.Fog);
+    partial void OnFogChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _chute;
 
-    partial void OnChuteChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.Chute);
+    partial void OnChuteChanged(bool value) => NotifyTileChanged();
 
     [ObservableProperty]
     private bool _stud;
 
-    partial void OnStudChanged(bool value) => NotifyTileChanged(value, DungeonTileFlag.Stud);
+    partial void OnStudChanged(bool value) => NotifyTileChanged();
+
+    public MapObjects MapObjects { get; private set; } = new();
 }
 
-public sealed record TileFlagChangedEventArgs(int TileX, int TileY, DungeonTileFlag? AddedTile, DungeonTileFlag? RemovedTile, DungeonTileFlag AllFlags);
+public sealed record TileFlagChangedEventArgs(int TileX, int TileY, DungeonTileFlag AllFlags, MapObjects MapObjects);

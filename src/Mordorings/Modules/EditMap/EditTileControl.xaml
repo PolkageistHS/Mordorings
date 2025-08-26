@@ -4,131 +4,186 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Mordorings.Modules.EditMap"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:controls="clr-namespace:Mordorings.Controls"
+             IsEnabled="{Binding Path=IsTileSelected}"
              mc:Ignorable="d"
-             d:DesignHeight="400" d:DesignWidth="150"
+             d:DesignHeight="410" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance local:EditMapViewModel}">
-	<StackPanel>
-		<StackPanel Orientation="Horizontal">
-			<TextBlock Text="Tile at " FontSize="14" />
-			<TextBlock Text="{Binding Path=TileEditor.TileX}" FontSize="14" FontWeight="Bold" d:Text="25" />
-            <TextBlock Text="," FontSize="14" />
-            <TextBlock Text="{Binding Path=TileEditor.TileY}" FontSize="14" FontWeight="Bold" d:Text="9" />
-		</StackPanel>
-		<StackPanel Orientation="Vertical">
-			<CheckBox Content="Wall East" IsChecked="{Binding Path=TileEditor.WallEast}" />
-			<CheckBox Content="Wall North" IsChecked="{Binding Path=TileEditor.WallNorth}" />
-			<CheckBox Content="Door East" IsChecked="{Binding Path=TileEditor.DoorEast}" />
-			<CheckBox Content="Door North" IsChecked="{Binding Path=TileEditor.DoorNorth}" />
-			<CheckBox Content="Secret Door East" IsChecked="{Binding Path=TileEditor.SecretDoorEast}" />
-			<CheckBox Content="Secret Door North" IsChecked="{Binding Path=TileEditor.SecretDoorNorth}" />
-			<CheckBox IsChecked="{Binding Path=TileEditor.StairsUp}">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="{StaticResource ResourceKey=StairsUp}" Margin="0,0,4,0" />
-					<TextBlock Text="Stairs Up" />
-				</StackPanel>
-			</CheckBox>
-			<CheckBox IsChecked="{Binding Path=TileEditor.StairsDown}">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="{StaticResource ResourceKey=StairsDown}" Margin="0,0,4,0" />
-					<TextBlock Text="Stairs Down" />
-				</StackPanel>
-			</CheckBox>
-			<CheckBox IsChecked="{Binding Path=TileEditor.Rock}">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="{StaticResource ResourceKey=Rock}" Margin="0,0,4,0" />
-					<TextBlock Text="Rock" />
-				</StackPanel>
-			</CheckBox>
-			<CheckBox IsChecked="{Binding Path=TileEditor.Fog}">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="{StaticResource ResourceKey=Fog}" Margin="0,0,4,0" />
-					<TextBlock Text="Fog" />
-				</StackPanel>
-			</CheckBox>
-			<CheckBox IsChecked="{Binding Path=TileEditor.Water}">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="{StaticResource ResourceKey=Water}" Margin="0,0,4,0" />
-					<TextBlock Text="Water" />
-				</StackPanel>
-			</CheckBox>
-			<CheckBox IsChecked="{Binding Path=TileEditor.Quicksand}">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="{StaticResource ResourceKey=Quicksand}" Margin="0,0,4,0" />
-					<TextBlock Text="Quicksand" />
-				</StackPanel>
-			</CheckBox>
-			<CheckBox IsChecked="{Binding Path=TileEditor.Antimagic}">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="{StaticResource ResourceKey=Antimagic}" Margin="0,0,4,0" />
-					<TextBlock Text="Antimagic" />
-				</StackPanel>
-			</CheckBox>
-			<CheckBox IsChecked="{Binding Path=TileEditor.Stud}">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="{StaticResource ResourceKey=Stud}" Margin="0,0,4,0" />
-					<TextBlock Text="Stud" />
-				</StackPanel>
-			</CheckBox>
-			<CheckBox IsChecked="{Binding Path=TileEditor.Pit}">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="{StaticResource ResourceKey=Pit}" Margin="0,0,4,0" />
-					<TextBlock Text="Pit" />
-				</StackPanel>
-			</CheckBox>
-			<CheckBox IsChecked="{Binding Path=TileEditor.Rotator}">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="{StaticResource ResourceKey=Rotator}" Margin="0,0,4,0" />
-					<TextBlock Text="Rotator" />
-				</StackPanel>
-			</CheckBox>
-			<CheckBox IsChecked="{Binding Path=TileEditor.Extinguisher}">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="{StaticResource ResourceKey=Extinguisher}" Margin="0,0,4,0" />
-					<TextBlock Text="Extinguisher" />
-				</StackPanel>
-			</CheckBox>
-			<CheckBox IsChecked="{Binding Path=TileEditor.FaceNorth}">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="{StaticResource ResourceKey=FaceNorth}" Margin="0,0,4,0" />
-					<TextBlock Text="Face North" />
-				</StackPanel>
-			</CheckBox>
-			<CheckBox IsChecked="{Binding Path=TileEditor.FaceEast}">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="{StaticResource ResourceKey=FaceEast}" Margin="0,0,4,0" />
-					<TextBlock Text="Face East" />
-				</StackPanel>
-			</CheckBox>
-			<CheckBox IsChecked="{Binding Path=TileEditor.FaceSouth}">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="{StaticResource ResourceKey=FaceSouth}" Margin="0,0,4,0" />
-					<TextBlock Text="Face South" />
-				</StackPanel>
-			</CheckBox>
-			<CheckBox IsChecked="{Binding Path=TileEditor.FaceWest}">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="{StaticResource ResourceKey=FaceWest}" Margin="0,0,4,0" />
-					<TextBlock Text="Face West" />
-				</StackPanel>
-			</CheckBox>
-		</StackPanel>
-		<Grid>
-			<Grid.RowDefinitions>
-				<RowDefinition />
-				<RowDefinition />
-			</Grid.RowDefinitions>
-			<CheckBox Grid.Row="0" IsEnabled="False" IsChecked="{Binding Path=TileEditor.Teleporter}">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="{StaticResource ResourceKey=Teleporter}" Margin="0,0,4,0" />
-					<TextBlock Text="Teleporter" />
-				</StackPanel>
-			</CheckBox>
-			<CheckBox Grid.Row="1" IsEnabled="False" IsChecked="{Binding Path=TileEditor.Chute}">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="{StaticResource ResourceKey=Chute}" Margin="0,0,4,0" />
-					<TextBlock Text="Chute" />
-				</StackPanel>
-			</CheckBox>
-		</Grid>
-	</StackPanel>
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Tile at " FontSize="14"
+                       Visibility="{Binding Path=IsTileSelected, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"
+                       d:Visibility="Visible" />
+            <TextBlock Text="{Binding Path=TileEditor.TileX}"
+                       FontSize="14" FontWeight="Bold"
+                       d:Text="25" />
+            <TextBlock Text="," FontSize="14" 
+                       Visibility="{Binding Path=IsTileSelected, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"
+                       d:Visibility="Visible" />
+            <TextBlock Text="{Binding Path=TileEditor.TileY}"
+                       FontSize="14" FontWeight="Bold"
+                       d:Text="9" />
+            <Button Height="19"
+                    Content="Reset" FontSize="9"
+                    Margin="8,0,0,0"
+                    Visibility="{Binding Path=IsTileSelected, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"
+                    Command="{Binding Path=ResetTileCommand}" />
+        </StackPanel>
+        <StackPanel Orientation="Vertical">
+            <CheckBox Content="Wall East" IsChecked="{Binding Path=TileEditor.WallEast}" />
+            <CheckBox Content="Wall North" IsChecked="{Binding Path=TileEditor.WallNorth}" />
+            <CheckBox Content="Door East" IsChecked="{Binding Path=TileEditor.DoorEast}" />
+            <CheckBox Content="Door North" IsChecked="{Binding Path=TileEditor.DoorNorth}" />
+            <CheckBox Content="Secret Door East" IsChecked="{Binding Path=TileEditor.SecretDoorEast}" />
+            <CheckBox Content="Secret Door North" IsChecked="{Binding Path=TileEditor.SecretDoorNorth}" />
+            <CheckBox IsChecked="{Binding Path=TileEditor.StairsUp}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource ResourceKey=StairsUp}" Margin="0,0,4,0" />
+                    <TextBlock Text="Stairs Up" />
+                </StackPanel>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Path=TileEditor.StairsDown}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource ResourceKey=StairsDown}" Margin="0,0,4,0" />
+                    <TextBlock Text="Stairs Down" />
+                </StackPanel>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Path=TileEditor.Rock}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource ResourceKey=Rock}" Margin="0,0,4,0" />
+                    <TextBlock Text="Rock" />
+                </StackPanel>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Path=TileEditor.Fog}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource ResourceKey=Fog}" Margin="0,0,4,0" />
+                    <TextBlock Text="Fog" />
+                </StackPanel>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Path=TileEditor.Water}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource ResourceKey=Water}" Margin="0,0,4,0" />
+                    <TextBlock Text="Water" />
+                </StackPanel>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Path=TileEditor.Quicksand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource ResourceKey=Quicksand}" Margin="0,0,4,0" />
+                    <TextBlock Text="Quicksand" />
+                </StackPanel>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Path=TileEditor.Antimagic}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource ResourceKey=Antimagic}" Margin="0,0,4,0" />
+                    <TextBlock Text="Antimagic" />
+                </StackPanel>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Path=TileEditor.Stud}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource ResourceKey=Stud}" Margin="0,0,4,0" />
+                    <TextBlock Text="Stud" />
+                </StackPanel>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Path=TileEditor.Pit}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource ResourceKey=Pit}" Margin="0,0,4,0" />
+                    <TextBlock Text="Pit" />
+                </StackPanel>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Path=TileEditor.Rotator}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource ResourceKey=Rotator}" Margin="0,0,4,0" />
+                    <TextBlock Text="Rotator" />
+                </StackPanel>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Path=TileEditor.Extinguisher}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource ResourceKey=Extinguisher}" Margin="0,0,4,0" />
+                    <TextBlock Text="Extinguisher" />
+                </StackPanel>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Path=TileEditor.FaceNorth}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource ResourceKey=FaceNorth}" Margin="0,0,4,0" />
+                    <TextBlock Text="Face North" />
+                </StackPanel>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Path=TileEditor.FaceEast}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource ResourceKey=FaceEast}" Margin="0,0,4,0" />
+                    <TextBlock Text="Face East" />
+                </StackPanel>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Path=TileEditor.FaceSouth}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource ResourceKey=FaceSouth}" Margin="0,0,4,0" />
+                    <TextBlock Text="Face South" />
+                </StackPanel>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Path=TileEditor.FaceWest}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource ResourceKey=FaceWest}" Margin="0,0,4,0" />
+                    <TextBlock Text="Face West" />
+                </StackPanel>
+            </CheckBox>
+        </StackPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <CheckBox Grid.Row="0" IsChecked="{Binding Path=TileEditor.Teleporter}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource ResourceKey=Teleporter}" Margin="0,0,4,0" />
+                    <TextBlock Text="Teleporter" />
+                </StackPanel>
+            </CheckBox>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="19,0,0,0"
+                        Visibility="{Binding Path=TileEditor.Teleporter, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
+                <CheckBox Content="Random" IsChecked="{Binding Path=TileEditor.MapObjects.TeleporterRandom}" />
+                <TextBlock Text="X" Margin="10,0,3,0" />
+                <TextBox Text="{Binding Path=TileEditor.MapObjects.TeleporterX}"
+                         Width="18"
+                         IsEnabled="{Binding Path=TileEditor.MapObjects.IsTeleporterFixed}">
+                    <b:Interaction.Behaviors>
+                        <controls:NumericOnlyBehavior MinValue="1" MaxValue="30" />
+                    </b:Interaction.Behaviors>
+                </TextBox>
+                <TextBlock Text="Y" Margin="10,0,3,0" />
+                <TextBox Text="{Binding Path=TileEditor.MapObjects.TeleporterY}" 
+                         Width="18"
+                         IsEnabled="{Binding Path=TileEditor.MapObjects.IsTeleporterFixed}">
+                    <b:Interaction.Behaviors>
+                        <controls:NumericOnlyBehavior MinValue="1" MaxValue="30" />
+                    </b:Interaction.Behaviors>
+                </TextBox>
+                <TextBlock Text="Z" Margin="10,0,3,0" />
+                <TextBox Text="{Binding Path=TileEditor.MapObjects.TeleporterZ}" 
+                         Width="18"
+                         IsEnabled="{Binding Path=TileEditor.MapObjects.IsTeleporterFixed}">
+                    <b:Interaction.Behaviors>
+                        <controls:NumericOnlyBehavior MinValue="1" MaxValue="15" />
+                    </b:Interaction.Behaviors>
+                </TextBox>
+            </StackPanel>
+            <CheckBox Grid.Row="2" IsChecked="{Binding Path=TileEditor.Chute}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource ResourceKey=Chute}" Margin="0,0,4,0" />
+                    <TextBlock Text="Chute" />
+                </StackPanel>
+            </CheckBox>
+            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="19,0,0,0"
+                        Visibility="{Binding Path=TileEditor.Chute, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
+                <TextBlock Text="Depth:" Margin="10,0,3,0" />
+                <TextBox Text="{Binding Path=TileEditor.MapObjects.ChuteDepth}" Width="18">
+                    <b:Interaction.Behaviors>
+                        <controls:NumericOnlyBehavior MinValue="1" MaxValue="3" />
+                    </b:Interaction.Behaviors>
+                </TextBox>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
 </UserControl>

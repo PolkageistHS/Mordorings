@@ -4,5 +4,5 @@ namespace Mordorings.Factories;
 
 public interface IMapRenderFactory
 {
-    IAutomapRenderer CreateRenderer();
+    IAutomapRenderer CreateAutomapRenderer();
 }

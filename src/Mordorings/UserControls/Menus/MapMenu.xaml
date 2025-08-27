@@ -12,7 +12,8 @@
         <Button Content="Edit Dungeon State" DockPanel.Dock="Top"
                 Command="{Binding Path=OpenDungeonStateEditorCommand}" />
         <Button Content="Reveal AutoMap" DockPanel.Dock="Top" IsEnabled="False" />
-        <Button Content="Monster Heatmap" DockPanel.Dock="Top" IsEnabled="False" />
+        <Button Content="Monster Heatmap" DockPanel.Dock="Top"
+                Command="{Binding Path=OpenMonsterHeatMapCommand}" />
         <Button Content="Item Heatmap" DockPanel.Dock="Top" IsEnabled="False" />
     </DockPanel>
 </UserControl>

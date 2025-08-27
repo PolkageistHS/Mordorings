@@ -14,6 +14,9 @@ public partial class GuildSpellsModel(Spell spell, Guild guild) : ObservableObje
 
     public void RecalculateCost(int spellLevel)
     {
-         
+        if (guild.Name == "")
+        {
+
+        }
     }
 }

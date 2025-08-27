@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="Mordorings.Modules.MonsterHeatMap.MonsterHeatMapControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Mordorings.Modules.MonsterHeatMap"
+             mc:Ignorable="d"
+             d:DesignHeight="800" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance local:MonsterHeatMapViewModel}">
+    <UserControl.Resources>
+        <Style TargetType="Label" BasedOn="{StaticResource ResourceKey=LabelNoPadding}" />
+    </UserControl.Resources>
+	<DockPanel>
+        <Grid DockPanel.Dock="Left" Margin="0, 50, 0, 10">
+            <Image Source="{Binding Path=SelectedFloor.Image, FallbackValue={x:Null}}"
+                   HorizontalAlignment="Left" VerticalAlignment="Top"
+                   MinWidth="421" MinHeight="421"
+				   d:Source="c:\temp\floor1.png" />
+        </Grid>
+	</DockPanel>
+</UserControl>

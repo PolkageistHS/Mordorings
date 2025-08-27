@@ -1,69 +1,28 @@
 ﻿using Mordorings.Controls;
+using Mordorings.Models;
 
 namespace Mordorings.Modules.EditMap;
 
-public partial class EditMapViewModel : ViewModelBase
+public partial class EditMapViewModel : MapViewModelBase
 {
-    private const string SpriteSheetFile = "Assets/DungeonSprites.bmp";
-    private readonly IMordorIoFactory _ioFactory;
-    private readonly IMapRenderFactory _mapRenderFactory;
     private readonly IDialogFactory _dialogFactory;
-    private readonly DATA11DungeonMap _map;
-    private readonly DungeonFloor[] _cachedDungeonFloors;
 
-    public EditMapViewModel(IMordorIoFactory ioFactory, IMapRenderFactory mapRenderFactory, IDialogFactory dialogFactory)
+    public EditMapViewModel(IMordorIoFactory ioFactory, IMapRenderFactory mapRenderFactory, IDialogFactory dialogFactory) : base(ioFactory, mapRenderFactory)
     {
-        _ioFactory = ioFactory;
-        _mapRenderFactory = mapRenderFactory;
         _dialogFactory = dialogFactory;
-        _map = _ioFactory.GetReader().GetMordorRecord<DATA11DungeonMap>();
-        _cachedDungeonFloors = CacheDungeonFloors().ToArray();
         SelectedFloorNum = 1;
-    }
-
-    private IEnumerable<DungeonFloor> CacheDungeonFloors()
-    {
-        foreach (Floor floor in _map.Floors)
-        {
-            IAutomapRenderer renderer = _mapRenderFactory.CreateRenderer();
-            renderer.LoadSpriteSheet(SpriteSheetFile);
-            var dungeonFloor = new DungeonFloor(floor);
-            dungeonFloor.Initialize(renderer);
-            yield return dungeonFloor;
-        }
     }
 
     private DungeonFloor ResetFloor(int floorNum)
     {
-        IAutomapRenderer renderer = _mapRenderFactory.CreateRenderer();
-        renderer.LoadSpriteSheet(SpriteSheetFile);
-        var dungeonFloor = new DungeonFloor(_map.Floors[floorNum - 1]);
-        dungeonFloor.Initialize(renderer);
-        _cachedDungeonFloors[floorNum - 1] = dungeonFloor;
+        DungeonFloor dungeonFloor = CreateDungeonFloor(Map.Floors[floorNum - 1]);
+        CachedDungeonFloors[floorNum - 1] = dungeonFloor;
         return dungeonFloor;
     }
 
     public TileEditor TileEditor { get; } = new();
 
     public bool IsTileSelected => TileEditor.TileX is not null && TileEditor.TileY is not null;
-
-    [ObservableProperty]
-    private DungeonFloor? _selectedFloor;
-
-    [ObservableProperty]
-    private int _selectedFloorNum;
-
-    [RelayCommand]
-    private void IncreaseFloor()
-    {
-        SelectedFloorNum = Math.Clamp(SelectedFloorNum + 1, 1, 15);
-    }
-
-    [RelayCommand]
-    private void DecreaseFloor()
-    {
-        SelectedFloorNum = Math.Clamp(SelectedFloorNum - 1, 1, 15);
-    }
 
     [RelayCommand]
     private void Save()
@@ -72,9 +31,9 @@ public partial class EditMapViewModel : ViewModelBase
             return;
         for (int i = 0; i < 15; i++)
         {
-            _map.Floors[i] = _cachedDungeonFloors[i].Floor;
+            Map.Floors[i] = CachedDungeonFloors[i].Floor;
         }
-        _ioFactory.GetWriter().WriteMordorRecord(_map);
+        IoFactory.GetWriter().WriteMordorRecord(Map);
     }
 
     [RelayCommand]
@@ -95,7 +54,7 @@ public partial class EditMapViewModel : ViewModelBase
         {
             ResetFloor(i);
         }
-        SelectedFloor = _cachedDungeonFloors[SelectedFloorNum - 1];
+        SelectedFloor = CachedDungeonFloors[SelectedFloorNum - 1];
         TileEditor.Clear();
     }
 
@@ -188,23 +147,9 @@ public partial class EditMapViewModel : ViewModelBase
         }
     }
 
-    partial void OnSelectedFloorNumChanged(int oldValue, int newValue)
+    protected override void OnSelectedFloorNumChanged()
     {
-        if (newValue is < 1 or > 15)
-        {
-            if (oldValue is >= 1 and <= 15)
-            {
-                _selectedFloorNum = oldValue;
-            }
-            else
-            {
-                _selectedFloorNum = Math.Clamp(newValue, 1, 15);
-            }
-        }
-        SelectedFloor = _cachedDungeonFloors[SelectedFloorNum - 1];
-        if (SelectedFloorNum == oldValue)
-            return;
-        SelectedFloor.Renderer?.RemoveHighlight();
+        SelectedFloor?.Renderer?.RemoveHighlight();
         TileEditor.Clear();
         OnPropertyChanged(nameof(IsTileSelected));
     }

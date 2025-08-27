@@ -237,7 +237,7 @@ public partial class TileEditor : ObservableObject
 
     partial void OnStudChanged(bool value) => NotifyTileChanged();
 
-    public MapObjects MapObjects { get; private set; } = new();
+    public MapObjects MapObjects { get; } = new();
 }
 
 public sealed record TileFlagChangedEventArgs(int TileX, int TileY, DungeonTileFlag AllFlags, MapObjects MapObjects);

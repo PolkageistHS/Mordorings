@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Mordorings.Modules.DungeonState;
 using Mordorings.Modules.EditMap;
 using Mordorings.Modules.GuildSpells;
+using Mordorings.Modules.MonsterHeatMap;
 using Mordorings.Modules.ReqsForLevel;
 using Mordorings.ViewModels;
 using Mordorings.Windows;
@@ -60,6 +61,7 @@ public static class ServiceCollectionExtensions
                                                                                                 .AddTransient<GuildSpellsViewModel>()
                                                                                                 .AddTransient<DungeonStateViewModel>()
                                                                                                 .AddTransient<EditMapViewModel>()
+                                                                                                .AddTransient<MonsterHeatMapViewModel>()
                                                                                                 ;
 
     public static IServiceCollection AddFactories(this IServiceCollection services) => services.AddSingleton<IViewModelFactory, ViewModelFactory>()

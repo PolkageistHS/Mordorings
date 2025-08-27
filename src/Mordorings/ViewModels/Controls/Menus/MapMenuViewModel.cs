@@ -2,6 +2,7 @@
 using Mordorings.Messages;
 using Mordorings.Modules.DungeonState;
 using Mordorings.Modules.EditMap;
+using Mordorings.Modules.MonsterHeatMap;
 
 namespace Mordorings.ViewModels;
 
@@ -17,5 +18,11 @@ public partial class MapMenuViewModel(IViewModelFactory factory)
     private void OpenMapEditor()
     {
         WeakReferenceMessenger.Default.Send(new ViewContentChangedMessage(factory.CreateViewModel<EditMapViewModel>()));
+    }
+
+    [RelayCommand]
+    private void OpenMonsterHeatMap()
+    {
+        WeakReferenceMessenger.Default.Send(new ViewContentChangedMessage(factory.CreateViewModel<MonsterHeatMapViewModel>()));
     }
 }

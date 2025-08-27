@@ -1,37 +1,20 @@
 ﻿using System.Drawing;
-using System.Drawing.Drawing2D;
+using Mordorings.Models;
 
 namespace Mordorings.Controls;
 
-public class AutomapRenderer : IAutomapRenderer
+public class AutomapRenderer : MapRendererBase, IAutomapRenderer
 {
     private DungeonFloor? _dungeonFloor;
     private Bitmap? _spriteSheet;
-    private Bitmap? _mapBuffer;
-    private Graphics? _mapGraphics;
-
-    private const int TileSize = 14;
-
-    public const int MapWidth = 30;
-    public const int MapHeight = 30;
 
     public event EventHandler? MapUpdated;
-
-    public static Size MapPixelSize => new(MapWidth * TileSize + 1, MapHeight * TileSize + 1);
 
     public void Initialize(DungeonFloor? dungeonFloor)
     {
         ArgumentNullException.ThrowIfNull(dungeonFloor);
         _dungeonFloor?.Dispose();
         _dungeonFloor = dungeonFloor;
-        _mapBuffer?.Dispose();
-        _mapGraphics?.Dispose();
-        _mapBuffer = new Bitmap(MapPixelSize.Width, MapPixelSize.Height);
-        _mapGraphics = Graphics.FromImage(_mapBuffer);
-        _mapGraphics.CompositingMode = CompositingMode.SourceOver;
-        _mapGraphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-        _mapGraphics.Clear(Color.Black);
-        DrawMapBorders();
     }
 
     public void LoadSpriteSheet(string? filePath)
@@ -50,9 +33,9 @@ public class AutomapRenderer : IAutomapRenderer
 
     public void DrawDungeonFloorMap()
     {
-        if (_dungeonFloor is null || _mapGraphics is null || _mapBuffer is null)
+        if (_dungeonFloor is null || MapGraphics is null || MapBuffer is null)
             throw new InvalidOperationException($"Map not initialized. Call {nameof(Initialize)} first.");
-        _mapGraphics.Clear(Color.Black);
+        MapGraphics.Clear(Color.Black);
         DrawMapBorders();
         for (int x = MapWidth - 1; x >= 0; x--)
         {
@@ -66,8 +49,8 @@ public class AutomapRenderer : IAutomapRenderer
 
     public Bitmap? GetMapSnapshot()
     {
-        if (_mapBuffer is not null)
-            return new Bitmap(_mapBuffer);
+        if (MapBuffer is not null)
+            return new Bitmap(MapBuffer);
         return null;
     }
 
@@ -84,34 +67,52 @@ public class AutomapRenderer : IAutomapRenderer
         return true;
     }
 
+    public void HighlightTile(int tileX, int tileY)
+    {
+        if (MapGraphics is null)
+            return;
+        int screenTileY = MapHeight - 1 - tileY;
+        int baseX = tileX * TileSize;
+        int baseY = screenTileY * TileSize;
+        Brush brush = new SolidBrush(Color.FromArgb(120, Color.Magenta));
+        Pen pen = new(brush, 2);
+        MapGraphics.DrawRectangle(pen, baseX, baseY, TileSize, TileSize);
+        MapUpdated?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void RemoveHighlight()
+    {
+        DrawDungeonFloorMap();
+    }
+
     private void DrawMapBorders()
     {
         Pen pen = new(Color.White, 1);
-        if (_mapBuffer == null || _mapGraphics == null)
+        if (MapBuffer == null || MapGraphics == null)
             return;
-        int x = _mapBuffer.Width;
-        int y = _mapBuffer.Height;
-        _mapGraphics.DrawLine(pen, 0, 0, 0, y);
-        _mapGraphics.DrawLine(pen, 0, 0, x, 0);
-        _mapGraphics.DrawLine(pen, x - 1, y - 1, x - 1, 0);
-        _mapGraphics.DrawLine(pen, x - 1, y - 1, 0, y - 1);
+        int x = MapBuffer.Width;
+        int y = MapBuffer.Height;
+        MapGraphics.DrawLine(pen, 0, 0, 0, y);
+        MapGraphics.DrawLine(pen, 0, 0, x, 0);
+        MapGraphics.DrawLine(pen, x - 1, y - 1, x - 1, 0);
+        MapGraphics.DrawLine(pen, x - 1, y - 1, 0, y - 1);
     }
 
     private void DrawTileToBuffer(int tileX, int tileY, long bitmask)
     {
         if (_spriteSheet is null)
             throw new InvalidOperationException("Sprite sheet has not been loaded.");
-        if (_mapGraphics is null)
+        if (MapGraphics is null)
             return;
         int imageTileY = MapHeight - 1 - tileY;
         int baseX = tileX * TileSize;
         int baseY = imageTileY * TileSize;
-        _mapGraphics.FillRectangle(Brushes.Black, baseX, baseY, TileSize, TileSize);
+        MapGraphics.FillRectangle(Brushes.Black, baseX, baseY, TileSize, TileSize);
         for (int i = 0; i <= 22; i++)
         {
             if ((bitmask & (1 << i)) != 0)
             {
-                DrawSpriteLayer(_mapGraphics, i, baseX, baseY);
+                DrawSpriteLayer(MapGraphics, i, baseX, baseY);
             }
         }
     }
@@ -132,28 +133,10 @@ public class AutomapRenderer : IAutomapRenderer
         graphics.DrawImage(_spriteSheet, destRect, sourceRect, GraphicsUnit.Pixel);
     }
 
-    public void HighlightTile(int tileX, int tileY)
+    protected override void Dispose(bool disposing)
     {
-        if (_mapGraphics is null)
-            return;
-        int screenTileY = MapHeight - 1 - tileY;
-        int baseX = tileX * TileSize;
-        int baseY = screenTileY * TileSize;
-        Brush brush = new SolidBrush(Color.FromArgb(120, Color.Magenta));
-        Pen pen = new(brush, 2);
-        _mapGraphics.DrawRectangle(pen, baseX, baseY, TileSize, TileSize);
-        MapUpdated?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void RemoveHighlight()
-    {
-        DrawDungeonFloorMap();
-    }
-
-    public void Dispose()
-    {
+        base.Dispose();
         _spriteSheet?.Dispose();
         _dungeonFloor?.Dispose();
-        GC.SuppressFinalize(this);
     }
 }

@@ -5,7 +5,8 @@
                     xmlns:reqsForLevel="clr-namespace:Mordorings.Modules.ReqsForLevel"
                     xmlns:guildSpells="clr-namespace:Mordorings.Modules.GuildSpells"
                     xmlns:editMap="clr-namespace:Mordorings.Modules.EditMap"
-                    xmlns:userControls="clr-namespace:Mordorings.UserControls">
+                    xmlns:userControls="clr-namespace:Mordorings.UserControls"
+                    xmlns:monsterHeatMap="clr-namespace:Mordorings.Modules.MonsterHeatMap">
 
     <DataTemplate DataType="{x:Type TypeName=viewModels:EditMenuViewModel}">
         <userControls:EditMenu />
@@ -37,6 +38,10 @@
     
     <DataTemplate DataType="{x:Type TypeName=editMap:EditMapViewModel}">
         <editMap:EditMapControl />
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type TypeName=monsterHeatMap:MonsterHeatMapViewModel}">
+        <monsterHeatMap:MonsterHeatMapControl />
     </DataTemplate>
     
 </ResourceDictionary>

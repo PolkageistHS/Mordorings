@@ -13,13 +13,6 @@ public partial class EditMapViewModel : MapViewModelBase
         SelectedFloorNum = 1;
     }
 
-    private DungeonFloor ResetFloor(int floorNum)
-    {
-        DungeonFloor dungeonFloor = CreateDungeonFloor(Map.Floors[floorNum - 1]);
-        CachedDungeonFloors[floorNum - 1] = dungeonFloor;
-        return dungeonFloor;
-    }
-
     public TileEditor TileEditor { get; } = new();
 
     public bool IsTileSelected => TileEditor.TileX is not null && TileEditor.TileY is not null;
@@ -50,9 +43,9 @@ public partial class EditMapViewModel : MapViewModelBase
     {
         if (!_dialogFactory.ShowYesNoQuestion("Do you want to reset all floors?", "Reset all"))
             return;
-        for (int i = 1; i <= 15; i++)
+        for (int floorNum = 1; floorNum <= 15; floorNum++)
         {
-            ResetFloor(i);
+            ResetFloor(floorNum);
         }
         SelectedFloor = CachedDungeonFloors[SelectedFloorNum - 1];
         TileEditor.Clear();
@@ -73,12 +66,19 @@ public partial class EditMapViewModel : MapViewModelBase
         TileEditor.FlagChanged -= UpdateTile;
         if (SelectedFloor != null)
         {
-            SelectedFloor.Renderer?.DrawDungeonFloorMap();
+            CurrentRenderer?.DrawDungeonFloorMap();
             TileEditor.LoadTile(x, y, SelectedFloor.Tiles[x, y], SelectedFloor.GetTeleporter(x, y), SelectedFloor.GetChute(x, y));
-            SelectedFloor.Renderer?.HighlightTile(x, y);
+            CurrentRenderer?.HighlightTile(x, y);
         }
         TileEditor.FlagChanged += UpdateTile;
         OnPropertyChanged(nameof(IsTileSelected));
+    }
+
+    private DungeonFloor ResetFloor(int floorNum)
+    {
+        var dungeonFloor = new DungeonFloor(Map.Floors[floorNum - 1]);
+        CachedDungeonFloors[floorNum - 1] = dungeonFloor;
+        return dungeonFloor;
     }
 
     private void UpdateTile(object? sender, TileFlagChangedEventArgs e)
@@ -91,7 +91,7 @@ public partial class EditMapViewModel : MapViewModelBase
         int y = e.TileY;
         ProcessTeleporterChange(flags.HasFlag(DungeonTileFlag.Teleporter), x, y, mapObjs);
         ProcessChuteChange(flags.HasFlag(DungeonTileFlag.Chute), x, y, mapObjs.ChuteDepth);
-        SelectedFloor.Renderer?.UpdateTile(x, y, flags);
+        CurrentRenderer?.UpdateTile(x, y, flags);
     }
 
     private void ProcessTeleporterChange(bool hasTeleporter, int tileX, int tileY, MapObjects mapObjects)
@@ -117,11 +117,10 @@ public partial class EditMapViewModel : MapViewModelBase
                 x = mapObjects.TeleporterX.Value;
                 y = mapObjects.TeleporterY.Value;
             }
-            if (!SelectedFloor.SaveTeleporter(tileX, tileY, x, y, z))
-            {
-                _dialogFactory.ShowErrorMessage("Unable to save teleporter. Only 20 teleporters are allowed per floor.", "Error");
-                TileEditor.Teleporter = false;
-            }
+            if (SelectedFloor.SaveTeleporter(tileX, tileY, x, y, z))
+                return;
+            _dialogFactory.ShowErrorMessage("Unable to save teleporter. Only 20 teleporters are allowed per floor.", "Error");
+            TileEditor.Teleporter = false;
         }
         else
         {
@@ -135,11 +134,10 @@ public partial class EditMapViewModel : MapViewModelBase
             return;
         if (hasChute)
         {
-            if (!SelectedFloor.SaveChute(tileX, tileY, chuteDepth))
-            {
-                _dialogFactory.ShowErrorMessage("Unable to save chute. Only 10 chutes are allowed per floor.", "Error");
-                TileEditor.Chute = false;
-            }
+            if (SelectedFloor.SaveChute(tileX, tileY, chuteDepth))
+                return;
+            _dialogFactory.ShowErrorMessage("Unable to save chute. Only 10 chutes are allowed per floor.", "Error");
+            TileEditor.Chute = false;
         }
         else
         {
@@ -149,7 +147,7 @@ public partial class EditMapViewModel : MapViewModelBase
 
     protected override void OnSelectedFloorNumChanged()
     {
-        SelectedFloor?.Renderer?.RemoveHighlight();
+        CurrentRenderer?.RemoveHighlight();
         TileEditor.Clear();
         OnPropertyChanged(nameof(IsTileSelected));
     }

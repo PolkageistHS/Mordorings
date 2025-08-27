@@ -13,7 +13,6 @@ public class AutomapRenderer : MapRendererBase, IAutomapRenderer
     public void Initialize(DungeonFloor? dungeonFloor)
     {
         ArgumentNullException.ThrowIfNull(dungeonFloor);
-        _dungeonFloor?.Dispose();
         _dungeonFloor = dungeonFloor;
     }
 
@@ -137,6 +136,5 @@ public class AutomapRenderer : MapRendererBase, IAutomapRenderer
     {
         base.Dispose();
         _spriteSheet?.Dispose();
-        _dungeonFloor?.Dispose();
     }
 }

@@ -22,17 +22,17 @@ public class MapRendererBase : IDisposable
         MapGraphics.InterpolationMode = InterpolationMode.NearestNeighbor;
     }
 
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
     protected virtual void Dispose(bool disposing)
     {
         if (!disposing)
             return;
         MapGraphics?.Dispose();
         MapBuffer?.Dispose();
-    }
-
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
     }
 }

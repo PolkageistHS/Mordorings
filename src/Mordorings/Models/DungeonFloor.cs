@@ -1,8 +1,6 @@
-﻿using Mordorings.Controls;
+﻿namespace Mordorings.Models;
 
-namespace Mordorings.Models;
-
-public sealed partial class DungeonFloor(Floor floor) : ObservableObject, IDisposable
+public sealed partial class DungeonFloor(Floor floor) : ObservableObject
 {
     public Floor Floor
     {
@@ -21,18 +19,8 @@ public sealed partial class DungeonFloor(Floor floor) : ObservableObject, IDispo
 
     public long[,] Tiles { get; } = GetTiles(floor);
 
-    public IAutomapRenderer? Renderer { get; private set; }
-
     [ObservableProperty]
     private object? _image;
-
-    public void Initialize(IAutomapRenderer renderer)
-    {
-        Renderer = renderer;
-        Renderer.Initialize(this);
-        Renderer.MapUpdated += ProcessMapSnapshot;
-        Renderer.DrawDungeonFloorMap();
-    }
 
     private static long[,] GetTiles(Floor floor)
     {
@@ -45,17 +33,5 @@ public sealed partial class DungeonFloor(Floor floor) : ObservableObject, IDispo
             }
         }
         return tiles;
-    }
-
-    private void ProcessMapSnapshot(object? sender, EventArgs args)
-    {
-        if (sender is not IAutomapRenderer renderer)
-            return;
-        Image = renderer.GetMapSnapshot()?.ToBitmapSource();
-    }
-
-    public void Dispose()
-    {
-        Renderer?.Dispose();
     }
 }

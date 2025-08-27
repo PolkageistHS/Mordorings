@@ -11,22 +11,48 @@ public abstract partial class MapViewModelBase : ViewModelBase
     protected readonly IMordorIoFactory IoFactory;
     protected readonly DATA11DungeonMap Map;
     private readonly IMapRenderFactory _mapRenderFactory;
+    private readonly IAutomapRenderer[] _renderers;
 
     protected MapViewModelBase(IMordorIoFactory ioFactory, IMapRenderFactory mapRenderFactory)
     {
         IoFactory = ioFactory;
         _mapRenderFactory = mapRenderFactory;
         Map = IoFactory.GetReader().GetMordorRecord<DATA11DungeonMap>();
-        CachedDungeonFloors = Map.Floors.Select(CreateDungeonFloor).ToArray();
+        Floor[] floors = Map.Floors;
+        CachedDungeonFloors = new DungeonFloor[floors.Length];
+        _renderers = new IAutomapRenderer[floors.Length];
+        InitializeRenderers(floors);
     }
 
-    protected DungeonFloor CreateDungeonFloor(Floor floor)
+    private void InitializeRenderers(Floor[] floors)
     {
-        IAutomapRenderer renderer = _mapRenderFactory.CreateAutomapRenderer();
-        renderer.LoadSpriteSheet(SpriteSheetFile);
-        var dungeonFloor = new DungeonFloor(floor);
-        dungeonFloor.Initialize(renderer);
-        return dungeonFloor;
+        for (int i = 0; i < floors.Length; i++)
+        {
+            var dungeonFloor = new DungeonFloor(floors[i]);
+            CachedDungeonFloors[i] = dungeonFloor;
+            IAutomapRenderer renderer = _mapRenderFactory.CreateAutomapRenderer();
+            renderer.LoadSpriteSheet(SpriteSheetFile);
+            renderer.Initialize(dungeonFloor);
+            renderer.MapUpdated += (sender, _) =>
+            {
+                if (sender is IAutomapRenderer iRenderer && SelectedFloor != null)
+                {
+                    SelectedFloor.Image = iRenderer.GetMapSnapshot()?.ToBitmapSource();
+                }
+            };
+            renderer.DrawDungeonFloorMap();
+            _renderers[i] = renderer;
+        }
+    }
+
+    protected IAutomapRenderer? CurrentRenderer
+    {
+        get
+        {
+            if (SelectedFloorNum is >= 1 and <= 15)
+                return _renderers[SelectedFloorNum - 1];
+            return null;
+        }
     }
 
     [ObservableProperty]
@@ -61,9 +87,15 @@ public abstract partial class MapViewModelBase : ViewModelBase
             }
         }
         SelectedFloor = CachedDungeonFloors[SelectedFloorNum - 1];
-        if (SelectedFloorNum == oldValue)
-            return;
-        OnSelectedFloorNumChanged();
+        if (SelectedFloorNum != oldValue)
+        {
+            OnSelectedFloorNumChanged();
+        }
+    }
+
+    partial void OnSelectedFloorChanged(DungeonFloor? value)
+    {
+        CurrentRenderer?.DrawDungeonFloorMap();
     }
 
     protected abstract void OnSelectedFloorNumChanged();

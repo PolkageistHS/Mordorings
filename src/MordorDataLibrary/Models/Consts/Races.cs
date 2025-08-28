@@ -1,5 +1,6 @@
 ﻿namespace MordorDataLibrary.Models;
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class RacesIndexes
 {
     public const int Human = 0;
@@ -13,6 +14,7 @@ public class RacesIndexes
     public const int Troll = 8;
 }
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class RaceNames
 {
     public const string Human = nameof(Human);

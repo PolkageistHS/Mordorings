@@ -1,12 +1,12 @@
 ﻿namespace MordorDataLibrary.Models;
 
-[Serializable]
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class Companion
 {
     [FixedLengthString(15)]
     public string Name { get; set; } = null!;
 
-    public short MonsterID { get; set; }
+    public short MonsterId { get; set; }
 
     public short Slot { get; set; }
 
@@ -22,5 +22,5 @@ public class Companion
 
     public short BindLevel { get; set; }
 
-    public short IDLevel { get; set; }
+    public short IdLevel { get; set; }
 }

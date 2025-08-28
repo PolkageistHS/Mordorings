@@ -1,12 +1,12 @@
 ﻿namespace MordorDataLibrary.Models;
 
-[Serializable]
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class Chute
 {
     [NewRecord]
-    public short x { get; set; }
+    public short X { get; set; }
 
-    public short y { get; set; }
+    public short Y { get; set; }
 
     public short Depth { get; set; }
 }

@@ -1,5 +1,6 @@
 ﻿namespace MordorDataLibrary.Models;
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public static class ItemIds
 {
     public const int Hands = 0;
@@ -370,6 +371,7 @@ public static class ItemIds
     public const int MedusasHead = 365;
 }
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public static class ItemNames
 {
     public const string Hands = "Hands";
@@ -740,6 +742,7 @@ public static class ItemNames
     public const string CurseofMorash = "Curse of Morash";
 }
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public static class ItemIndexes
 {
     public const int Hands = 0;

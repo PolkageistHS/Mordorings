@@ -2,13 +2,13 @@
 
 public abstract class MdrBase : IDisposable
 {
-    protected readonly FileStream _file;
+    protected readonly FileStream File;
     private bool _disposed;
 
     protected MdrBase(string filename, FileMode mode, FileAccess access)
     {
-        _file = new FileStream(filename, mode, access);
-        if (_file == null)
+        File = new FileStream(filename, mode, access);
+        if (File == null)
         {
             throw new Exception($"Unable to open file! {filename}");
         }
@@ -35,7 +35,7 @@ public abstract class MdrBase : IDisposable
         }
         if (disposing)
         {
-            _file.Dispose();
+            File.Dispose();
         }
         _disposed = true;
     }

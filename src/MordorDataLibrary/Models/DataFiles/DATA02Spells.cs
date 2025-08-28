@@ -1,7 +1,7 @@
 ﻿namespace MordorDataLibrary.Models;
 
 [DataRecordLength(StaticValues.Data02RecordLength)]
-[Serializable]
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class DATA02Spells : IMordorDataFile
 {
     [NewRecord]

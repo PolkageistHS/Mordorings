@@ -20,7 +20,7 @@ public class MordorRecordWriter : RecordProcessor
     private MdrWriter GetWriter<TDataFile>() where TDataFile : IMordorDataFile
     {
         Type dataClassType = typeof(TDataFile);
-        string filePath = _filePathStrategy.GetFilePath<TDataFile>();
+        string filePath = FilePathStrategy.GetFilePath<TDataFile>();
         return new MdrWriter(filePath, dataClassType.GetDataRecordLength());
     }
 
@@ -28,7 +28,7 @@ public class MordorRecordWriter : RecordProcessor
     {
         Type propertyType = propertyAccessor.PropertyType;
         object value = propertyAccessor.GetValue(instance);
-        MdrWriter writer = (MdrWriter)readerOrWriter;
+        var writer = (MdrWriter)readerOrWriter;
         if (TypeHandlers.TryGetHandler(propertyType, out ITypeHandler? handler))
         {
             handler.WriteValue(writer, value, propertyAccessor.PropertyInfo);

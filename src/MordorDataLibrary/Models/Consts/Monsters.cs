@@ -1,5 +1,7 @@
-﻿namespace MordorDataLibrary.Models;
+﻿// ReSharper disable InconsistentNaming
+namespace MordorDataLibrary.Models;
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public static class MonsterIds
 {
     public const int Goblie = 0;
@@ -405,6 +407,7 @@ public static class MonsterIds
     public const int Griffin = 400;
 }
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public static class MonsterNames
 {
     public const string Goblie = "Goblie";
@@ -810,6 +813,7 @@ public static class MonsterNames
     public const string TLanea = "T'Lanea";
 }
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public static class MonsterIndexes
 {
     public const int Goblie = 0;

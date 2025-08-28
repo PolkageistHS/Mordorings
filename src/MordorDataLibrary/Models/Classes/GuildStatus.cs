@@ -1,6 +1,6 @@
 ﻿namespace MordorDataLibrary.Models;
 
-[Serializable]
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class GuildStatus
 {
     public short CurrentLevel { get; set; }
@@ -9,7 +9,7 @@ public class GuildStatus
 
     public short IsQuested { get; set; }
 
-    public short QuestedTargetID { get; set; }
+    public short QuestedTargetId { get; set; }
 
     public short IsQuestCompleted { get; set; }
 

@@ -2,7 +2,7 @@
 
 public static class SpellExtensions
 {
-    public static Spell? GetById(this Spell[] spells, int id) => spells.FirstOrDefault(spell => spell.ID == id);
+    public static Spell? GetById(this Spell[] spells, int id) => spells.FirstOrDefault(spell => spell.Id == id);
 
     public static int GetIndex(this Spell[] spells, Spell spell) => Array.IndexOf(spells, spell);
 

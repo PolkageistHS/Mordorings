@@ -1,12 +1,12 @@
 ﻿namespace MordorDataLibrary.Models;
 
-[Serializable]
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class ConfinementMonster
 {
     [NewRecord]
     public short RowNumber { get; set; }
 
-    public short MonsterID { get; set; }
+    public short MonsterId { get; set; }
 
     public short Good { get; set; }
 

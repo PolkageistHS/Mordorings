@@ -1,6 +1,6 @@
 ﻿namespace MordorDataLibrary.Models;
 
-[Serializable]
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class Monster
 {
     [NewRecord]
@@ -10,13 +10,13 @@ public class Monster
 
     public short Defense { get; set; }
 
-    public short ID { get; set; }
+    public short Id { get; set; }
 
     public short Hits { get; set; }
 
     public short NumGroups { get; set; }
 
-    public short PicID { get; set; }
+    public short PicId { get; set; }
 
     public short LockedChance { get; set; }
 
@@ -54,11 +54,11 @@ public class Monster
 
     public short CompanionSpawnMode { get; set; }
 
-    public short CompanionID { get; set; } //id of specific monster
+    public short CompanionId { get; set; } //id of specific monster
 
     public short[] Items { get; set; } = new short[11];
 
-    public short SimilarityID { get; set; }
+    public short SimilarityId { get; set; }
 
     public short CompanionGrouping { get; set; }
 
@@ -90,9 +90,9 @@ public class Monster
             {
                 return false;
             }
-            return x.Name == y.Name && x.ID == y.ID;
+            return x.Name == y.Name && x.Id == y.Id;
         }
 
-        public int GetHashCode(Monster obj) => HashCode.Combine(obj.Name, obj.ID);
+        public int GetHashCode(Monster obj) => HashCode.Combine(obj.Name, obj.Id);
     }
 }

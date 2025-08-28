@@ -22,7 +22,7 @@ public partial class EditMapViewModel : MapViewModelBase
     {
         if (!_dialogFactory.ShowYesNoQuestion("Do you want to write your changes to the dungeon file?", "Save all"))
             return;
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < MaxFloor; i++)
         {
             Map.Floors[i] = CachedDungeonFloors[i].Floor;
         }
@@ -43,7 +43,7 @@ public partial class EditMapViewModel : MapViewModelBase
     {
         if (!_dialogFactory.ShowYesNoQuestion("Do you want to reset all floors?", "Reset all"))
             return;
-        for (int floorNum = 1; floorNum <= 15; floorNum++)
+        for (int floorNum = MinFloor; floorNum <= MaxFloor; floorNum++)
         {
             ResetFloor(floorNum);
         }
@@ -61,7 +61,7 @@ public partial class EditMapViewModel : MapViewModelBase
     private void GetImageMouseClick(object? parameter)
     {
         (int x, int y) = AutomapEventConverters.GetCoordinatesFromEvent(parameter);
-        if (x is < 0 or >= 30 || y is < 0 or >= 30)
+        if (x is < 0 or >= FloorWidth || y is < 0 or >= FloorHeight)
             return;
         TileEditor.FlagChanged -= UpdateTile;
         if (SelectedFloor != null)

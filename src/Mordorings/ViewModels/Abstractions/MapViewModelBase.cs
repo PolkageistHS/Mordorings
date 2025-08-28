@@ -7,6 +7,11 @@ public abstract partial class MapViewModelBase : ViewModelBase
 {
     private const string SpriteSheetFile = "Assets/DungeonSprites.bmp";
 
+    protected const int MinFloor = 1;
+    protected const int MaxFloor = 15;
+    protected const int FloorWidth = 30;
+    protected const int FloorHeight = 30;
+
     protected readonly DungeonFloor[] CachedDungeonFloors;
     protected readonly IMordorIoFactory IoFactory;
     protected readonly DATA11DungeonMap Map;
@@ -49,7 +54,7 @@ public abstract partial class MapViewModelBase : ViewModelBase
     {
         get
         {
-            if (SelectedFloorNum is >= 1 and <= 15)
+            if (SelectedFloorNum is >= 1 and <= MaxFloor)
                 return _renderers[SelectedFloorNum - 1];
             return null;
         }
@@ -64,26 +69,26 @@ public abstract partial class MapViewModelBase : ViewModelBase
     [RelayCommand]
     private void IncreaseFloor()
     {
-        SelectedFloorNum = Math.Clamp(SelectedFloorNum + 1, 1, 15);
+        SelectedFloorNum = NormalizeFloorNum(SelectedFloorNum + 1);
     }
 
     [RelayCommand]
     private void DecreaseFloor()
     {
-        SelectedFloorNum = Math.Clamp(SelectedFloorNum - 1, 1, 15);
+        SelectedFloorNum = NormalizeFloorNum(SelectedFloorNum - 1);
     }
 
     partial void OnSelectedFloorNumChanged(int oldValue, int newValue)
     {
-        if (newValue is < 1 or > 15)
+        if (newValue is < 1 or > MaxFloor)
         {
-            if (oldValue is >= 1 and <= 15)
+            if (oldValue is >= 1 and <= MaxFloor)
             {
                 _selectedFloorNum = oldValue;
             }
             else
             {
-                _selectedFloorNum = Math.Clamp(newValue, 1, 15);
+                _selectedFloorNum = NormalizeFloorNum(newValue);
             }
         }
         SelectedFloor = CachedDungeonFloors[SelectedFloorNum - 1];
@@ -99,4 +104,6 @@ public abstract partial class MapViewModelBase : ViewModelBase
     }
 
     protected abstract void OnSelectedFloorNumChanged();
+
+    private static int NormalizeFloorNum(int floorNum) => Math.Clamp(floorNum, MinFloor, MaxFloor);
 }

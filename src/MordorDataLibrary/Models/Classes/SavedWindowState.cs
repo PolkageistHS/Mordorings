@@ -1,6 +1,6 @@
 ﻿namespace MordorDataLibrary.Models;
 
-[Serializable]
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class SavedWindowState
 {
     public int Left { get; set; }

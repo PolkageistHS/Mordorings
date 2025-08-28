@@ -1,6 +1,7 @@
 ﻿namespace MordorDataLibrary.Models;
 
-public class GuildIndexes
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+public static class GuildIndexes
 {
     public const int Nomad = 0;
     public const int Warrior = 1;
@@ -16,7 +17,8 @@ public class GuildIndexes
     public const int Healer = 11;
 }
 
-public class GuildNames
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+public static class GuildNames
 {
     public const string Nomad = nameof(Nomad);
     public const string Warrior = nameof(Warrior);

@@ -1,7 +1,7 @@
 ﻿namespace MordorDataLibrary.Models;
 
 [DataRecordLength(StaticValues.Data15RecordLength)]
-[Serializable]
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class DATA15Confinement : IMordorDataFile
 {
     [NewRecord]

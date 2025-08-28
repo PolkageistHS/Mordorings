@@ -1,12 +1,12 @@
 ﻿namespace MordorDataLibrary.Models;
 
-[Serializable]
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class Spell
 {
     [NewRecord]
     public string Name { get; set; } = null!;
 
-    public short ID { get; set; }
+    public short Id { get; set; }
 
     public short Category { get; set; }
 

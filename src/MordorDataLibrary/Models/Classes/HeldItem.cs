@@ -1,6 +1,6 @@
 ﻿namespace MordorDataLibrary.Models;
 
-[Serializable]
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class HeldItem
 {
     public short Atk { get; set; }

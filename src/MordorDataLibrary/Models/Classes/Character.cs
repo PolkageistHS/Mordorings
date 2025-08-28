@@ -1,5 +1,6 @@
 ﻿namespace MordorDataLibrary.Models;
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 [Serializable]
 public class Character
 {
@@ -15,7 +16,7 @@ public class Character
 
     public float DaysOld { get; set; }
 
-    public short CurrentMP { get; set; }
+    public short CurrentMp { get; set; }
 
     public short DungeonLevel { get; set; }
 
@@ -86,7 +87,7 @@ public class Character
 
     public short DeadType { get; set; }
 
-    public short CarriedCorpseID { get; set; }
+    public short CarriedCorpseId { get; set; }
 
     [FixedLengthString(10)]
     public string Password { get; set; } = null!;
@@ -103,7 +104,7 @@ public class Character
 
     public short[] EquippedItemsInHands { get; set; } = new short[2];
 
-    public short SomeADPlaceholderMaybe { get; set; }
+    public short SomeAtkDefPlaceholderMaybe { get; set; }
 
     public short[] BufferSlots { get; set; } = new short[11];
 

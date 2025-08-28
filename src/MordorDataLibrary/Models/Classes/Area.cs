@@ -1,6 +1,6 @@
 ﻿namespace MordorDataLibrary.Models;
 
-[Serializable]
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class Area
 {
     [NewRecord]
@@ -9,5 +9,5 @@ public class Area
     /// <summary>
     /// If 0 or greater, the MonsterID for the laired monster
     /// </summary>
-    public short LairID { get; set; }
+    public short LairId { get; set; }
 }

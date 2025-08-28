@@ -48,22 +48,22 @@ public class DungeonManipulation
         {
             MonsterSpawn spawn = areaSpawn.MonsterSpawnGroup1;
             TreasureSpawn treasure = areaSpawn.Treasure;
-            spawn.MonsterID = monster.ID;
-            spawn.OtherMonsterID = monster.ID;
+            spawn.MonsterId = monster.Id;
+            spawn.OtherMonsterId = monster.Id;
             spawn.IdentificationLevel = (short)idLevel;
             spawn.Alignment = monster.Alignment;
             spawn.Atk = monster.Attack;
             spawn.Def = monster.Defense;
-            spawn.CurrentHP = monster.Hits;
-            spawn.MaxHP = monster.Hits;
+            spawn.CurrentHp = monster.Hits;
+            spawn.MaxHp = monster.Hits;
             spawn.GroupSize = monster.GroupSize;
             spawn.NumberWhoWantToJoin = 0;
             spawn.Hostility = Hostile;
-            treasure.MonsterID = monster.ID;
+            treasure.MonsterId = monster.Id;
             treasure.ChestType = (short)ChestType.None;
             treasure.Gold = 0;
             treasure.Locked = (short)LockedState.NotLocked;
-            treasure.TrapID = 0;
+            treasure.TrapId = 0;
         });
         _primaryMonsterSet = true;
         return this;
@@ -96,11 +96,11 @@ public class DungeonManipulation
             }
             if (currentHits > 0)
             {
-                spawn.CurrentHP = currentHits;
+                spawn.CurrentHp = currentHits;
             }
             if (maxHits > 0)
             {
-                spawn.MaxHP = maxHits;
+                spawn.MaxHp = maxHits;
             }
         });
         return this;
@@ -143,7 +143,7 @@ public class DungeonManipulation
             }
             if (trapID > -1)
             {
-                treasure.TrapID = trapID;
+                treasure.TrapId = trapID;
             }
         });
         return this;
@@ -159,7 +159,7 @@ public class DungeonManipulation
         _actions.Add(areaSpawn =>
         {
             areaSpawn.MonsterSpawnGroup1.GroupSize = 0;
-            areaSpawn.MonsterSpawnGroup1.CurrentHP = 0;
+            areaSpawn.MonsterSpawnGroup1.CurrentHp = 0;
             _doNotSpawnMonster = true;
         });
         return this;
@@ -186,16 +186,16 @@ public class DungeonManipulation
     {
         spawn.Atk = 1;
         spawn.Def = 1;
-        spawn.CurrentHP = 0;
-        spawn.MaxHP = 1;
+        spawn.CurrentHp = 0;
+        spawn.MaxHp = 1;
         spawn.Alignment = (short)MonsterAlignment.Evil;
         spawn.Hostility = 0;
-        spawn.MonsterID = -1;
+        spawn.MonsterId = -1;
         spawn.GroupSize = 0;
         spawn.IdentificationLevel = (short)CreatureIdentityLevel.Completely;
         spawn.SpawnTime = (float)(DateTime.Now - DateTime.Today).TotalSeconds;
         spawn.NumberWhoWantToJoin = 0;
-        spawn.OtherMonsterID = -1;
+        spawn.OtherMonsterId = -1;
     }
 
     private void CleanUpSpawn(AreaSpawn areaSpawn)
@@ -204,14 +204,14 @@ public class DungeonManipulation
         spawn.SpawnTime = (float)(DateTime.Now - DateTime.Today).TotalSeconds;
         if (_doNotSpawnMonster)
         {
-            spawn.CurrentHP = 0;
+            spawn.CurrentHp = 0;
             spawn.GroupSize = 0;
         }
-        if (spawn is { GroupSize: 0, CurrentHP: > 0 })
+        if (spawn is { GroupSize: 0, CurrentHp: > 0 })
         {
-            spawn.CurrentHP = 0;
+            spawn.CurrentHp = 0;
         }
-        if (spawn is { CurrentHP: 0, GroupSize: > 0 })
+        if (spawn is { CurrentHp: 0, GroupSize: > 0 })
         {
             spawn.GroupSize = 0;
         }
@@ -219,9 +219,9 @@ public class DungeonManipulation
         {
             spawn.NumberWhoWantToJoin = 0;
         }
-        if (spawn.CurrentHP > spawn.MaxHP)
+        if (spawn.CurrentHp > spawn.MaxHp)
         {
-            spawn.CurrentHP = spawn.MaxHP;
+            spawn.CurrentHp = spawn.MaxHp;
         }
     }
 }

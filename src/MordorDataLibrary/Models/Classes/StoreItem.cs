@@ -1,12 +1,12 @@
 ﻿namespace MordorDataLibrary.Models;
 
-[Serializable]
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class StoreItem
 {
     [NewRecord]
     public short RowNumber { get; set; }
 
-    public short ItemID { get; set; }
+    public short ItemId { get; set; }
 
     public short UnalignedQty { get; set; }
 

@@ -1,9 +1,9 @@
 ﻿namespace MordorDataLibrary.Models;
 
-[Serializable]
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class GuildLogEntry
 {
-    public short GuildID { get; set; }
+    public short GuildId { get; set; }
 
     public int DayValue { get; set; }
 

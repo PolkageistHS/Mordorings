@@ -19,7 +19,7 @@ public partial class TileEditor : ObservableObject
         LoadTileFlags((DungeonTileFlag)flags);
         if (teleporter is not null)
         {
-            if (teleporter is { x2: 0, y2: 0 })
+            if (teleporter is { X2: 0, Y2: 0 })
             {
                 MapObjects.TeleporterRandom = true;
                 MapObjects.TeleporterX = null;
@@ -29,9 +29,9 @@ public partial class TileEditor : ObservableObject
             else
             {
                 MapObjects.TeleporterRandom = false;
-                MapObjects.TeleporterX = teleporter.x2;
-                MapObjects.TeleporterY = teleporter.y2;
-                MapObjects.TeleporterZ = teleporter.z2;
+                MapObjects.TeleporterX = teleporter.X2;
+                MapObjects.TeleporterY = teleporter.Y2;
+                MapObjects.TeleporterZ = teleporter.Z2;
             }
         }
         if (chute is not null)

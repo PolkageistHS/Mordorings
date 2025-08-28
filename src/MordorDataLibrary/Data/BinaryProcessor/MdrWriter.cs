@@ -11,11 +11,11 @@ public class MdrWriter : MdrBase
     {
         if (bufferLength > 0)
         {
-            _writeStrategy = new BufferedWriteStrategy(_file, bufferLength);
+            _writeStrategy = new BufferedWriteStrategy(File, bufferLength);
         }
         else
         {
-            _writeStrategy = new DirectWriteStrategy(_file);
+            _writeStrategy = new DirectWriteStrategy(File);
         }
     }
 

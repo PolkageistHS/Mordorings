@@ -36,7 +36,7 @@ public partial class DungeonStateViewModel : ViewModelBase
             _dialogFactory.ShowErrorMessage(string.Join('\n', Model.GetAllErrors().Select(result => result.ErrorMessage)), "Input Error");
             return;
         }
-        DATA10DungeonState dungeonState = _ioFactory.GetReader().GetMordorRecord<DATA10DungeonState>();
+        var dungeonState = _ioFactory.GetReader().GetMordorRecord<DATA10DungeonState>();
         DungeonStateProcessor processor = new((short)Monsters.IndexOf(Model.SelectedMonster), Model, dungeonState);
         DATA10DungeonState newState = processor.Process();
         _ioFactory.GetWriter().WriteMordorRecord(newState);

@@ -28,7 +28,7 @@ public class MonsterLooting
     {
         MordorRecordReader reader = new(dataFileFolder);
         var map = reader.GetMordorRecord<DATA11DungeonMap>();
-        _lairedMonsterIds = map.Floors.SelectMany(floor => floor.Areas).Select(area => area.LairID).Where(id => id >= 0).Distinct();
+        _lairedMonsterIds = map.Floors.SelectMany(floor => floor.Areas).Select(area => area.LairId).Where(id => id >= 0).Distinct();
         _items = reader.GetMordorRecord<DATA03Items>();
     }
 
@@ -117,7 +117,7 @@ public class MonsterLooting
             switch (id)
             {
                 case < -1: // values less than -1 actually refer to the IDs for specific items a monster can drop
-                    lootItem = _items.ItemList.First(item => item.ID == Math.Abs(id) - 2);
+                    lootItem = _items.ItemList.First(item => item.Id == Math.Abs(id) - 2);
                     break;
                 case -1: // -1 is any random item within the level range
                     break;
@@ -136,7 +136,7 @@ public class MonsterLooting
         {
             if (loot.ItemSubtypeId != null)
             {
-                yield return new ItemsWithWeights(loot.Weight, items.Where(item => item.SubtypeID == loot.ItemSubtypeId).ToDictionary(item => item, item => (int)item.Rarity));
+                yield return new ItemsWithWeights(loot.Weight, items.Where(item => item.SubtypeId == loot.ItemSubtypeId).ToDictionary(item => item, item => (int)item.Rarity));
             }
             else if (loot.IsRandom())
             {
@@ -184,13 +184,13 @@ public class MonsterLooting
         return (BoxRate: boxRate, ChestRate: adjustedChestChance);
     }
 
-    private bool IsMonsterLaired(Monster monster) => _lairedMonsterIds.Contains(monster.ID);
+    private bool IsMonsterLaired(Monster monster) => _lairedMonsterIds.Contains(monster.Id);
 
-    public class ItemEqualityComparer : IEqualityComparer<Item>
+    private class ItemEqualityComparer : IEqualityComparer<Item>
     {
-        public bool Equals(Item? x, Item? y) => x?.ID == y?.ID && x?.Name == y?.Name;
+        public bool Equals(Item? x, Item? y) => x?.Id == y?.Id && x?.Name == y?.Name;
 
-        public int GetHashCode(Item obj) => HashCode.Combine(obj.ID, obj.Name);
+        public int GetHashCode(Item obj) => HashCode.Combine(obj.Id, obj.Name);
     }
 }
 

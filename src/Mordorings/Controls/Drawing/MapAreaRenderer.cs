@@ -2,5 +2,5 @@
 
 public class MapAreaRenderer : MapRendererBase, IMapAreaRenderer
 {
-    
+
 }

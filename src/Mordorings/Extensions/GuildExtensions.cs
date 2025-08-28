@@ -19,7 +19,7 @@ public static class GuildExtensions
         Dictionary<SpellCategory, float> retval = [];
         foreach (int category in categories)
         {
-            retval[((SpellCategory)category)] = guild.SpellGuildMods[category];
+            retval[(SpellCategory)category] = guild.SpellGuildMods[category];
         }
         return retval;
     }

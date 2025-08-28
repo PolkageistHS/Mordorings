@@ -1,5 +1,6 @@
 ﻿namespace MordorDataLibrary.Models;
 
+[UsedImplicitly(ImplicitUseTargetFlags.Members)]
 public enum SpellCategory
 {
     Fire = 0,

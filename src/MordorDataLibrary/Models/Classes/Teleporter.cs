@@ -1,16 +1,16 @@
 ﻿namespace MordorDataLibrary.Models;
 
-[Serializable]
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class Teleporter
 {
     [NewRecord]
-    public short x { get; set; }
+    public short X { get; set; }
 
-    public short y { get; set; }
+    public short Y { get; set; }
 
-    public short x2 { get; set; }
+    public short X2 { get; set; }
 
-    public short y2 { get; set; }
+    public short Y2 { get; set; }
 
-    public short z2 { get; set; }
+    public short Z2 { get; set; }
 }

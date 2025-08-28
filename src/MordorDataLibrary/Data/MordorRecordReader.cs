@@ -17,7 +17,7 @@ public class MordorRecordReader : RecordProcessor
     private MdrReader GetReader<TDataFile>() where TDataFile : IMordorDataFile
     {
         Type dataClassType = typeof(TDataFile);
-        string filePath = _filePathStrategy.GetFilePath<TDataFile>();
+        string filePath = FilePathStrategy.GetFilePath<TDataFile>();
         return new MdrReader(filePath, dataClassType.GetDataRecordLength());
     }
 

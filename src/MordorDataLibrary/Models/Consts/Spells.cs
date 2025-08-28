@@ -1,5 +1,6 @@
 ﻿namespace MordorDataLibrary.Models;
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public static class SpellIds
 {
     public const int CharmofOpening = 0;
@@ -109,6 +110,7 @@ public static class SpellIds
     public const int ShockLance = 104;
 }
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public static class SpellNames
 {
     public const string CharmofOpening = "Charm of Opening";
@@ -218,6 +220,7 @@ public static class SpellNames
     public const string ShockLance = "Shock Lance";
 }
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public static class SpellIndexes
 {
     public const int CharmofOpening = 0;

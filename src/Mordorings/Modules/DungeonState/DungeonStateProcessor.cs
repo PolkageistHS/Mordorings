@@ -27,17 +27,17 @@ public class DungeonStateProcessor(short monsterId, DungeonStateModel model, DAT
         treasure.ChestType = (short)ChestType.None;
         treasure.Gold = 0;
         treasure.Locked = (short)LockedState.NotLocked;
-        treasure.TrapID = 0;
+        treasure.TrapId = 0;
     }
 
     private void ProcessMonster(AreaSpawn area)
     {
         MonsterSpawn spawn = area.MonsterSpawnGroup1;
-        spawn.MonsterID = monsterId;
-        spawn.OtherMonsterID = monsterId;
+        spawn.MonsterId = monsterId;
+        spawn.OtherMonsterId = monsterId;
         spawn.Alignment = (short)model.Alignment;
-        spawn.CurrentHP = model.CurrentHits!.Value;
-        spawn.MaxHP = model.MaxHits!.Value;
+        spawn.CurrentHp = model.CurrentHits!.Value;
+        spawn.MaxHp = model.MaxHits!.Value;
         spawn.Atk = model.Attack!.Value;
         spawn.Def = model.Defense!.Value;
         spawn.GroupSize = model.GroupSize!.Value;
@@ -48,10 +48,10 @@ public class DungeonStateProcessor(short monsterId, DungeonStateModel model, DAT
 
     private void ProcessTreasure(AreaSpawn area)
     {
-        area.Treasure.MonsterID = monsterId;
+        area.Treasure.MonsterId = monsterId;
         area.Treasure.ChestType = (short)model.ChestType;
         area.Treasure.Locked = (short)model.LockedType;
-        area.Treasure.TrapID = (short)model.TrapType;
+        area.Treasure.TrapId = (short)model.TrapType;
         area.Treasure.Gold = model.Gold;
     }
 
@@ -59,15 +59,15 @@ public class DungeonStateProcessor(short monsterId, DungeonStateModel model, DAT
     {
         spawn.Atk = 1;
         spawn.Def = 1;
-        spawn.CurrentHP = 0;
-        spawn.MaxHP = 1;
+        spawn.CurrentHp = 0;
+        spawn.MaxHp = 1;
         spawn.Alignment = (short)MonsterAlignment.Evil;
         spawn.Hostility = 0;
-        spawn.MonsterID = -1;
+        spawn.MonsterId = -1;
         spawn.GroupSize = 0;
         spawn.IdentificationLevel = (short)CreatureIdentityLevel.Completely;
         spawn.SpawnTime = (float)(DateTime.Now - DateTime.Today).TotalSeconds;
         spawn.NumberWhoWantToJoin = 0;
-        spawn.OtherMonsterID = -1;
+        spawn.OtherMonsterId = -1;
     }
 }

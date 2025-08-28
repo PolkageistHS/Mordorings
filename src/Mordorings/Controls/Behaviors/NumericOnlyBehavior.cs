@@ -53,7 +53,7 @@ public partial class NumericOnlyBehavior : Behavior<TextBox>
             return;
         if (string.IsNullOrWhiteSpace(textBox.Text))
         {
-            if (MinValue.HasValue)
+            if (MinValue != null)
             {
                 textBox.Text = MinValue.Value.ToString();
             }
@@ -61,11 +61,11 @@ public partial class NumericOnlyBehavior : Behavior<TextBox>
         }
         if (!int.TryParse(textBox.Text, out int value))
             return;
-        if (MinValue.HasValue && value < MinValue.Value)
+        if (value < MinValue)
         {
             textBox.Text = MinValue.Value.ToString();
         }
-        else if (MaxValue.HasValue && value > MaxValue.Value)
+        else if (value > MaxValue)
         {
             textBox.Text = MaxValue.Value.ToString();
         }

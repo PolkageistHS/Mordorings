@@ -16,7 +16,7 @@ public class MdrReader : MdrBase
         }
         else
         {
-            length = Convert.ToInt32(_file.Length);
+            length = Convert.ToInt32(File.Length);
         }
         _bufferManager = new BufferManager(length);
     }
@@ -25,7 +25,7 @@ public class MdrReader : MdrBase
     {
         ThrowIfDisposed();
         _bufferManager.ResetCursor();
-        return _file.Read(_bufferManager.GetBuffer(), 0, _bufferManager.Length) > 0;
+        return File.Read(_bufferManager.GetBuffer(), 0, _bufferManager.Length) > 0;
     }
 
     public string GetString(ushort length = 0)

@@ -6,7 +6,7 @@ public class BufferManager(int bufferLength)
 
     public int Length => _buffer.Length;
 
-    public long Cursor { get; private set; }
+    private long Cursor { get; set; }
 
     public byte[] GetBuffer() => _buffer;
 

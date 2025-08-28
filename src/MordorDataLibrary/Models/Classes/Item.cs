@@ -1,12 +1,12 @@
 ﻿namespace MordorDataLibrary.Models;
 
-[Serializable]
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class Item
 {
     [NewRecord]
     public string Name { get; set; } = null!;
 
-    public short ID { get; set; }
+    public short Id { get; set; }
 
     public short Attack { get; set; }
 
@@ -26,11 +26,11 @@ public class Item
 
     public short SpellRowNum { get; set; }
 
-    public short SpellID { get; set; }
+    public short SpellId { get; set; }
 
     public short Charges { get; set; }
 
-    public short TypeID { get; set; }
+    public short TypeId { get; set; }
 
     public int Guilds { get; set; }
 
@@ -42,7 +42,7 @@ public class Item
 
     public short Hands { get; set; }
 
-    public short SubtypeID { get; set; }
+    public short SubtypeId { get; set; }
 
     public int ResistanceFlags { get; set; }
 

@@ -2,16 +2,16 @@
 
 public abstract class RecordProcessor
 {
-    protected readonly IFilePathStrategy _filePathStrategy;
+    protected readonly IFilePathStrategy FilePathStrategy;
 
     protected RecordProcessor(string folder)
     {
-        _filePathStrategy = new FolderBasedFilePathStrategy(folder);
+        FilePathStrategy = new FolderBasedFilePathStrategy(folder);
     }
 
     protected RecordProcessor(IFilePathStrategy filePathStrategy)
     {
-        _filePathStrategy = filePathStrategy;
+        FilePathStrategy = filePathStrategy;
     }
 
     protected void ProcessRecursive(Type dataClass, object instance, MdrBase readerOrWriter, bool isFirstObjectInListItem)

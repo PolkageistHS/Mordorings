@@ -94,9 +94,9 @@ public class MonsterSpawning
         const double fullWeight = 1.0;
         Monster? lairedMonster;
         double lairedPercent;
-        if (area.LairID > 0)
+        if (area.LairId > 0)
         {
-            lairedMonster = _monsters.MonstersList.First(monster => monster.ID == area.LairID);
+            lairedMonster = _monsters.MonstersList.First(monster => monster.Id == area.LairId);
             lairedPercent = 0.75;
         }
         else
@@ -109,7 +109,7 @@ public class MonsterSpawning
         int maxFloor = baseFloor;
         List<(MonsterSubtype subtype, List<Monster> Monsters)> validMonstersBySubtype = [];
         validMonstersBySubtype.AddRange(_gameData.MonsterSubtypes.Select((subtype, i) => (subtype, _monsters.MonstersList
-                                                                                                            .Where(monster => monster.ID > 0 &&
+                                                                                                            .Where(monster => monster.Id > 0 &&
                                                                                                                               monster.MonsterSubtype == i &&
                                                                                                                               monster.LevelFound >= minFloor &&
                                                                                                                               monster.LevelFound <= maxFloor &&

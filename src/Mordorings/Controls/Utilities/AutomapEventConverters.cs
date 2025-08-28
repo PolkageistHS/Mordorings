@@ -6,7 +6,7 @@ namespace Mordorings.Controls;
 
 public static class AutomapEventConverters
 {
-    public static (int X, int Y) GetCoordinatesFromEvent(object? eventParameter)
+    public static (int X, int Y) GetMapCoordinatesFromEvent(object? eventParameter)
     {
         if (eventParameter is not MouseButtonEventArgs { Source: Image image } args)
             return (X: 0, Y: 0);

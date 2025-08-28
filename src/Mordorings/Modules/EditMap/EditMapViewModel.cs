@@ -1,5 +1,4 @@
-﻿using Mordorings.Controls;
-using Mordorings.Models;
+﻿using Mordorings.Models;
 
 namespace Mordorings.Modules.EditMap;
 
@@ -58,9 +57,10 @@ public partial class EditMapViewModel : MapViewModelBase
     }
 
     [RelayCommand]
-    private void GetImageMouseClick(object? parameter)
+    private void GetImageMouseClick((int X, int Y) coords)
     {
-        (int x, int y) = AutomapEventConverters.GetCoordinatesFromEvent(parameter);
+        int x = coords.X;
+        int y = coords.Y;
         if (x is < 0 or >= FloorWidth || y is < 0 or >= FloorHeight)
             return;
         TileEditor.FlagChanged -= UpdateTile;

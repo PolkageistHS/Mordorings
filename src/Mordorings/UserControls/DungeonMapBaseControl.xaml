@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="Mordorings.UserControls.DungeonMapBaseControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:Mordorings.ViewModels.Abstractions"
+             mc:Ignorable="d"
+             d:DesignHeight="500" d:DesignWidth="500"
+             d:DataContext="{d:DesignInstance vm:MapViewModelBase}">
+    <UserControl.Resources>
+        <Style TargetType="Label" BasedOn="{StaticResource ResourceKey=LabelNoPadding}" />
+    </UserControl.Resources>
+    <DockPanel>
+        <Grid DockPanel.Dock="Top" Width="{Binding ElementName=ImageMap, Path=ActualWidth}" HorizontalAlignment="Left">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                <Label Content="Floor" HorizontalAlignment="Center" />
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="&lt;" Command="{Binding Path=DecreaseFloorCommand}" />
+                    <TextBox Text="{Binding Path=SelectedFloorNum, Converter={StaticResource ResourceKey=StringToInt0}, UpdateSourceTrigger=PropertyChanged}"
+                             Width="20"
+                             d:Text="15"
+                             HorizontalContentAlignment="Center" Margin="5,0,5,0" />
+                    <Button Content="&gt;"
+                            Command="{Binding Path=IncreaseFloorCommand}" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid DockPanel.Dock="Left">
+            <Image Name="ImageMap"
+                   Source="{Binding Path=SelectedFloor.Image, FallbackValue={x:Null}}"
+                   MinWidth="421" MinHeight="421"
+                   d:Source="c:\temp\floor1.png" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Grid>
+    </DockPanel>
+</UserControl>

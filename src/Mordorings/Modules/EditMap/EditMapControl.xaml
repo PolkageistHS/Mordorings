@@ -4,56 +4,27 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Mordorings.Modules.EditMap"
-             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:uc="clr-namespace:Mordorings.UserControls"
              mc:Ignorable="d" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance local:EditMapViewModel}">
     <UserControl.Resources>
         <Style TargetType="Label" BasedOn="{StaticResource ResourceKey=LabelNoPadding}" />
     </UserControl.Resources>
     <DockPanel>
-        <Grid DockPanel.Dock="Right">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Canvas Height="50" Grid.Row="0">
-                <Button Content="&lt;"
-                        Canvas.Left="5" Canvas.Top="20"
-                        Command="{Binding Path=DecreaseFloorCommand}" />
-                <Label Content="Floor"
-                       Canvas.Left="18" Canvas.Top="4" />
-                <TextBox Text="{Binding Path=SelectedFloorNum, Converter={StaticResource ResourceKey=StringToInt0}, UpdateSourceTrigger=PropertyChanged}"
-                         Canvas.Top="21" Canvas.Left="22"
-                         Width="20"
-                         d:Text="15"
-                         HorizontalContentAlignment="Center" />
-                <Button Content=">"
-                        Canvas.Left="47" Canvas.Top="20"
-                        Command="{Binding Path=IncreaseFloorCommand}" />
+        <StackPanel DockPanel.Dock="Right">
+            <Canvas Height="50" Width="300">
                 <Button Content="Save" Width="30"
-                        Canvas.Left="90" Canvas.Top="20"
+                        Canvas.Left="10" Canvas.Top="20"
                         Command="{Binding Path=SaveCommand}" />
                 <Button Content="Reset Floor" Width="63"
-                        Canvas.Left="125" Canvas.Top="20"
+                        Canvas.Left="45" Canvas.Top="20"
                         Command="{Binding Path=ResetFloorCommand}" />
                 <Button Content="Reset All" Width="50"
-                        Canvas.Left="193" Canvas.Top="20"
+                        Canvas.Left="113" Canvas.Top="20"
                         Command="{Binding Path=ResetAllFloorsCommand}" />
             </Canvas>
-            <local:EditTileControl Grid.Row="1" Width="300" />
-        </Grid>
-        <Grid DockPanel.Dock="Left" Margin="0, 50, 0, 10">
-            <Image Source="{Binding Path=SelectedFloor.Image, FallbackValue={x:Null}}"
-                   HorizontalAlignment="Left" VerticalAlignment="Top"
-                   MinWidth="421" MinHeight="421"
-				   d:Source="c:\temp\floor1.png">
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="MouseLeftButtonUp">
-                        <b:InvokeCommandAction Command="{Binding Path=GetImageMouseClickCommand}"
-                                               PassEventArgsToCommand="True" />
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-            </Image>
-        </Grid>
+            <local:EditTileControl Width="300" Height="402" />
+        </StackPanel>
+        <uc:DungeonMapBaseControl DockPanel.Dock="Left" MapClickCommand="{Binding Path=GetImageMouseClickCommand}" />
     </DockPanel>
 </UserControl>

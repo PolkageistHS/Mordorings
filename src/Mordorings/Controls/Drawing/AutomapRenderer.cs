@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using Mordorings.Models;
 
 namespace Mordorings.Controls;
 
@@ -46,36 +45,24 @@ public class AutomapRenderer : MapRendererBase, IAutomapRenderer
         MapUpdated?.Invoke(this, EventArgs.Empty);
     }
 
-    public Bitmap? GetMapSnapshot()
-    {
-        if (MapBuffer is not null)
-            return new Bitmap(MapBuffer);
-        return null;
-    }
-
-    public bool UpdateTile(int x, int y, DungeonTileFlag newTileData)
+    public bool UpdateTile(Tile tile, DungeonTileFlag newTileData)
     {
         long tileData = (long)newTileData;
+        int x = tile.X;
+        int y = tile.Y;
         if (_dungeonFloor is null || x is < 0 or >= MapWidth || y is < 0 or >= MapHeight)
             return false;
         if (_dungeonFloor.Tiles[x, y] == tileData)
             return false;
         _dungeonFloor.Tiles[x, y] = tileData;
         DrawDungeonFloorMap();
-        HighlightTile(x, y);
+        HighlightTile(tile);
         return true;
     }
 
-    public void HighlightTile(int tileX, int tileY)
+    public void HighlightTile(Tile tile)
     {
-        if (MapGraphics is null)
-            return;
-        int screenTileY = MapHeight - 1 - tileY;
-        int baseX = tileX * TileSize;
-        int baseY = screenTileY * TileSize;
-        Brush brush = new SolidBrush(Color.FromArgb(120, Color.Magenta));
-        Pen pen = new(brush, 2);
-        MapGraphics.DrawRectangle(pen, baseX, baseY, TileSize, TileSize);
+        DrawTileBorder(tile, Color.Magenta, 120);
         MapUpdated?.Invoke(this, EventArgs.Empty);
     }
 
@@ -86,11 +73,11 @@ public class AutomapRenderer : MapRendererBase, IAutomapRenderer
 
     private void DrawMapBorders()
     {
-        Pen pen = new(Color.White, 1);
         if (MapBuffer == null || MapGraphics == null)
             return;
         int x = MapBuffer.Width;
         int y = MapBuffer.Height;
+        var pen = new Pen(Color.White, 1);
         MapGraphics.DrawLine(pen, 0, 0, 0, y);
         MapGraphics.DrawLine(pen, 0, 0, x, 0);
         MapGraphics.DrawLine(pen, x - 1, y - 1, x - 1, 0);

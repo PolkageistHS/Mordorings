@@ -1,6 +1,4 @@
-﻿using Mordorings.Models;
-
-namespace Mordorings.Modules.EditMap;
+﻿namespace Mordorings.Modules.EditMap;
 
 public partial class EditMapViewModel : MapViewModelBase
 {
@@ -57,7 +55,7 @@ public partial class EditMapViewModel : MapViewModelBase
     }
 
     [RelayCommand]
-    private void GetImageMouseClick((int X, int Y) coords)
+    private void GetImageMouseClick(Tile coords)
     {
         int x = coords.X;
         int y = coords.Y;
@@ -67,8 +65,8 @@ public partial class EditMapViewModel : MapViewModelBase
         if (SelectedFloor != null)
         {
             CurrentRenderer?.DrawDungeonFloorMap();
-            TileEditor.LoadTile(x, y, SelectedFloor.Tiles[x, y], SelectedFloor.GetTeleporter(x, y), SelectedFloor.GetChute(x, y));
-            CurrentRenderer?.HighlightTile(x, y);
+            TileEditor.LoadTile(coords, SelectedFloor.Tiles[x, y], SelectedFloor.GetTeleporter(coords), SelectedFloor.GetChute(coords));
+            CurrentRenderer?.HighlightTile(coords);
         }
         TileEditor.FlagChanged += UpdateTile;
         OnPropertyChanged(nameof(IsTileSelected));
@@ -87,66 +85,65 @@ public partial class EditMapViewModel : MapViewModelBase
             return;
         DungeonTileFlag flags = e.AllFlags;
         MapObjects mapObjs = e.MapObjects;
-        int x = e.TileX;
-        int y = e.TileY;
-        ProcessTeleporterChange(flags.HasFlag(DungeonTileFlag.Teleporter), x, y, mapObjs);
-        ProcessChuteChange(flags.HasFlag(DungeonTileFlag.Chute), x, y, mapObjs.ChuteDepth);
-        CurrentRenderer?.UpdateTile(x, y, flags);
+        ProcessTeleporterChange(flags.HasFlag(DungeonTileFlag.Teleporter), e.Tile, mapObjs);
+        ProcessChuteChange(flags.HasFlag(DungeonTileFlag.Chute), e.Tile, mapObjs.ChuteDepth);
+        CurrentRenderer?.UpdateTile(e.Tile, flags);
     }
 
-    private void ProcessTeleporterChange(bool hasTeleporter, int tileX, int tileY, MapObjects mapObjects)
+    private void ProcessTeleporterChange(bool hasTeleporter, Tile tile, MapObjects mapObjects)
     {
         if (SelectedFloor is null)
             return;
         if (hasTeleporter)
         {
-            int x;
-            int y;
-            int z;
+            int x2;
+            int y2;
+            int z2;
             if (mapObjects.TeleporterRandom)
             {
-                x = 0;
-                y = 0;
-                z = 0;
+                x2 = 0;
+                y2 = 0;
+                z2 = 0;
             }
             else
             {
                 if (mapObjects is not { TeleporterX: not null, TeleporterY: not null, TeleporterZ: not null })
                     return;
-                z = mapObjects.TeleporterZ.Value;
-                x = mapObjects.TeleporterX.Value;
-                y = mapObjects.TeleporterY.Value;
+                z2 = mapObjects.TeleporterZ.Value;
+                x2 = mapObjects.TeleporterX.Value;
+                y2 = mapObjects.TeleporterY.Value;
             }
-            if (SelectedFloor.SaveTeleporter(tileX, tileY, x, y, z))
+            if (SelectedFloor.SaveTeleporter(tile, x2, y2, z2))
                 return;
             _dialogFactory.ShowErrorMessage("Unable to save teleporter. Only 20 teleporters are allowed per floor.", "Error");
             TileEditor.Teleporter = false;
         }
         else
         {
-            SelectedFloor.DeleteTeleporter(tileX, tileY);
+            SelectedFloor.DeleteTeleporter(tile);
         }
     }
 
-    private void ProcessChuteChange(bool hasChute, int tileX, int tileY, int chuteDepth)
+    private void ProcessChuteChange(bool hasChute, Tile tile, int chuteDepth)
     {
         if (SelectedFloor is null)
             return;
         if (hasChute)
         {
-            if (SelectedFloor.SaveChute(tileX, tileY, chuteDepth))
+            if (SelectedFloor.SaveChute(tile, chuteDepth))
                 return;
             _dialogFactory.ShowErrorMessage("Unable to save chute. Only 10 chutes are allowed per floor.", "Error");
             TileEditor.Chute = false;
         }
         else
         {
-            SelectedFloor.DeleteChute(tileX, tileY);
+            SelectedFloor.DeleteChute(tile);
         }
     }
 
-    protected override void OnSelectedFloorNumChanged()
+    protected override void HandleOnSelectedFloorNumChanged(int oldValue, int newValue)
     {
+        base.HandleOnSelectedFloorNumChanged(oldValue, newValue);
         CurrentRenderer?.RemoveHighlight();
         TileEditor.Clear();
         OnPropertyChanged(nameof(IsTileSelected));

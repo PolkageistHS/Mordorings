@@ -37,7 +37,7 @@ public partial class DungeonStateViewModel : ViewModelBase
             return;
         }
         var dungeonState = _ioFactory.GetReader().GetMordorRecord<DATA10DungeonState>();
-        DungeonStateProcessor processor = new((short)Monsters.IndexOf(Model.SelectedMonster), Model, dungeonState);
+        var processor = new DungeonStateProcessor((short)Monsters.IndexOf(Model.SelectedMonster), Model, dungeonState);
         DATA10DungeonState newState = processor.Process();
         _ioFactory.GetWriter().WriteMordorRecord(newState);
         _dialogFactory.ShowMessage("Dungeon state written.", "Success");

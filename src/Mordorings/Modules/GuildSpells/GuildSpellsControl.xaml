@@ -9,7 +9,6 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance spellStats:GuildSpellsViewModel}">
     <UserControl.Resources>
-        <controls:StringToIntConverter EmptyStringValue="0" x:Key="StringToInt" />
         <Style TargetType="Label">
             <Setter Property="Padding" Value="0" />
         </Style>
@@ -25,8 +24,11 @@
                  Width="58">
             <TextBox.Text>
                 <Binding Path="GuildLevel"
-                         Converter="{StaticResource ResourceKey=StringToInt}"
-                         UpdateSourceTrigger="PropertyChanged" />
+                         UpdateSourceTrigger="PropertyChanged">
+                    <Binding.Converter>
+                        <controls:StringToIntConverter EmptyStringValue="0" />
+                    </Binding.Converter>
+                </Binding>
             </TextBox.Text>
         </TextBox>
         <Label Content="Spell Level"
@@ -35,6 +37,5 @@
                  Canvas.Left="90" Canvas.Top="71"
                  IsEnabled="False"
                  Width="58" />
-
     </Canvas>
 </UserControl>

@@ -1,5 +1,6 @@
 ﻿namespace MordorDataLibrary.Models;
 
+[DebuggerDisplay( "{Name} ({Id})" )]
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class Monster
 {
@@ -68,31 +69,16 @@ public class Monster
 
     public short ItemChance { get; set; }
 
-    public override string ToString() => Name;
-
-    public class MonsterComparable : IEqualityComparer<Monster>
+    public override bool Equals(object? obj)
     {
-        public bool Equals(Monster? x, Monster? y)
-        {
-            if (ReferenceEquals(x, y))
-            {
-                return true;
-            }
-            if (x is null)
-            {
-                return false;
-            }
-            if (y is null)
-            {
-                return false;
-            }
-            if (x.GetType() != y.GetType())
-            {
-                return false;
-            }
-            return x.Name == y.Name && x.Id == y.Id;
-        }
-
-        public int GetHashCode(Monster obj) => HashCode.Combine(obj.Name, obj.Id);
+        if (obj is not Monster other)
+            return false;
+        return Equals(other);
     }
+
+    protected bool Equals(Monster other) => Name == other.Name && Id == other.Id;
+
+    public override int GetHashCode() => GetHashCode(this);
+
+    private static int GetHashCode(Monster obj) => HashCode.Combine(obj.Name, obj.Id);
 }

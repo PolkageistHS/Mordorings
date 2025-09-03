@@ -6,4 +6,5 @@ global using MordorDataLibrary.Data;
 global using MordorDataLibrary.Models;
 global using Mordorings.Configs;
 global using Mordorings.Factories;
+global using Mordorings.Models;
 global using Mordorings.ViewModels.Abstractions;

@@ -11,8 +11,8 @@ public static class AllSpawnRates
     /// to include the monsters that can spawn as part of that 1%.</param>
     public static IEnumerable<MonsterSpawnRates> GetAllMonsterSpawnRates(string dataFileFolder, bool includeRandomSubtypeSpawns)
     {
-        MordorRecordReader reader = new(dataFileFolder);
-        MonsterSpawning spawning = new(dataFileFolder);
+        var reader = new MordorRecordReader(dataFileFolder);
+        var spawning = new MonsterSpawning(dataFileFolder);
         var map = reader.GetMordorRecord<DATA11DungeonMap>();
         List<MonsterSpawnRates> monsterRates = [];
         for (int floor = 1; floor <= 15; floor++)

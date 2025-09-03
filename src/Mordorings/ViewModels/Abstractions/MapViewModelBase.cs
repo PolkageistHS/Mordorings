@@ -1,5 +1,4 @@
 ﻿using Mordorings.Controls;
-using Mordorings.Models;
 
 namespace Mordorings.ViewModels.Abstractions;
 
@@ -16,7 +15,7 @@ public abstract partial class MapViewModelBase : ViewModelBase
     protected readonly IMordorIoFactory IoFactory;
     protected readonly DATA11DungeonMap Map;
     private readonly IMapRenderFactory _mapRenderFactory;
-    private readonly IAutomapRenderer[] _renderers;
+    protected readonly IAutomapRenderer[] Renderers;
 
     protected MapViewModelBase(IMordorIoFactory ioFactory, IMapRenderFactory mapRenderFactory)
     {
@@ -25,7 +24,7 @@ public abstract partial class MapViewModelBase : ViewModelBase
         Map = IoFactory.GetReader().GetMordorRecord<DATA11DungeonMap>();
         Floor[] floors = Map.Floors;
         CachedDungeonFloors = new DungeonFloor[floors.Length];
-        _renderers = new IAutomapRenderer[floors.Length];
+        Renderers = new IAutomapRenderer[floors.Length];
         InitializeRenderers(floors);
     }
 
@@ -42,11 +41,11 @@ public abstract partial class MapViewModelBase : ViewModelBase
             {
                 if (sender is IAutomapRenderer iRenderer && SelectedFloor != null)
                 {
-                    SelectedFloor.Image = iRenderer.GetMapSnapshot()?.ToBitmapSource();
+                    Image = iRenderer.GetMapSnapshot()?.ToBitmapSource();
                 }
             };
             renderer.DrawDungeonFloorMap();
-            _renderers[i] = renderer;
+            Renderers[i] = renderer;
         }
     }
 
@@ -54,8 +53,8 @@ public abstract partial class MapViewModelBase : ViewModelBase
     {
         get
         {
-            if (SelectedFloorNum is >= 1 and <= MaxFloor)
-                return _renderers[SelectedFloorNum - 1];
+            if (SelectedFloorNum is >= MinFloor and <= MaxFloor)
+                return Renderers[SelectedFloorNum - 1];
             return null;
         }
     }
@@ -64,46 +63,58 @@ public abstract partial class MapViewModelBase : ViewModelBase
     private DungeonFloor? _selectedFloor;
 
     [ObservableProperty]
+    private object? _image;
+
+    public TooltipManager Tooltips { get; } = new();
+
     private int _selectedFloorNum;
 
-    [RelayCommand]
+    public int SelectedFloorNum
+    {
+        get => _selectedFloorNum;
+        set
+        {
+            int oldValue = _selectedFloorNum;
+            SetProperty(ref _selectedFloorNum, value);
+            HandleOnSelectedFloorNumChanged(oldValue, value);
+            IncreaseFloorCommand.NotifyCanExecuteChanged();
+            DecreaseFloorCommand.NotifyCanExecuteChanged();
+        }
+    }
+
+    [RelayCommand(CanExecute = nameof(CanIncreaseFloor))]
     private void IncreaseFloor()
     {
-        SelectedFloorNum = NormalizeFloorNum(SelectedFloorNum + 1);
+        SelectedFloorNum = NormalizeFloorNum(SelectedFloorNum, SelectedFloorNum + 1);
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanDecreaseFloor))]
     private void DecreaseFloor()
     {
-        SelectedFloorNum = NormalizeFloorNum(SelectedFloorNum - 1);
+        SelectedFloorNum = NormalizeFloorNum(SelectedFloorNum, SelectedFloorNum - 1);
     }
 
-    partial void OnSelectedFloorNumChanged(int oldValue, int newValue)
+    protected virtual bool CanIncreaseFloor => SelectedFloorNum < MaxFloor;
+
+    protected virtual bool CanDecreaseFloor => SelectedFloorNum > MinFloor;
+
+    protected virtual void HandleOnSelectedFloorNumChanged(int oldValue, int newValue)
     {
-        if (newValue is < 1 or > MaxFloor)
+        if (newValue is < MinFloor or > MaxFloor)
         {
-            if (oldValue is >= 1 and <= MaxFloor)
+            int actualValue;
+            if (oldValue is >= MinFloor and <= MaxFloor)
             {
-                _selectedFloorNum = oldValue;
+                actualValue = oldValue;
             }
             else
             {
-                _selectedFloorNum = NormalizeFloorNum(newValue);
+                actualValue = NormalizeFloorNum(oldValue, newValue);
             }
+            _selectedFloorNum = actualValue;
         }
         SelectedFloor = CachedDungeonFloors[SelectedFloorNum - 1];
-        if (SelectedFloorNum != oldValue)
-        {
-            OnSelectedFloorNumChanged();
-        }
     }
 
-    partial void OnSelectedFloorChanged(DungeonFloor? value)
-    {
-        CurrentRenderer?.DrawDungeonFloorMap();
-    }
-
-    protected abstract void OnSelectedFloorNumChanged();
-
-    private static int NormalizeFloorNum(int floorNum) => Math.Clamp(floorNum, MinFloor, MaxFloor);
+    protected virtual int NormalizeFloorNum(int oldValue, int newValue) => Math.Clamp(newValue, MinFloor, MaxFloor);
 }

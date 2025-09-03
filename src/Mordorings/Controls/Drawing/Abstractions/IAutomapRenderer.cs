@@ -1,9 +1,8 @@
 ﻿using System.Drawing;
-using Mordorings.Models;
 
 namespace Mordorings.Controls;
 
-public interface IAutomapRenderer : IDisposable
+public interface IAutomapRenderer : IMapRendererBase, IDisposable
 {
     event EventHandler? MapUpdated;
 
@@ -13,13 +12,11 @@ public interface IAutomapRenderer : IDisposable
 
     void LoadSpriteSheet(Bitmap? bitmap);
 
-    Bitmap? GetMapSnapshot();
-
     void DrawDungeonFloorMap();
 
-    bool UpdateTile(int x, int y, DungeonTileFlag newTileData);
+    bool UpdateTile(Tile tile, DungeonTileFlag newTileData);
 
-    void HighlightTile(int tileX, int tileY);
+    void HighlightTile(Tile tile);
 
     void RemoveHighlight();
 }

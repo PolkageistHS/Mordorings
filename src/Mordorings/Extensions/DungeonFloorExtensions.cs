@@ -1,14 +1,14 @@
-﻿using Mordorings.Models;
-
-namespace Mordorings;
+﻿namespace Mordorings;
 
 public static class DungeonFloorExtensions
 {
-    public static Teleporter? GetTeleporter(this DungeonFloor floor, int x, int y) =>
-        floor.Floor.Teleporters.FirstOrDefault(teleporter => teleporter.X == x + 1 && teleporter.Y == y + 1);
+    public static Teleporter? GetTeleporter(this DungeonFloor floor, Tile tile) =>
+        floor.Floor.Teleporters.FirstOrDefault(teleporter => teleporter.X == tile.X + 1 && teleporter.Y == tile.Y + 1);
 
-    public static void DeleteTeleporter(this DungeonFloor floor, int x, int y)
+    public static void DeleteTeleporter(this DungeonFloor floor, Tile tile)
     {
+        int x = tile.X;
+        int y = tile.Y;
         foreach (Teleporter teleporter in floor.Floor.Teleporters.Where(teleporter => teleporter.X == x + 1 && teleporter.Y == y + 1))
         {
             teleporter.X = 0;
@@ -19,9 +19,11 @@ public static class DungeonFloorExtensions
         }
     }
 
-    public static bool SaveTeleporter(this DungeonFloor floor, int x, int y, int x2, int y2, int z2)
+    public static bool SaveTeleporter(this DungeonFloor floor, Tile tile, int x2, int y2, int z2)
     {
-        Teleporter? teleporter = floor.GetTeleporter(x, y);
+        int x = tile.X;
+        int y = tile.Y;
+        Teleporter? teleporter = floor.GetTeleporter(tile);
         if (teleporter is not null)
         {
             teleporter.X2 = (short)x2;
@@ -32,7 +34,14 @@ public static class DungeonFloorExtensions
         int i = GetFirstFreeTeleporter(floor);
         if (i == -1)
             return false;
-        floor.Floor.Teleporters[i] = new Teleporter { X = (short)(x + 1), Y = (short)(y + 1), X2 = (short)x2, Y2 = (short)y2, Z2 = (short)z2 };
+        floor.Floor.Teleporters[i] = new Teleporter
+        {
+            X = (short)(x + 1),
+            Y = (short)(y + 1),
+            X2 = (short)x2,
+            Y2 = (short)y2,
+            Z2 = (short)z2
+        };
         return true;
     }
 
@@ -46,12 +55,12 @@ public static class DungeonFloorExtensions
         return -1;
     }
 
-    public static Chute? GetChute(this DungeonFloor floor, int x, int y) =>
-        floor.Floor.Chutes.FirstOrDefault(chute => chute.X == x + 1 && chute.Y == y + 1);
+    public static Chute? GetChute(this DungeonFloor floor, Tile tile) =>
+        floor.Floor.Chutes.FirstOrDefault(chute => chute.X == tile.X + 1 && chute.Y == tile.Y + 1);
 
-    public static bool SaveChute(this DungeonFloor floor, int x, int y, int depth)
+    public static bool SaveChute(this DungeonFloor floor, Tile tile, int depth)
     {
-        Chute? chute = GetChute(floor, x, y);
+        Chute? chute = GetChute(floor, tile);
         if (chute is not null)
         {
             chute.Depth = (short)depth;
@@ -60,13 +69,18 @@ public static class DungeonFloorExtensions
         int i = GetFirstFreeChute(floor);
         if (i == -1)
             return false;
-        floor.Floor.Chutes[i] = new Chute { X = (short)(x + 1), Y = (short)(y + 1), Depth = (short)depth };
+        floor.Floor.Chutes[i] = new Chute
+        {
+            X = (short)(tile.X + 1),
+            Y = (short)(tile.Y + 1),
+            Depth = (short)depth
+        };
         return true;
     }
 
-    public static void DeleteChute(this DungeonFloor floor, int x, int y)
+    public static void DeleteChute(this DungeonFloor floor, Tile tile)
     {
-        foreach (Chute chute in floor.Floor.Chutes.Where(chute => chute.X == x + 1 && chute.Y == y + 1))
+        foreach (Chute chute in floor.Floor.Chutes.Where(chute => chute.X == tile.X + 1 && chute.Y == tile.Y + 1))
         {
             chute.X = 0;
             chute.Y = 0;

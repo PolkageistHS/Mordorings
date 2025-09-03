@@ -14,10 +14,10 @@ public partial class DungeonMapBaseControl
 
     private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
-        (int X, int Y) coords = AutomapEventConverters.GetMapCoordinatesFromEvent(e);
-        if (MapClickCommand is not null && coords is { X: >= 0, Y: >= 0 } && MapClickCommand.CanExecute(coords))
+        Tile tile = AutomapEventConversion.GetMapCoordinatesFromEvent(e);
+        if (MapClickCommand is not null && MapClickCommand.CanExecute(tile))
         {
-            MapClickCommand.Execute(coords);
+            MapClickCommand.Execute(tile);
         }
     }
 

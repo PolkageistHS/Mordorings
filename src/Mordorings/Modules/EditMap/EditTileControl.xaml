@@ -12,23 +12,42 @@
              d:DataContext="{d:DesignInstance local:EditMapViewModel}">
     <StackPanel>
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Tile at " FontSize="14"
-                       Visibility="{Binding Path=IsTileSelected, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"
-                       d:Visibility="Visible" />
+            <TextBlock Text="Tile at " FontSize="14" d:Visibility="Visible">
+                <TextBlock.Visibility>
+                    <Binding Path="IsTileSelected">
+                        <Binding.Converter>
+                            <BooleanToVisibilityConverter />
+                        </Binding.Converter>
+                    </Binding>
+                </TextBlock.Visibility>
+            </TextBlock>
             <TextBlock Text="{Binding Path=TileEditor.TileX}"
                        FontSize="14" FontWeight="Bold"
                        d:Text="25" />
-            <TextBlock Text="," FontSize="14" 
-                       Visibility="{Binding Path=IsTileSelected, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"
-                       d:Visibility="Visible" />
+            <TextBlock Text="," FontSize="14" d:Visibility="Visible">
+                <TextBlock.Visibility>
+                    <Binding Path="IsTileSelected">
+                        <Binding.Converter>
+                            <BooleanToVisibilityConverter />
+                        </Binding.Converter>
+                    </Binding>
+                </TextBlock.Visibility>
+            </TextBlock>
             <TextBlock Text="{Binding Path=TileEditor.TileY}"
                        FontSize="14" FontWeight="Bold"
                        d:Text="9" />
             <Button Height="19"
                     Content="Reset" FontSize="9"
                     Margin="8,0,0,0"
-                    Visibility="{Binding Path=IsTileSelected, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"
-                    Command="{Binding Path=ResetTileCommand}" />
+                    Command="{Binding Path=ResetTileCommand}">
+                <Button.Visibility>
+                    <Binding Path="IsTileSelected">
+                        <Binding.Converter>
+                            <BooleanToVisibilityConverter />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.Visibility>
+            </Button>
         </StackPanel>
         <StackPanel Orientation="Vertical">
             <CheckBox Content="Wall East" IsChecked="{Binding Path=TileEditor.WallEast}" />
@@ -141,8 +160,14 @@
                     <TextBlock Text="Teleporter" />
                 </StackPanel>
             </CheckBox>
-            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="19,0,0,0"
-                        Visibility="{Binding Path=TileEditor.Teleporter, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="19,0,0,0">
+                <StackPanel.Visibility>
+                    <Binding Path="TileEditor.Teleporter">
+                        <Binding.Converter>
+                            <BooleanToVisibilityConverter />
+                        </Binding.Converter>
+                    </Binding>
+                </StackPanel.Visibility>
                 <CheckBox Content="Random" IsChecked="{Binding Path=TileEditor.MapObjects.TeleporterRandom}" />
                 <TextBlock Text="X" Margin="10,0,3,0" />
                 <TextBox Text="{Binding Path=TileEditor.MapObjects.TeleporterX}"
@@ -175,8 +200,14 @@
                     <TextBlock Text="Chute" />
                 </StackPanel>
             </CheckBox>
-            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="19,0,0,0"
-                        Visibility="{Binding Path=TileEditor.Chute, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
+            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="19,0,0,0">
+                <StackPanel.Visibility>
+                    <Binding Path="TileEditor.Chute">
+                        <Binding.Converter>
+                            <BooleanToVisibilityConverter />
+                        </Binding.Converter>
+                    </Binding>
+                </StackPanel.Visibility>
                 <TextBlock Text="Depth:" Margin="10,0,3,0" />
                 <TextBox Text="{Binding Path=TileEditor.MapObjects.ChuteDepth}" Width="18">
                     <b:Interaction.Behaviors>

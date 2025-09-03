@@ -4,14 +4,84 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Mordorings.Modules.MonsterHeatMap"
-             xmlns:userControls="clr-namespace:Mordorings.UserControls"
+             xmlns:controls="clr-namespace:Mordorings.Controls"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance local:MonsterHeatMapViewModel}">
     <UserControl.Resources>
         <Style TargetType="Label" BasedOn="{StaticResource ResourceKey=LabelNoPadding}" />
     </UserControl.Resources>
-	<DockPanel>
-		<userControls:DungeonMapBaseControl DockPanel.Dock="Left" />
-	</DockPanel>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Right" Orientation="Vertical">
+            <Grid DockPanel.Dock="Top" HorizontalAlignment="Center">
+                <Grid.IsEnabled>
+                    <Binding Path="SelectedMonster">
+                        <Binding.Converter>
+                            <controls:NullToBooleanConverter />
+                        </Binding.Converter>
+                    </Binding>
+                </Grid.IsEnabled>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="5, 5, 5, 10">
+                    <Label Content="Floor" HorizontalAlignment="Center" />
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="&lt;" Command="{Binding Path=DecreaseFloorCommand}" />
+                        <TextBox Width="20" HorizontalContentAlignment="Center" Margin="5,0,5,0" IsEnabled="false" d:Text="1">
+                            <TextBox.Text>
+                                <Binding Path="SelectedFloorNum" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.Converter>
+                                        <controls:StringToIntConverter EmptyStringValue="0" />
+                                    </Binding.Converter>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Button Content="&gt;" Command="{Binding Path=IncreaseFloorCommand}" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+            <DockPanel>
+                <Label DockPanel.Dock="Left" Content="Monster Type" VerticalAlignment="Center" />
+                <ComboBox Margin="5,0,0,0" IsEnabled="{Binding Path=IsDataLoaded}"
+                          Width="125"
+                          ItemsSource="{Binding Path=MonsterTypes}"
+                          SelectedItem="{Binding Path=SelectedMonsterType}"
+                          DisplayMemberPath="Name"
+                          d:IsEditable="True" d:Text="Water-Dweller" />
+            </DockPanel>
+            <DockPanel>
+                <Label DockPanel.Dock="Left" Content="Monster" VerticalAlignment="Center" />
+                <ComboBox Margin="5,0,0,0" ItemsSource="{Binding Path=Monsters}"
+                          SelectedItem="{Binding Path=SelectedMonster}"
+                          DisplayMemberPath="Name"
+                          d:IsEditable="True" d:Text="Destroyer of the Deep">
+                    <ComboBox.IsEnabled>
+                        <Binding Path="SelectedMonsterType">
+                            <Binding.Converter>
+                                <controls:NullToBooleanConverter />
+                            </Binding.Converter>
+                        </Binding>
+                    </ComboBox.IsEnabled>
+                </ComboBox>
+            </DockPanel>
+        </StackPanel>
+        <DockPanel>
+            <Grid DockPanel.Dock="Left">
+                <Image Source="{Binding Path=Image, FallbackValue={x:Null}}"
+                       MinWidth="421" MinHeight="421"
+                       HorizontalAlignment="Left" VerticalAlignment="Top"
+                       ToolTip="{Binding Path=Tooltips.TooltipText}"
+                       ToolTipService.Placement="MousePoint"
+                       ToolTipService.IsEnabled="{Binding Path=Tooltips.IsVisible}"
+                       d:Source="c:\temp\floor1.png">
+                    <b:Interaction.Triggers>
+                        <b:EventTrigger EventName="MouseMove">
+                            <b:EventTrigger.Actions>
+                                <b:InvokeCommandAction Command="{Binding Path=Tooltips.ShowTooltipForTileCommand}" PassEventArgsToCommand="True" />
+                            </b:EventTrigger.Actions>
+                        </b:EventTrigger>
+                    </b:Interaction.Triggers>
+                </Image>
+            </Grid>
+        </DockPanel>
+    </DockPanel>
 </UserControl>

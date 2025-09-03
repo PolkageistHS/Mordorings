@@ -6,6 +6,13 @@ public class MonsterSpawning
     private readonly DATA11DungeonMap _map;
     private readonly DATA01GameData _gameData;
 
+    public MonsterSpawning(MordorRecordReader reader)
+    {
+        _gameData = reader.GetMordorRecord<DATA01GameData>();
+        _monsters = reader.GetMordorRecord<DATA05Monsters>();
+        _map = reader.GetMordorRecord<DATA11DungeonMap>();
+    }
+
     public MonsterSpawning(string dataFileFolder)
     {
         MordorRecordReader reader = new(dataFileFolder);
@@ -31,9 +38,7 @@ public class MonsterSpawning
         short areaNum = tile.Area;
         Area area = floor.Areas[areaNum];
         if (area.SpawnMask == 0 || IsRock(tile.Tile))
-        {
             return [];
-        }
         bool isStud = IsStud(tile.Tile);
         int baseFloor;
         if (isStud)
@@ -116,9 +121,7 @@ public class MonsterSpawning
                                                                                                                               monster.EncounterChance > 0)
                                                                                                             .ToList())));
         if (validMonstersBySubtype.Count == 0)
-        {
             return [];
-        }
         Dictionary<Monster, double> monsterChances = [];
         if (lairedMonster != null)
         {
@@ -148,9 +151,7 @@ public class MonsterSpawning
         Dictionary<MonsterSubtype, double> subtypeWeights = spawnableSubtypes.ToDictionary(tuple => tuple.Subtype, tuple => (double)tuple.ValidMonsters.Sum(monster => monster.EncounterChance));
         double totalSubtypeWeight = subtypeWeights.Values.Sum();
         if (totalSubtypeWeight == 0)
-        {
             return monsterChances;
-        }
         double setSubtypePortion = remainingPercent * (1 - randomSubtypeChance);
         foreach ((MonsterSubtype subtype, double subtypeWeight) in subtypeWeights)
         {

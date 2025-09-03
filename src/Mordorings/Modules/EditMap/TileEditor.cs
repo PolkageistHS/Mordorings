@@ -11,10 +11,10 @@ public partial class TileEditor : ObservableObject
 
     public event EventHandler<TileFlagChangedEventArgs>? FlagChanged;
 
-    public void LoadTile(int x, int y, long flags, Teleporter? teleporter, Chute? chute)
+    public void LoadTile(Tile tile, long flags, Teleporter? teleporter, Chute? chute)
     {
-        TileX = x + 1;
-        TileY = y + 1;
+        TileX = tile.X + 1;
+        TileY = tile.Y + 1;
         _originalFlags = flags;
         LoadTileFlags((DungeonTileFlag)flags);
         if (teleporter is not null)
@@ -112,7 +112,7 @@ public partial class TileEditor : ObservableObject
     {
         if (TileX == null || TileY == null)
             return;
-        var args = new TileFlagChangedEventArgs(TileX.Value - 1, TileY.Value - 1, GetTileFlag(), MapObjects);
+        var args = new TileFlagChangedEventArgs(new Tile(TileX.Value - 1, TileY.Value - 1), GetTileFlag(), MapObjects);
         FlagChanged?.Invoke(this, args);
     }
 
@@ -239,5 +239,3 @@ public partial class TileEditor : ObservableObject
 
     public MapObjects MapObjects { get; } = new();
 }
-
-public sealed record TileFlagChangedEventArgs(int TileX, int TileY, DungeonTileFlag AllFlags, MapObjects MapObjects);

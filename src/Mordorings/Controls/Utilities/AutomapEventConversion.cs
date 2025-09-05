@@ -12,11 +12,22 @@ public static class AutomapEventConversion
     public static Tile GetMapCoordinatesFromEvent(object? eventParameter)
     {
         if (eventParameter is not MouseEventArgs { Source: Image image } args)
-            return new Tile(0, 0);
-        double scale = image.ActualWidth / 30;
+            return new Tile(-1, -1);
+        double imageScale = image.ActualWidth / MapRendererBase.ImagePixelSize.Width;
         Point pos = args.GetPosition(image);
-        int x = Math.Clamp((int)(pos.X / scale), 0, 29);
-        int y = Math.Clamp(29 - (int)(pos.Y / scale), 0, 29);
+        double scaledtileSize = imageScale * MapRendererBase.TileSize;
+        double scaledGutterSize = imageScale * MapRendererBase.LeftGutterWidth;
+        int x;
+        double startX = pos.X - scaledGutterSize;
+        if (startX < 0)
+        {
+            x = -1;
+        }
+        else
+        {
+            x = Math.Clamp((int)(startX / scaledtileSize), -1, 29);
+        }
+        int y = Math.Clamp(29 - (int)(pos.Y / scaledtileSize), -1, 29);
         return new Tile(x, y);
     }
 }

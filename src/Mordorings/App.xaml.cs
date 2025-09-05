@@ -2,7 +2,6 @@
 using Config.Net;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Mordorings.Controls;
 using Mordorings.Modules.DungeonState;
 using Mordorings.Modules.EditMap;
 using Mordorings.Modules.GuildSpells;
@@ -68,7 +67,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddFactories(this IServiceCollection services) => services.AddSingleton<IViewModelFactory, ViewModelFactory>()
                                                                                                .AddSingleton<IDialogFactory, DialogFactory>()
                                                                                                .AddTransient<IMordorIoFactory, MordorIoFactory>()
-                                                                                               .AddTransient<IMapRenderFactory, MapRenderFactory>()
+                                                                                               .AddTransient<IMapRendererFactory, MapRendererFactory>()
+                                                                                               .AddTransient<IAutomapRenderer, AutomapRenderer>()
                                                                                                .AddTransient<IHeatmapRenderer, HeatmapRenderer>()
                                                                                                ;
 

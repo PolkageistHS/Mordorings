@@ -44,7 +44,7 @@
 					<Binding Path="ViewModel.Instructions" FallbackValue="" />
 				</TextBlock.Text>
 			</TextBlock>
-			<ContentControl Content="{Binding Path=ViewModel}" />
+			<ContentControl Content="{Binding Path=ViewModel}" Margin="5,0,5,5" />
 		</DockPanel>
 	</Grid>
 </Window>

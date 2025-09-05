@@ -3,37 +3,38 @@ using System.Drawing.Drawing2D;
 
 namespace Mordorings.Controls;
 
-public class MapRendererBase : IDisposable, IMapRendererBase
+public abstract class MapRendererBase : IDisposable, IMapRendererBase
 {
-    protected const int TileSize = 14;
-    protected const int MapWidth = 30;
-    protected const int MapHeight = 30;
+    protected internal const int TileSize = 14;
+    protected const int MapWidthInTiles = 30;
+    protected const int MapHeightInTiles = 30;
+    public const int LeftGutterWidth = 14;
+    protected const int BottomGutterHeight = 14;
 
-    protected Bitmap? MapBuffer { get; private set; }
+    private Bitmap MapBuffer { get; set; } = new(ImagePixelSize.Width, ImagePixelSize.Height);
 
-    protected Graphics? MapGraphics { get; private set; }
+    protected Graphics MapGraphics { get; private set; }
 
-    private static Size MapPixelSize => new(MapWidth * TileSize + 1, MapHeight * TileSize + 1);
+    protected internal static Size ImagePixelSize =>
+        new(MapPixelSize.Width + LeftGutterWidth, MapPixelSize.Height + BottomGutterHeight);
+
+    protected static Size MapPixelSize => new(MapWidthInTiles * TileSize, MapHeightInTiles * TileSize);
 
     protected MapRendererBase()
     {
-        MapBuffer = new Bitmap(MapPixelSize.Width, MapPixelSize.Height);
         MapGraphics = Graphics.FromImage(MapBuffer);
         MapGraphics.CompositingMode = CompositingMode.SourceOver;
         MapGraphics.InterpolationMode = InterpolationMode.NearestNeighbor;
     }
 
-    public Bitmap? GetMapSnapshot()
-    {
-        if (MapBuffer is not null)
-            return new Bitmap(MapBuffer);
-        return null;
-    }
+    public Bitmap GetMapSnapshot() => new(MapBuffer);
 
     protected void ReplaceBitmap(Bitmap bitmap)
     {
+        if (bitmap.Width != ImagePixelSize.Width || bitmap.Height != ImagePixelSize.Height)
+            throw new ArgumentException("Bitmap must be the same size as the map.");
         MapBuffer = new Bitmap(bitmap);
-        MapGraphics?.Dispose();
+        MapGraphics.Dispose();
         MapGraphics = Graphics.FromImage(MapBuffer);
         MapGraphics.CompositingMode = CompositingMode.SourceOver;
         MapGraphics.InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -41,30 +42,20 @@ public class MapRendererBase : IDisposable, IMapRendererBase
 
     protected void DrawTileBorder(Tile tile, Color color, int alpha)
     {
-        if (MapGraphics is null)
-            return;
-        int screenTileY = MapHeight - 1 - tile.Y;
-        int baseX = tile.X * TileSize;
-        int baseY = screenTileY * TileSize;
+        (int x, int y) = GetPixels(tile);
         Brush brush = new SolidBrush(Color.FromArgb(alpha, color));
-        MapGraphics.DrawRectangle(new Pen(brush, 2), baseX, baseY, TileSize, TileSize);
+        MapGraphics.DrawRectangle(new Pen(brush, 2), x, y, TileSize, TileSize);
     }
 
-    protected void DrawRectangleOnTile(int tileX, int tileY, Color color, int alpha)
+    protected void DrawRectangleOnTile(Tile tile, Color color)
     {
-        DrawRectangleOnTile(tileX, tileY, Color.FromArgb(alpha, color));
-    }
-
-    protected void DrawRectangleOnTile(int tileX, int tileY, Color color)
-    {
-        if (MapGraphics is null)
-            return;
-        int screenTileY = MapHeight - 1 - tileY;
-        int baseX = tileX * TileSize;
-        int baseY = screenTileY * TileSize;
+        (int x, int y) = GetPixels(tile);
         Brush brush = new SolidBrush(color);
-        MapGraphics.FillRectangle(brush, baseX, baseY, TileSize, TileSize);
+        MapGraphics.FillRectangle(brush, x, y, TileSize, TileSize);
     }
+
+    private static (int x, int y) GetPixels(Tile tile) =>
+        (tile.X * TileSize + LeftGutterWidth, (MapHeightInTiles - 1 - tile.Y) * TileSize);
 
     public void Dispose()
     {
@@ -76,7 +67,7 @@ public class MapRendererBase : IDisposable, IMapRendererBase
     {
         if (!disposing)
             return;
-        MapGraphics?.Dispose();
-        MapBuffer?.Dispose();
+        MapGraphics.Dispose();
+        MapBuffer.Dispose();
     }
 }

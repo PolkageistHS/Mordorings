@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using Mordorings.Controls;
 
 namespace Mordorings.Modules.MonsterHeatMap;
 
@@ -11,12 +10,11 @@ public partial class MonsterHeatMapViewModel : MapViewModelBase
     private readonly Dictionary<int, Bitmap?> _cachedMaps = [];
     private readonly List<MonsterHeatmapFloor> _cachedFloors = [];
 
-    public MonsterHeatMapViewModel(IMordorIoFactory ioFactory, IMapRenderFactory mapRenderFactory, IHeatmapRenderer heatmapRenderer) : base(ioFactory, mapRenderFactory)
+    public MonsterHeatMapViewModel(IMordorIoFactory ioFactory, IMapRendererFactory mapRendererFactory) : base(ioFactory, mapRendererFactory)
     {
-        _heatmapRenderer = heatmapRenderer;
+        _heatmapRenderer = MapRendererFactory.CreateHeatmapRenderer();
         _reader = IoFactory.GetReader();
         MonsterTypes = _reader.GetMordorRecord<DATA01GameData>().GetIndexedMonsterSubtypes().ToList();
-        Tooltips.TooltipLocationChanged += SetTooltip;
         _ = LoadData();
     }
 
@@ -40,22 +38,25 @@ public partial class MonsterHeatMapViewModel : MapViewModelBase
         }
     }
 
-    private void SetTooltip(object? sender, TooltipChangedEventArgs e)
+    [RelayCommand]
+    private void ShowTileDetails(object? args)
     {
+        Tile tile = AutomapEventConversion.GetMapCoordinatesFromEvent(args);
+        if (tile.X < 0 || tile.Y < 0)
+            return;
         if (SelectedFloor is null)
             return;
-        int area = SelectedFloor.DungeonFloor.GetAreaFromTile(e.Tile);
+        int area = SelectedFloor.DungeonFloor.GetAreaFromTile(tile);
         AreaSpawnChance? spawn = SelectedFloor.SpawnRates.FirstOrDefault(chance => chance.AreaNum == area);
-        string? text;
-        if (spawn != null)
+        SelectedTileDetails = FormatTileDetails();
+        return;
+
+        string? FormatTileDetails()
         {
-            text = $"{e.Tile.X + 1},{e.Tile.Y + 1} - Area {area}\nChance: {spawn.SpawnChance:P2}";
+            if (spawn == null)
+                return null;
+            return $"{tile.X + 1},{tile.Y + 1} - Area {area}\nChance: {spawn.SpawnChance:P2}";
         }
-        else
-        {
-            text = "";
-        }
-        e.TooltipText = text;
     }
 
     public List<MonsterSubtypeIndexed> MonsterTypes { get; }
@@ -74,6 +75,9 @@ public partial class MonsterHeatMapViewModel : MapViewModelBase
     [ObservableProperty]
     private MonsterHeatmapFloor? _selectedFloor;
 
+    [ObservableProperty]
+    private string? _selectedTileDetails;
+
     partial void OnSelectedMonsterTypeChanged(MonsterSubtypeIndexed? value)
     {
         Monsters.Clear();
@@ -89,24 +93,37 @@ public partial class MonsterHeatMapViewModel : MapViewModelBase
         {
             ProcessMonsterSpawnChances(value);
         }
+        else
+        {
+            SelectedTileDetails = null;
+            Image = null;
+        }
     }
 
     private void ProcessMonsterSpawnChances(Monster value)
     {
-        IOrderedEnumerable<IGrouping<int, AreaSpawnChance>> spawnChances = _cachedMonsterSpawnRates.First(rates => Equals(rates.Monster, value))
-                                                                                                   .SpawnRates
-                                                                                                   .OrderByDescending(chance => chance.SpawnChance)
-                                                                                                   .GroupBy(chance => chance.Floor)
-                                                                                                   .OrderBy(grouping => grouping.Key);
+        IOrderedEnumerable<IGrouping<int, AreaSpawnChance>>? spawnChances = _cachedMonsterSpawnRates.FirstOrDefault(rates => Equals(rates.Monster, value))?
+                                                                                                    .SpawnRates
+                                                                                                    .OrderByDescending(chance => chance.SpawnChance)
+                                                                                                    .GroupBy(chance => chance.Floor)
+                                                                                                    .OrderBy(grouping => grouping.Key);
         _cachedFloors.Clear();
-        foreach (IGrouping<int, AreaSpawnChance> grouping in spawnChances)
+        if (spawnChances != null)
         {
-            Bitmap? bitmap = _cachedMaps[grouping.Key - 1];
-            if (bitmap == null)
-                continue;
-            _cachedFloors.Add(new MonsterHeatmapFloor(grouping.Key, Map.Floors[grouping.Key - 1], bitmap, grouping.ToList()));
+            foreach (IGrouping<int, AreaSpawnChance> grouping in spawnChances)
+            {
+                Bitmap? bitmap = _cachedMaps[grouping.Key - 1];
+                if (bitmap == null)
+                    continue;
+                _cachedFloors.Add(new MonsterHeatmapFloor(grouping.Key, Map.Floors[grouping.Key - 1], bitmap, grouping.ToList()));
+            }
+            SelectedFloorNum = _cachedFloors.OrderBy(floor => floor.FloorNum).First().FloorNum;
         }
-        SelectedFloorNum = _cachedFloors.OrderBy(floor => floor.FloorNum).First().FloorNum;
+        else
+        {
+            Image = null;
+            SelectedTileDetails = "Cannot spawn as primary.";
+        }
     }
 
     protected override bool CanIncreaseFloor
@@ -134,6 +151,7 @@ public partial class MonsterHeatMapViewModel : MapViewModelBase
         SelectedFloor = _cachedFloors.FirstOrDefault(floor => floor.FloorNum == newValue);
         _heatmapRenderer.Render(SelectedFloor);
         Image = _heatmapRenderer.GetMapSnapshot()?.ToBitmapSource();
+        SelectedTileDetails = null;
     }
 
     protected override int NormalizeFloorNum(int oldValue, int newValue)

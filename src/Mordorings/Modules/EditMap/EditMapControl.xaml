@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:Mordorings.Modules.EditMap"
-             xmlns:uc="clr-namespace:Mordorings.UserControls"
+             xmlns:controls="clr-namespace:Mordorings.Controls"
              mc:Ignorable="d" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance local:EditMapViewModel}">
     <UserControl.Resources>
@@ -25,6 +26,42 @@
             </Canvas>
             <local:EditTileControl Width="300" Height="402" />
         </StackPanel>
-        <uc:DungeonMapBaseControl DockPanel.Dock="Left" MapClickCommand="{Binding Path=GetImageMouseClickCommand}" />
+        <DockPanel>
+        <Grid DockPanel.Dock="Top" Width="{Binding ElementName=ImageMap, Path=ActualWidth}" HorizontalAlignment="Left">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                <Label Content="Floor" HorizontalAlignment="Center" />
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="&lt;" Command="{Binding Path=DecreaseFloorCommand}" />
+                    <TextBox Width="20"
+                             d:Text="15"
+                             HorizontalContentAlignment="Center" Margin="5,0,5,0">
+                        <TextBox.Text>
+                            <Binding Path="SelectedFloorNum" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.Converter>
+                                    <controls:StringToIntConverter EmptyStringValue="0" />
+                                </Binding.Converter>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <Button Content="&gt;"
+                            Command="{Binding Path=IncreaseFloorCommand}" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid DockPanel.Dock="Left">
+            <Image Name="ImageMap"
+                   Source="{Binding Path=Image, FallbackValue={x:Null}}"
+                   MinWidth="421" MinHeight="421"
+                   d:Source="c:\temp\floor1.png" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="MouseLeftButtonDown">
+                        <b:EventTrigger.Actions>
+                            <b:InvokeCommandAction Command="{Binding Path=GetImageMouseClickCommand}" PassEventArgsToCommand="True" />
+                        </b:EventTrigger.Actions>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </Image>
+        </Grid>
+        </DockPanel>
     </DockPanel>
 </UserControl>

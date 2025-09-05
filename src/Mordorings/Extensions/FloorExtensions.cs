@@ -2,11 +2,8 @@
 
 public static class FloorExtensions
 {
-    public static int GetAreaFromTile(this Floor floor, int tileX, int tileY) =>
-        floor.Tiles[tileX + tileY * 30].Area;
-
     public static int GetAreaFromTile(this Floor floor, Tile tile) =>
-        GetAreaFromTile(floor, tile.X, tile.Y);
+        floor.Tiles[tile.X + tile.Y * 30].Area;
 
     public static IEnumerable<Tile> GetTilesForArea(this Floor floor, int area)
     {

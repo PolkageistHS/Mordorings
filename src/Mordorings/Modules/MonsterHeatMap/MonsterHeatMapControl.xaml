@@ -63,20 +63,18 @@
                     </ComboBox.IsEnabled>
                 </ComboBox>
             </DockPanel>
-        </StackPanel>
+			<TextBlock Margin="0,40,0,0" Text="{Binding Path=SelectedTileDetails}" />
+		</StackPanel>
         <DockPanel>
             <Grid DockPanel.Dock="Left">
                 <Image Source="{Binding Path=Image, FallbackValue={x:Null}}"
                        MinWidth="421" MinHeight="421"
                        HorizontalAlignment="Left" VerticalAlignment="Top"
-                       ToolTip="{Binding Path=Tooltips.TooltipText}"
-                       ToolTipService.Placement="MousePoint"
-                       ToolTipService.IsEnabled="{Binding Path=Tooltips.IsVisible}"
                        d:Source="c:\temp\floor1.png">
                     <b:Interaction.Triggers>
                         <b:EventTrigger EventName="MouseMove">
                             <b:EventTrigger.Actions>
-                                <b:InvokeCommandAction Command="{Binding Path=Tooltips.ShowTooltipForTileCommand}" PassEventArgsToCommand="True" />
+                                <b:InvokeCommandAction Command="{Binding Path=ShowTileDetailsCommand}" PassEventArgsToCommand="True" />
                             </b:EventTrigger.Actions>
                         </b:EventTrigger>
                     </b:Interaction.Triggers>

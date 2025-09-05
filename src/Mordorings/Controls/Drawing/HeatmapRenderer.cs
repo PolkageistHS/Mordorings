@@ -11,14 +11,15 @@ public class HeatmapRenderer : MapRendererBase, IHeatmapRenderer
         ReplaceBitmap(floor.Map);
         foreach (AreaSpawnChance spawnRate in floor.SpawnRates)
         {
-            for (int x = 0; x < MapWidth; x++)
+            for (int x = 0; x < MapWidthInTiles; x++)
             {
-                for (int y = 0; y < MapHeight; y++)
+                for (int y = 0; y < MapHeightInTiles; y++)
                 {
-                    if (floor.DungeonFloor.GetAreaFromTile(x, y) != spawnRate.AreaNum)
+                    var tile = new Tile(x, y);
+                    if (floor.DungeonFloor.GetAreaFromTile(tile) != spawnRate.AreaNum)
                         continue;
                     Color color = ProbabilityToColor(spawnRate.SpawnChance);
-                    DrawRectangleOnTile(x, y, color);
+                    DrawRectangleOnTile(tile, color);
                 }
             }
         }
@@ -31,6 +32,6 @@ public class HeatmapRenderer : MapRendererBase, IHeatmapRenderer
         double scaled = Math.Sqrt(probability);
         int i = (int)(scaled * 255);
         int alpha = (int)(scaled * 175);
-        return Color.FromArgb(Math.Max(alpha, 40), 255, 255 - i, 255 - i);
+        return Color.FromArgb(Math.Max(alpha, 75), 255, 255 - i, 255 - i);
     }
 }

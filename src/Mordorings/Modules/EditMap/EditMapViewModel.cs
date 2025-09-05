@@ -4,7 +4,7 @@ public partial class EditMapViewModel : MapViewModelBase
 {
     private readonly IDialogFactory _dialogFactory;
 
-    public EditMapViewModel(IMordorIoFactory ioFactory, IMapRenderFactory mapRenderFactory, IDialogFactory dialogFactory) : base(ioFactory, mapRenderFactory)
+    public EditMapViewModel(IMordorIoFactory ioFactory, IMapRendererFactory mapRendererFactory, IDialogFactory dialogFactory) : base(ioFactory, mapRendererFactory)
     {
         _dialogFactory = dialogFactory;
         SelectedFloorNum = 1;

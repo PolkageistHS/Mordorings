@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using Mordorings.Controls;
 
 namespace Mordorings.UserControls;
 

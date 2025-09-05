@@ -1,6 +1,4 @@
-﻿using Mordorings.Controls;
-
-namespace Mordorings.ViewModels.Abstractions;
+﻿namespace Mordorings.ViewModels.Abstractions;
 
 public abstract partial class MapViewModelBase : ViewModelBase
 {
@@ -14,13 +12,13 @@ public abstract partial class MapViewModelBase : ViewModelBase
     protected readonly DungeonFloor[] CachedDungeonFloors;
     protected readonly IMordorIoFactory IoFactory;
     protected readonly DATA11DungeonMap Map;
-    private readonly IMapRenderFactory _mapRenderFactory;
+    protected readonly IMapRendererFactory MapRendererFactory;
     protected readonly IAutomapRenderer[] Renderers;
 
-    protected MapViewModelBase(IMordorIoFactory ioFactory, IMapRenderFactory mapRenderFactory)
+    protected MapViewModelBase(IMordorIoFactory ioFactory, IMapRendererFactory mapRendererFactory)
     {
         IoFactory = ioFactory;
-        _mapRenderFactory = mapRenderFactory;
+        MapRendererFactory = mapRendererFactory;
         Map = IoFactory.GetReader().GetMordorRecord<DATA11DungeonMap>();
         Floor[] floors = Map.Floors;
         CachedDungeonFloors = new DungeonFloor[floors.Length];
@@ -34,7 +32,7 @@ public abstract partial class MapViewModelBase : ViewModelBase
         {
             var dungeonFloor = new DungeonFloor(floors[i]);
             CachedDungeonFloors[i] = dungeonFloor;
-            IAutomapRenderer renderer = _mapRenderFactory.CreateAutomapRenderer();
+            IAutomapRenderer renderer = MapRendererFactory.CreateAutomapRenderer();
             renderer.LoadSpriteSheet(SpriteSheetFile);
             renderer.Initialize(dungeonFloor);
             renderer.MapUpdated += (sender, _) =>
@@ -64,8 +62,6 @@ public abstract partial class MapViewModelBase : ViewModelBase
 
     [ObservableProperty]
     private object? _image;
-
-    public TooltipManager Tooltips { get; } = new();
 
     private int _selectedFloorNum;
 

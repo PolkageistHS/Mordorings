@@ -26,8 +26,9 @@ public partial class App
                                                                .AddUserControls()
                                                                .AddViewModels()
                                                                .AddFactories()
+                                                               .AddMediators()
                                                                .AddOtherServices()
-                                                               )
+                    )
                     .Build();
     }
 
@@ -61,16 +62,16 @@ public static class ServiceCollectionExtensions
                                                                                                 .AddTransient<GuildSpellsViewModel>()
                                                                                                 .AddTransient<DungeonStateViewModel>()
                                                                                                 .AddTransient<EditMapViewModel>()
-                                                                                                .AddTransient<MonsterHeatMapViewModel>()
-                                                                                                ;
+                                                                                                .AddTransient<MonsterHeatMapViewModel>();
 
     public static IServiceCollection AddFactories(this IServiceCollection services) => services.AddSingleton<IViewModelFactory, ViewModelFactory>()
                                                                                                .AddSingleton<IDialogFactory, DialogFactory>()
                                                                                                .AddTransient<IMordorIoFactory, MordorIoFactory>()
                                                                                                .AddTransient<IMapRendererFactory, MapRendererFactory>()
                                                                                                .AddTransient<IAutomapRenderer, AutomapRenderer>()
-                                                                                               .AddTransient<IHeatmapRenderer, HeatmapRenderer>()
-                                                                                               ;
+                                                                                               .AddTransient<IHeatmapRenderer, HeatmapRenderer>();
+
+    public static IServiceCollection AddMediators(this IServiceCollection services) => services.AddTransient<IMonsterHeatMapMediator, MonsterHeatMapPresenter>();
 
     public static IServiceCollection AddOtherServices(this IServiceCollection services)
     {
@@ -81,6 +82,6 @@ public static class ServiceCollectionExtensions
         }
         return services.AddSingleton<IViewModelFactory, ViewModelFactory>()
                        .AddSingleton(settings)
-                       ;
+            ;
     }
 }

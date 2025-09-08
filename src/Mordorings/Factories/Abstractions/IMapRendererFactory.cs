@@ -4,5 +4,5 @@ public interface IMapRendererFactory
 {
     IAutomapRenderer CreateAutomapRenderer();
 
-    IHeatmapRenderer CreateHeatmapRenderer();
+    IHeatMapRenderer CreateHeatMapRenderer();
 }

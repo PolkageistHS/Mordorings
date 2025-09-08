@@ -69,7 +69,7 @@ public static class ServiceCollectionExtensions
                                                                                                .AddTransient<IMordorIoFactory, MordorIoFactory>()
                                                                                                .AddTransient<IMapRendererFactory, MapRendererFactory>()
                                                                                                .AddTransient<IAutomapRenderer, AutomapRenderer>()
-                                                                                               .AddTransient<IHeatmapRenderer, HeatmapRenderer>();
+                                                                                               .AddTransient<IHeatMapRenderer, HeatMapRenderer>();
 
     public static IServiceCollection AddMediators(this IServiceCollection services) => services.AddTransient<IMonsterHeatMapMediator, MonsterHeatMapPresenter>();
 

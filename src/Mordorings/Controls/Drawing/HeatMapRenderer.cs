@@ -2,9 +2,9 @@
 
 namespace Mordorings.Controls;
 
-public class HeatmapRenderer : MapRendererBase, IHeatmapRenderer
+public class HeatMapRenderer : MapRendererBase, IHeatMapRenderer
 {
-    public void Render(MonsterHeatmapFloor? floor)
+    public void Render(MonsterHeatMapFloor? floor)
     {
         if (floor == null)
             return;

@@ -3,7 +3,7 @@ using Mordorings.Modules.EditMap;
 
 namespace Mordorings.Models;
 
-public record MonsterHeatmapFloor(int FloorNum, Floor DungeonFloor, Bitmap Map, List<AreaSpawnChance> SpawnRates);
+public record MonsterHeatMapFloor(int FloorNum, Floor DungeonFloor, Bitmap Map, List<AreaSpawnChance> SpawnRates);
 
 public record Tile(int X, int Y);
 

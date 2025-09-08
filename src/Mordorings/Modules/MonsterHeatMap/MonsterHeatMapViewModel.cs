@@ -1,26 +1,13 @@
-﻿using System.Drawing;
-
-namespace Mordorings.Modules.MonsterHeatMap;
+﻿namespace Mordorings.Modules.MonsterHeatMap;
 
 public partial class MonsterHeatMapViewModel : ViewModelBase
 {
-    private const string SpriteSheetFile = "Assets/DungeonSprites.bmp";
-
-    private List<MonsterSpawnRates> _cachedMonsterSpawnRates = [];
-
-    private readonly Floor[] _floors;
-    private readonly IHeatmapRenderer _heatmapRenderer;
     private readonly IMonsterHeatMapMediator _mediator;
-    private readonly IMapRendererFactory _mapRendererFactory;
-    private readonly Dictionary<int, Bitmap?> _cachedMaps = [];
-    private readonly List<MonsterHeatmapFloor> _cachedFloors = [];
 
-    public MonsterHeatMapViewModel(IMapRendererFactory mapRendererFactory, IMonsterHeatMapMediator mediator)
+    public MonsterHeatMapViewModel(IMonsterHeatMapMediator mediator)
     {
-        _mapRendererFactory = mapRendererFactory;
         _mediator = mediator;
-        _heatmapRenderer = _mapRendererFactory.CreateHeatmapRenderer();
-        _floors = _mediator.GetFloors();
+        MonsterTypes = _mediator.GetMonsterSubtypes();
         _ = LoadData();
     }
 
@@ -28,10 +15,8 @@ public partial class MonsterHeatMapViewModel : ViewModelBase
     {
         try
         {
-            MonsterTypes = _mediator.GetMonsterSubtypes();
-            InitializeRenderers();
             IsDataLoaded = false;
-            await Task.Run(() => { _cachedMonsterSpawnRates = _mediator.GetAllMonsterSpawns(); });
+            await _mediator.Initialize();
         }
         finally
         {
@@ -39,30 +24,21 @@ public partial class MonsterHeatMapViewModel : ViewModelBase
         }
     }
 
-    private void InitializeRenderers()
-    {
-        for (int i = 0; i < _floors.Length; i++)
-        {
-            var dungeonFloor = new DungeonFloor(_floors[i]);
-            IAutomapRenderer renderer = _mapRendererFactory.CreateAutomapRenderer();
-            renderer.LoadSpriteSheet(SpriteSheetFile);
-            renderer.Initialize(dungeonFloor);
-            renderer.DrawDungeonFloorMap();
-            _cachedMaps[i] = renderer.GetMapSnapshot();
-        }
-    }
-
     [RelayCommand(CanExecute = nameof(CanIncreaseFloor))]
     private void IncreaseFloor()
     {
-        SelectedFloorNum = NormalizeFloorNum(SelectedFloorNum, SelectedFloorNum + 1);
+        CurrentFloorNumber = _mediator.GetNextValidFloorNumber(CurrentFloorNumber, CurrentFloorNumber + 1);
     }
+
+    protected bool CanIncreaseFloor => _mediator.HasHigherFloor(CurrentFloorNumber);
 
     [RelayCommand(CanExecute = nameof(CanDecreaseFloor))]
     private void DecreaseFloor()
     {
-        SelectedFloorNum = NormalizeFloorNum(SelectedFloorNum, SelectedFloorNum - 1);
+        CurrentFloorNumber = _mediator.GetNextValidFloorNumber(CurrentFloorNumber, CurrentFloorNumber - 1);
     }
+
+    protected bool CanDecreaseFloor => _mediator.HasLowerFloor(CurrentFloorNumber);
 
     [RelayCommand]
     private void ShowTileDetails(object? args)
@@ -70,50 +46,63 @@ public partial class MonsterHeatMapViewModel : ViewModelBase
         Tile tile = AutomapEventConversion.GetMapCoordinatesFromEvent(args);
         if (tile.X < 0 || tile.Y < 0)
             return;
-        if (SelectedFloor is null)
-            return;
-        int area = SelectedFloor.DungeonFloor.GetAreaFromTile(tile);
-        AreaSpawnChance? spawn = SelectedFloor.SpawnRates.FirstOrDefault(chance => chance.AreaNum == area);
-        SelectedTileDetails = spawn != null ? $"{tile.X + 1},{tile.Y + 1} - Area {area}\nChance: {spawn.SpawnChance:P2}" : null;
+        (AreaSpawnChance? spawnChance, int areaNumber) = _mediator.GetTileDetails(tile);
+        SelectedTileDetails = spawnChance != null ? $"{tile.X + 1},{tile.Y + 1} - Area {areaNumber}\nChance: {spawnChance.SpawnChance:P2}" : null;
     }
 
-    public List<MonsterSubtypeIndexed> MonsterTypes { get; private set; } = [];
+    public List<MonsterSubtypeIndexed> MonsterTypes { get; private set; }
 
     public ObservableCollection<Monster> Monsters { get; } = [];
 
-    private int _selectedFloorNum;
+    private int _currentFloorNumber;
 
-    public int SelectedFloorNum
+    public int CurrentFloorNumber
     {
-        get => _selectedFloorNum;
+        get => _currentFloorNumber;
         set
         {
-            SetProperty(ref _selectedFloorNum, value);
-            HandleOnSelectedFloorNumChanged(value);
-            IncreaseFloorCommand.NotifyCanExecuteChanged();
-            DecreaseFloorCommand.NotifyCanExecuteChanged();
+            SetProperty(ref _currentFloorNumber, value);
+            UpdateSelectedFloor(value);
         }
     }
 
-    [ObservableProperty]
+    private void UpdateSelectedFloor(int value)
+    {
+        Image = _mediator.GetHeatMapImage(value);
+        SelectedTileDetails = null;
+        IncreaseFloorCommand.NotifyCanExecuteChanged();
+        DecreaseFloorCommand.NotifyCanExecuteChanged();
+    }
+
     private bool _isDataLoaded;
 
-    [ObservableProperty]
+    public bool IsDataLoaded
+    {
+        get => _isDataLoaded;
+        set => SetProperty(ref _isDataLoaded, value);
+    }
+
     private object? _image;
 
-    [ObservableProperty]
+    public object? Image
+    {
+        get => _image;
+        private set => SetProperty(ref _image, value);
+    }
+
     private MonsterSubtypeIndexed? _selectedMonsterType;
 
-    [ObservableProperty]
-    private Monster? _selectedMonster;
+    public MonsterSubtypeIndexed? SelectedMonsterType
+    {
+        get => _selectedMonsterType;
+        set
+        {
+            SetProperty(ref _selectedMonsterType, value);
+            RefreshMonsterList(value);
+        }
+    }
 
-    [ObservableProperty]
-    private MonsterHeatmapFloor? _selectedFloor;
-
-    [ObservableProperty]
-    private string? _selectedTileDetails;
-
-    partial void OnSelectedMonsterTypeChanged(MonsterSubtypeIndexed? value)
+    private void RefreshMonsterList(MonsterSubtypeIndexed? value)
     {
         Monsters.Clear();
         foreach (Monster monster in _mediator.GetMonstersBySubtypeId(value?.Index))
@@ -122,11 +111,32 @@ public partial class MonsterHeatMapViewModel : ViewModelBase
         }
     }
 
-    partial void OnSelectedMonsterChanged(Monster? value)
+    private Monster? _selectedMonster;
+
+    public Monster? SelectedMonster
+    {
+        get => _selectedMonster;
+        set
+        {
+            SetProperty(ref _selectedMonster, value);
+            UpdateForSelectedMonster(value);
+        }
+    }
+
+    private void UpdateForSelectedMonster(Monster? value)
     {
         if (value != null)
         {
-            ProcessMonsterSpawnChances(value);
+            int? floorNum = _mediator.GetFirstFloorForMonster(value);
+            if (floorNum != null)
+            {
+                CurrentFloorNumber = floorNum.Value;
+            }
+            else
+            {
+                Image = null;
+                SelectedTileDetails = "Cannot spawn as primary.";
+            }
         }
         else
         {
@@ -135,76 +145,12 @@ public partial class MonsterHeatMapViewModel : ViewModelBase
         }
     }
 
-    private void ProcessMonsterSpawnChances(Monster value)
-    {
-        IOrderedEnumerable<IGrouping<int, AreaSpawnChance>>? spawnChances = _cachedMonsterSpawnRates.FirstOrDefault(rates => Equals(rates.Monster, value))
-                                                                                                    ?.SpawnRates
-                                                                                                    .OrderByDescending(chance => chance.SpawnChance)
-                                                                                                    .GroupBy(chance => chance.Floor)
-                                                                                                    .OrderBy(grouping => grouping.Key);
-        _cachedFloors.Clear();
-        if (spawnChances != null)
-        {
-            foreach (IGrouping<int, AreaSpawnChance> grouping in spawnChances)
-            {
-                Bitmap? bitmap = _cachedMaps[grouping.Key - 1];
-                if (bitmap == null)
-                    continue;
-                _cachedFloors.Add(new MonsterHeatmapFloor(grouping.Key, _floors[grouping.Key - 1], bitmap, grouping.ToList()));
-            }
-            SelectedFloorNum = _cachedFloors.OrderBy(floor => floor.FloorNum).First().FloorNum;
-        }
-        else
-        {
-            Image = null;
-            SelectedTileDetails = "Cannot spawn as primary.";
-        }
-    }
+    private string? _selectedTileDetails;
 
-    protected bool CanIncreaseFloor
+    public string? SelectedTileDetails
     {
-        get
-        {
-            if (_cachedFloors.Count == 0)
-                return false;
-            return _cachedFloors.Select(floor => floor.FloorNum).Max() > SelectedFloorNum;
-        }
-    }
-
-    protected bool CanDecreaseFloor
-    {
-        get
-        {
-            if (_cachedFloors.Count == 0)
-                return false;
-            return _cachedFloors.Select(floor => floor.FloorNum).Min() < SelectedFloorNum;
-        }
-    }
-
-    private void HandleOnSelectedFloorNumChanged(int newValue)
-    {
-        SelectedFloor = _cachedFloors.FirstOrDefault(floor => floor.FloorNum == newValue);
-        _heatmapRenderer.Render(SelectedFloor);
-        Image = _heatmapRenderer.GetMapSnapshot()?.ToBitmapSource();
-        SelectedTileDetails = null;
-    }
-
-    private int NormalizeFloorNum(int oldValue, int newValue)
-    {
-        if (oldValue == newValue)
-            return newValue;
-        int[] floors = _cachedFloors.Select(floor => floor.FloorNum).OrderBy(i => i).ToArray();
-        if (floors.Contains(newValue))
-            return newValue;
-        int maxFloor = floors.Last();
-        if (newValue > maxFloor)
-            return maxFloor;
-        int minFloor = floors.First();
-        if (newValue < minFloor)
-            return minFloor;
-        if (oldValue > newValue)
-            return floors.Last(floor => floor < newValue);
-        return floors.First(floor => floor > newValue);
+        get => _selectedTileDetails;
+        private set => SetProperty(ref _selectedTileDetails, value);
     }
 
     public override string Instructions => "See where monsters are capable of spawning and the relative chances of spawning.";

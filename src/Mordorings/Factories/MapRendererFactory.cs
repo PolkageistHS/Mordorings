@@ -6,5 +6,5 @@ public class MapRendererFactory(IServiceProvider services) : IMapRendererFactory
 {
     public IAutomapRenderer CreateAutomapRenderer() => services.GetRequiredService<IAutomapRenderer>();
 
-    public IHeatmapRenderer CreateHeatmapRenderer() => services.GetRequiredService<IHeatmapRenderer>();
+    public IHeatMapRenderer CreateHeatMapRenderer() => services.GetRequiredService<IHeatMapRenderer>();
 }

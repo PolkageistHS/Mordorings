@@ -28,7 +28,7 @@
                         <Button Content="&lt;" Command="{Binding Path=DecreaseFloorCommand}" />
                         <TextBox Width="20" HorizontalContentAlignment="Center" Margin="5,0,5,0" IsEnabled="false" d:Text="1">
                             <TextBox.Text>
-                                <Binding Path="SelectedFloorNum" UpdateSourceTrigger="PropertyChanged">
+                                <Binding Path="CurrentFloorNumber" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.Converter>
                                         <controls:StringToIntConverter EmptyStringValue="0" />
                                     </Binding.Converter>

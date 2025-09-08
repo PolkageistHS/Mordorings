@@ -65,4 +65,6 @@ public partial class RaceGuildGraphViewModel : ViewModelBase
         Chart.Recalculate(RaceOne, GuildOne, RaceTwo, GuildTwo);
         OnPropertyChanged(nameof(IsChartEnabled));
     }
+
+    public override string Instructions => throw new NotSupportedException();
 }

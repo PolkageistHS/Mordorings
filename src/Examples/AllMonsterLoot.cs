@@ -1,4 +1,8 @@
-﻿namespace Examples;
+﻿using Calculations;
+using MordorDataLibrary.Data;
+using MordorDataLibrary.Models;
+
+namespace Examples;
 
 public static class AllMonsterLoot
 {

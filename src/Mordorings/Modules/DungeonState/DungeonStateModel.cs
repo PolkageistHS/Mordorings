@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Mordorings.Modules.DungeonState;
+﻿namespace Mordorings.Modules;
 
 public partial class DungeonStateModel : ObservableValidator
 {

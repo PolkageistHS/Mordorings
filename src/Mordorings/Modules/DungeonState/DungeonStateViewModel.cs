@@ -1,4 +1,4 @@
-﻿namespace Mordorings.Modules.DungeonState;
+﻿namespace Mordorings.Modules;
 
 public partial class DungeonStateViewModel : ViewModelBase
 {

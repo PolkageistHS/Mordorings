@@ -1,4 +1,4 @@
-﻿namespace Mordorings.Modules.MonsterHeatMap;
+﻿namespace Mordorings.Modules;
 
 public interface IMonsterHeatMapMediator
 {

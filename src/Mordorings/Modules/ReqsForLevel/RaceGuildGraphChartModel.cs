@@ -4,7 +4,7 @@ using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 
-namespace Mordorings.Modules.ReqsForLevel;
+namespace Mordorings.Modules;
 
 public partial class RaceGuildGraphChartModel : ObservableObject
 {

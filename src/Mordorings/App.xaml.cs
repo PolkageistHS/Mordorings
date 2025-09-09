@@ -2,19 +2,13 @@
 using Config.Net;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Mordorings.Modules.DungeonState;
-using Mordorings.Modules.EditMap;
-using Mordorings.Modules.GuildSpells;
-using Mordorings.Modules.MonsterHeatMap;
-using Mordorings.Modules.ReqsForLevel;
+using Mordorings.Modules;
 using Mordorings.ViewModels;
 using Mordorings.Windows;
 
-// ReSharper disable AsyncVoidEventHandlerMethod
 namespace Mordorings;
 
-using DungeonStateViewModel = DungeonStateViewModel;
-
+// ReSharper disable AsyncVoidEventHandlerMethod
 public partial class App
 {
     private readonly IHost _host;

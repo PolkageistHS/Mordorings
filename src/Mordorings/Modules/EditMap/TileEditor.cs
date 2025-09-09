@@ -1,4 +1,4 @@
-﻿namespace Mordorings.Modules.EditMap;
+﻿namespace Mordorings.Modules;
 
 public partial class TileEditor : ObservableObject
 {

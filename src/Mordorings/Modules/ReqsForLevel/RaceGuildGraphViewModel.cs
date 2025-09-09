@@ -1,6 +1,6 @@
-﻿namespace Mordorings.Modules.ReqsForLevel;
+﻿namespace Mordorings.Modules;
 
-public partial class RaceGuildGraphViewModel : ViewModelBase
+public partial class RaceGuildGraphViewModel : ObservableObject
 {
     [ObservableProperty]
     private Race? _raceOne;
@@ -65,6 +65,4 @@ public partial class RaceGuildGraphViewModel : ViewModelBase
         Chart.Recalculate(RaceOne, GuildOne, RaceTwo, GuildTwo);
         OnPropertyChanged(nameof(IsChartEnabled));
     }
-
-    public override string Instructions => throw new NotSupportedException();
 }

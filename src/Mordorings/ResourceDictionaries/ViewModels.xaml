@@ -1,12 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:viewModels="clr-namespace:Mordorings.ViewModels"
-                    xmlns:dungeonState="clr-namespace:Mordorings.Modules.DungeonState"
-                    xmlns:reqsForLevel="clr-namespace:Mordorings.Modules.ReqsForLevel"
-                    xmlns:guildSpells="clr-namespace:Mordorings.Modules.GuildSpells"
-                    xmlns:editMap="clr-namespace:Mordorings.Modules.EditMap"
-                    xmlns:userControls="clr-namespace:Mordorings.UserControls"
-                    xmlns:monsterHeatMap="clr-namespace:Mordorings.Modules.MonsterHeatMap">
+                    xmlns:modules="clr-namespace:Mordorings.Modules"
+                    xmlns:userControls="clr-namespace:Mordorings.UserControls">
 
     <DataTemplate DataType="{x:Type TypeName=viewModels:EditMenuViewModel}">
         <userControls:EditMenu />
@@ -20,28 +16,28 @@
         <userControls:CalculationsMenu />
     </DataTemplate>
     
-    <DataTemplate DataType="{x:Type TypeName=dungeonState:DungeonStateViewModel}">
-        <dungeonState:DungeonStateControl />
+    <DataTemplate DataType="{x:Type TypeName=modules:DungeonStateViewModel}">
+        <modules:DungeonStateControl />
     </DataTemplate>
     
-    <DataTemplate DataType="{x:Type TypeName=reqsForLevel:LevelRequirementsViewModel}">
-        <reqsForLevel:LevelRequirementsControl />
+    <DataTemplate DataType="{x:Type TypeName=modules:LevelRequirementsViewModel}">
+        <modules:LevelRequirementsControl />
     </DataTemplate>
     
-    <DataTemplate DataType="{x:Type TypeName=reqsForLevel:RaceGuildGraphViewModel}">
-        <reqsForLevel:RaceGuildGraphControl />
+    <DataTemplate DataType="{x:Type TypeName=modules:RaceGuildGraphViewModel}">
+        <modules:RaceGuildGraphControl />
     </DataTemplate>
     
-    <DataTemplate DataType="{x:Type TypeName=guildSpells:GuildSpellsViewModel}">
-        <guildSpells:GuildSpellsControl />
+    <DataTemplate DataType="{x:Type TypeName=modules:GuildSpellsViewModel}">
+        <modules:GuildSpellsControl />
     </DataTemplate>
     
-    <DataTemplate DataType="{x:Type TypeName=editMap:EditMapViewModel}">
-        <editMap:EditMapControl />
+    <DataTemplate DataType="{x:Type TypeName=modules:EditMapViewModel}">
+        <modules:EditMapControl />
     </DataTemplate>
     
-    <DataTemplate DataType="{x:Type TypeName=monsterHeatMap:MonsterHeatMapViewModel}">
-        <monsterHeatMap:MonsterHeatMapControl />
+    <DataTemplate DataType="{x:Type TypeName=modules:MonsterHeatMapViewModel}">
+        <modules:MonsterHeatMapControl />
     </DataTemplate>
     
 </ResourceDictionary>

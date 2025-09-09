@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Mordorings.Messages;
-using Mordorings.Modules.GuildSpells;
-using Mordorings.Modules.ReqsForLevel;
+using Mordorings.Modules;
 
 namespace Mordorings.ViewModels;
 

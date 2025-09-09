@@ -1,14 +1,14 @@
-﻿<UserControl x:Class="Mordorings.Modules.DungeonState.DungeonStateControl"
+﻿<UserControl x:Class="Mordorings.Modules.DungeonStateControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:local="clr-namespace:Mordorings.Modules.DungeonState"
+             xmlns:modules="clr-namespace:Mordorings.Modules"
              xmlns:controls="clr-namespace:Mordorings.Controls"
              mc:Ignorable="d"
              d:DesignWidth="400" d:DesignHeight="270"
-             d:DataContext="{d:DesignInstance local:DungeonStateViewModel}">
+             d:DataContext="{d:DesignInstance modules:DungeonStateViewModel}">
     <UserControl.Resources>
         <Style TargetType="Label" BasedOn="{StaticResource ResourceKey=LabelNoPadding}" />
         <Style TargetType="ComboBox">

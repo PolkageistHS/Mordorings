@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Mordorings.Modules.MonsterHeatMap;
+namespace Mordorings.Modules;
 
 public class MonsterHeatMapPresenter(IMordorIoFactory factory, IMapRendererFactory mapRendererFactory) : IMonsterHeatMapMediator
 {

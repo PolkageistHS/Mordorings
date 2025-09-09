@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Mordorings.Messages;
-using Mordorings.Modules.DungeonState;
-using Mordorings.Modules.EditMap;
-using Mordorings.Modules.MonsterHeatMap;
+using Mordorings.Modules;
 
 namespace Mordorings.ViewModels;
 

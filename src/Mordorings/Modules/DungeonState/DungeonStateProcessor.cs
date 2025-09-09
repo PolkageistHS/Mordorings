@@ -1,4 +1,4 @@
-﻿namespace Mordorings.Modules.DungeonState;
+﻿namespace Mordorings.Modules;
 
 public class DungeonStateProcessor(short monsterId, DungeonStateModel model, DATA10DungeonState data)
 {

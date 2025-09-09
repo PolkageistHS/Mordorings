@@ -1,4 +1,4 @@
-﻿namespace Mordorings.Modules.GuildSpells;
+﻿namespace Mordorings.Modules;
 
 public partial class GuildSpellsViewModel : ViewModelBase
 {

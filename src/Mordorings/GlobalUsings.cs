@@ -1,5 +1,5 @@
 ﻿global using System.Collections.ObjectModel;
-global using System.Text;
+global using System.ComponentModel.DataAnnotations;
 global using Calculations;
 global using CommunityToolkit.Mvvm.ComponentModel;
 global using CommunityToolkit.Mvvm.Input;

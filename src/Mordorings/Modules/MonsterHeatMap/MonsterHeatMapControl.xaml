@@ -1,14 +1,14 @@
-﻿<UserControl x:Class="Mordorings.Modules.MonsterHeatMap.MonsterHeatMapControl"
+﻿<UserControl x:Class="Mordorings.Modules.MonsterHeatMapControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Mordorings.Modules.MonsterHeatMap"
-             xmlns:controls="clr-namespace:Mordorings.Controls"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:controls="clr-namespace:Mordorings.Controls"
+             xmlns:modules="clr-namespace:Mordorings.Modules"
              mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance local:MonsterHeatMapViewModel}">
+             d:DataContext="{d:DesignInstance modules:MonsterHeatMapViewModel}">
     <UserControl.Resources>
         <Style TargetType="Label" BasedOn="{StaticResource ResourceKey=LabelNoPadding}" />
     </UserControl.Resources>

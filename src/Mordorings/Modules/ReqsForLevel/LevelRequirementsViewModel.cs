@@ -1,4 +1,4 @@
-﻿namespace Mordorings.Modules.ReqsForLevel;
+﻿namespace Mordorings.Modules;
 
 public partial class LevelRequirementsViewModel : ViewModelBase
 {

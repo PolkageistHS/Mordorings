@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using Mordorings.Modules.EditMap;
+using Mordorings.Modules;
 
 namespace Mordorings.Models;
 

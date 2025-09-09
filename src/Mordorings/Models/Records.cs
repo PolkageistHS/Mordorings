@@ -1,9 +1,6 @@
-﻿using System.Drawing;
-using Mordorings.Modules;
+﻿using Mordorings.Modules;
 
 namespace Mordorings.Models;
-
-public record MonsterHeatMapFloor(int FloorNum, Floor DungeonFloor, Bitmap Map, List<AreaSpawnChance> SpawnRates);
 
 public record Tile(int X, int Y);
 

@@ -3,13 +3,11 @@ using System.Drawing.Drawing2D;
 
 namespace Mordorings.Controls;
 
-public abstract class MapRendererBase : IDisposable, IMapRendererBase
+public abstract class MapRendererBase : IMapRendererBase, IDisposable
 {
-    protected internal const int TileSize = 14;
-    protected const int MapWidthInTiles = 30;
-    protected const int MapHeightInTiles = 30;
     public const int LeftGutterWidth = 14;
     protected const int BottomGutterHeight = 14;
+    protected internal const int TileSize = 14;
 
     private Bitmap MapBuffer { get; set; } = new(ImagePixelSize.Width, ImagePixelSize.Height);
 
@@ -18,7 +16,8 @@ public abstract class MapRendererBase : IDisposable, IMapRendererBase
     protected internal static Size ImagePixelSize =>
         new(MapPixelSize.Width + LeftGutterWidth, MapPixelSize.Height + BottomGutterHeight);
 
-    protected static Size MapPixelSize => new(MapWidthInTiles * TileSize, MapHeightInTiles * TileSize);
+    protected static Size MapPixelSize =>
+        new(Game.FloorWidth * TileSize, Game.FloorHeight * TileSize);
 
     protected MapRendererBase()
     {
@@ -55,7 +54,7 @@ public abstract class MapRendererBase : IDisposable, IMapRendererBase
     }
 
     private static (int x, int y) GetPixels(Tile tile) =>
-        (tile.X * TileSize + LeftGutterWidth, (MapHeightInTiles - 1 - tile.Y) * TileSize);
+        (tile.X * TileSize + LeftGutterWidth, (Game.FloorHeight - 1 - tile.Y) * TileSize);
 
     public void Dispose()
     {

@@ -65,7 +65,8 @@ public static class ServiceCollectionExtensions
                                                                                                .AddTransient<IAutomapRenderer, AutomapRenderer>()
                                                                                                .AddTransient<IHeatMapRenderer, HeatMapRenderer>();
 
-    public static IServiceCollection AddMediators(this IServiceCollection services) => services.AddTransient<IMonsterHeatMapMediator, MonsterHeatMapPresenter>();
+    public static IServiceCollection AddMediators(this IServiceCollection services) => services.AddTransient<IMonsterHeatMapMediator, MonsterHeatMapPresenter>()
+                                                                                               .AddTransient<IEditMapMediator, EditMapPresenter>();
 
     public static IServiceCollection AddOtherServices(this IServiceCollection services)
     {

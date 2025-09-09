@@ -1,16 +1,16 @@
 ﻿namespace Mordorings.Models;
 
-public sealed partial class DungeonFloor(Floor floor) : ObservableObject
+public sealed class DungeonFloor(Floor floor)
 {
     public Floor Floor
     {
         get
         {
-            for (int x = 0; x < 30; x++)
+            for (int x = 0; x < Game.FloorWidth; x++)
             {
-                for (int y = 0; y < 30; y++)
+                for (int y = 0; y < Game.FloorHeight; y++)
                 {
-                    floor.Tiles[x + y * 30].Tile = Tiles[x, y];
+                    floor.Tiles[x + y * Game.FloorHeight].Tile = Tiles[x, y];
                 }
             }
             return floor;
@@ -19,17 +19,14 @@ public sealed partial class DungeonFloor(Floor floor) : ObservableObject
 
     public long[,] Tiles { get; } = GetTiles(floor);
 
-    [ObservableProperty]
-    private object? _image;
-
     private static long[,] GetTiles(Floor floor)
     {
-        long[,] tiles = new long[30, 30];
-        for (int x = 0; x < 30; x++)
+        long[,] tiles = new long[Game.FloorWidth, Game.FloorHeight];
+        for (int x = 0; x < Game.FloorWidth; x++)
         {
-            for (int y = 0; y < 30; y++)
+            for (int y = 0; y < Game.FloorHeight; y++)
             {
-                tiles[x, y] = floor.Tiles[x + y * 30].Tile;
+                tiles[x, y] = floor.Tiles[x + y * Game.FloorHeight].Tile;
             }
         }
         return tiles;

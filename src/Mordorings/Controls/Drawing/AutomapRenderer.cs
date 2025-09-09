@@ -34,9 +34,9 @@ public class AutomapRenderer : MapRendererBase, IAutomapRenderer
         if (_dungeonFloor is null)
             throw new InvalidOperationException($"Map not initialized. Call {nameof(Initialize)} first.");
         MapGraphics.Clear(Color.Black);
-        for (int x = MapWidthInTiles - 1; x >= 0; x--)
+        for (int x = Game.FloorWidth - 1; x >= 0; x--)
         {
-            for (int y = MapHeightInTiles - 1; y >= 0; y--)
+            for (int y = Game.FloorHeight - 1; y >= 0; y--)
             {
                 DrawTileToBuffer(x, y, _dungeonFloor.Tiles[x, y]);
             }
@@ -52,7 +52,7 @@ public class AutomapRenderer : MapRendererBase, IAutomapRenderer
         long tileData = (long)newTileData;
         int x = tile.X;
         int y = tile.Y;
-        if (_dungeonFloor is null || x is < 0 or >= MapWidthInTiles || y is < 0 or >= MapHeightInTiles)
+        if (_dungeonFloor is null || x is < 0 or >= Game.FloorWidth || y is < 0 or >= Game.FloorHeight)
             return false;
         if (_dungeonFloor.Tiles[x, y] == tileData)
             return false;
@@ -77,7 +77,7 @@ public class AutomapRenderer : MapRendererBase, IAutomapRenderer
     {
         if (_spriteSheet is null)
             throw new InvalidOperationException("Sprite sheet has not been loaded.");
-        int imageTileY = MapHeightInTiles - 1 - tileY;
+        int imageTileY = Game.FloorHeight - 1 - tileY;
         int baseX = tileX * TileSize;
         int baseY = imageTileY * TileSize;
         MapGraphics.FillRectangle(Brushes.Black, baseX, baseY, TileSize, TileSize);
@@ -123,11 +123,11 @@ public class AutomapRenderer : MapRendererBase, IAutomapRenderer
     {
         var font = new Font("Consolas", 9.5f, FontStyle.Bold, GraphicsUnit.Pixel);
         Brush brush = Brushes.Black;
-        for (int i = 2; i <= MapWidthInTiles; i += 2)
+        for (int i = 2; i <= Game.FloorWidth; i += 2)
         {
             MapGraphics.DrawString(i.ToString().PadLeft(2, ' '), font, brush, LeftGutterWidth + TileSize * (i - 1), MapPixelSize.Height - 1);
         }
-        for (int i = MapHeightInTiles; i >= 2; i -= 2)
+        for (int i = Game.FloorHeight; i >= 2; i -= 2)
         {
             MapGraphics.DrawString(i.ToString().PadLeft(2, ' '), font, brush, 0, MapPixelSize.Height - TileSize * (i));
         }

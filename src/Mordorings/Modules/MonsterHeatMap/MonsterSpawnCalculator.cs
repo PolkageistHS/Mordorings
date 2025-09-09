@@ -9,11 +9,11 @@ public class MonsterSpawnCalculator(MordorRecordReader reader)
         List<MonsterSpawnRates> monsterRates = [];
         for (int floor = 1; floor <= 15; floor++)
         {
-            for (int y = 0; y < 30; y++)
+            for (int y = 0; y < Game.FloorHeight; y++)
             {
-                for (int x = 0; x < 30; x++)
+                for (int x = 0; x < Game.FloorWidth; x++)
                 {
-                    short area = map.Floors[floor - 1].Tiles[x + y * 30].Area;
+                    short area = map.Floors[floor - 1].Tiles[x + y * Game.FloorHeight].Area;
                     foreach ((Monster monster, double chance) in spawning.GetExpectedMonsterSpawnProbabilities(x + 1, y + 1, floor, false))
                     {
                         double rounded = Math.Round(chance, 3);

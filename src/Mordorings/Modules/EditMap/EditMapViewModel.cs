@@ -3,27 +3,13 @@
 public partial class EditMapViewModel : ViewModelBase
 {
     private readonly IDialogFactory _dialogFactory;
-    private const string SpriteSheetFile = "Assets/DungeonSprites.bmp";
+    private readonly IEditMapMediator _mediator;
 
-    private const int MinFloor = 1;
-    private const int MaxFloor = 15;
-    private const int FloorWidth = 30;
-    private const int FloorHeight = 30;
-    private readonly DungeonFloor[] _cachedDungeonFloors;
-    private readonly DATA11DungeonMap _map;
-    private readonly IMapRendererFactory _mapRendererFactory;
-    private readonly IAutomapRenderer[] _renderers;
-    private readonly MordorRecordWriter _writer;
-
-    public EditMapViewModel(IMordorIoFactory ioFactory, IMapRendererFactory mapRendererFactory, IDialogFactory dialogFactory)
+    public EditMapViewModel(IEditMapMediator mediator, IDialogFactory dialogFactory)
     {
-        _mapRendererFactory = mapRendererFactory;
+        _mediator = mediator;
         _dialogFactory = dialogFactory;
-        _writer = ioFactory.GetWriter();
-        _map = ioFactory.GetReader().GetMordorRecord<DATA11DungeonMap>();
-        int floorCount = _map.Floors.Length;
-        _cachedDungeonFloors = new DungeonFloor[floorCount];
-        _renderers = new IAutomapRenderer[floorCount];
+        _mediator.Initialize();
         InitializeRenderers();
         SelectedFloorNum = 1;
     }
@@ -34,23 +20,15 @@ public partial class EditMapViewModel : ViewModelBase
 
     private void InitializeRenderers()
     {
-        Floor[] floors = _map.Floors;
-        for (int i = 0; i < floors.Length; i++)
+        foreach (IAutomapRenderer renderer in _mediator.Renderers)
         {
-            var dungeonFloor = new DungeonFloor(floors[i]);
-            _cachedDungeonFloors[i] = dungeonFloor;
-            IAutomapRenderer renderer = _mapRendererFactory.CreateAutomapRenderer();
-            renderer.LoadSpriteSheet(SpriteSheetFile);
-            renderer.Initialize(dungeonFloor);
             renderer.MapUpdated += (sender, _) =>
             {
-                if (sender is IAutomapRenderer iRenderer && SelectedFloor != null)
+                if (sender is IAutomapRenderer iRenderer)
                 {
                     Image = iRenderer.GetMapSnapshot()?.ToBitmapSource();
                 }
             };
-            renderer.DrawDungeonFloorMap();
-            _renderers[i] = renderer;
         }
     }
 
@@ -58,17 +36,21 @@ public partial class EditMapViewModel : ViewModelBase
     {
         get
         {
-            if (SelectedFloorNum is >= MinFloor and <= MaxFloor)
-                return _renderers[SelectedFloorNum - 1];
-            return null;
+            if (SelectedFloorNum is < Game.MinFloor or > Game.MaxFloor)
+                return null;
+            return _mediator.Renderers[SelectedFloorNum - 1];
         }
     }
 
-    [ObservableProperty]
-    private DungeonFloor? _selectedFloor;
+    private DungeonFloor SelectedFloor => _mediator.DungeonFloors[SelectedFloorNum - 1];
 
-    [ObservableProperty]
     private object? _image;
+
+    public object? Image
+    {
+        get => _image;
+        private set => SetProperty(ref _image, value);
+    }
 
     private int _selectedFloorNum;
 
@@ -97,20 +79,17 @@ public partial class EditMapViewModel : ViewModelBase
         SelectedFloorNum = NormalizeFloorNum(SelectedFloorNum - 1);
     }
 
-    protected bool CanIncreaseFloor => SelectedFloorNum < MaxFloor;
+    protected bool CanIncreaseFloor => SelectedFloorNum < Game.MaxFloor;
 
-    protected bool CanDecreaseFloor => SelectedFloorNum > MinFloor;
+    protected bool CanDecreaseFloor => SelectedFloorNum > Game.MinFloor;
 
     [RelayCommand]
     private void Save()
     {
-        if (!_dialogFactory.ShowYesNoQuestion("Do you want to write your changes to the dungeon file?", "Save all"))
-            return;
-        for (int i = 0; i < MaxFloor; i++)
+        if (_dialogFactory.ShowYesNoQuestion("Do you want to write your changes to the dungeon file?", "Save all"))
         {
-            _map.Floors[i] = _cachedDungeonFloors[i].Floor;
+            _mediator.SaveAll();
         }
-        _writer.WriteMordorRecord(_map);
     }
 
     [RelayCommand]
@@ -118,7 +97,7 @@ public partial class EditMapViewModel : ViewModelBase
     {
         if (!_dialogFactory.ShowYesNoQuestion("Do you want to reset the floor?", "Reset floor"))
             return;
-        SelectedFloor = ResetFloor(SelectedFloorNum);
+        ResetFloor(SelectedFloorNum);
         TileEditor.Clear();
     }
 
@@ -127,11 +106,10 @@ public partial class EditMapViewModel : ViewModelBase
     {
         if (!_dialogFactory.ShowYesNoQuestion("Do you want to reset all floors?", "Reset all"))
             return;
-        for (int floorNum = MinFloor; floorNum <= MaxFloor; floorNum++)
+        for (int floorNum = Game.MinFloor; floorNum <= Game.MaxFloor; floorNum++)
         {
             ResetFloor(floorNum);
         }
-        SelectedFloor = _cachedDungeonFloors[SelectedFloorNum - 1];
         TileEditor.Clear();
     }
 
@@ -147,41 +125,33 @@ public partial class EditMapViewModel : ViewModelBase
         Tile coords = AutomapEventConversion.GetMapCoordinatesFromEvent(args);
         int x = coords.X;
         int y = coords.Y;
-        if (x is < 0 or >= FloorWidth || y is < 0 or >= FloorHeight)
+        if (x is < 0 or >= Game.FloorWidth || y is < 0 or >= Game.FloorHeight)
             return;
         TileEditor.FlagChanged -= UpdateTile;
-        if (SelectedFloor != null)
-        {
-            CurrentRenderer?.DrawDungeonFloorMap();
-            TileEditor.LoadTile(coords, SelectedFloor.Tiles[x, y], SelectedFloor.GetTeleporter(coords), SelectedFloor.GetChute(coords));
-            CurrentRenderer?.HighlightTile(coords);
-        }
+        CurrentRenderer?.DrawDungeonFloorMap();
+        TileEditor.LoadTile(coords, SelectedFloor.Tiles[x, y], SelectedFloor.GetTeleporter(coords), SelectedFloor.GetChute(coords));
+        CurrentRenderer?.HighlightTile(coords);
         TileEditor.FlagChanged += UpdateTile;
         OnPropertyChanged(nameof(IsTileSelected));
     }
 
-    private DungeonFloor ResetFloor(int floorNum)
+    private void ResetFloor(int floorNum)
     {
-        var dungeonFloor = new DungeonFloor(_map.Floors[floorNum - 1]);
-        _cachedDungeonFloors[floorNum - 1] = dungeonFloor;
-        return dungeonFloor;
+        _mediator.ResetFloor(floorNum);
     }
 
     private void UpdateTile(object? sender, TileFlagChangedEventArgs e)
     {
-        if (SelectedFloor is null)
-            return;
         DungeonTileFlag flags = e.AllFlags;
         MapObjects mapObjs = e.MapObjects;
-        ProcessTeleporterChange(flags.HasFlag(DungeonTileFlag.Teleporter), e.Tile, mapObjs);
-        ProcessChuteChange(flags.HasFlag(DungeonTileFlag.Chute), e.Tile, mapObjs.ChuteDepth);
-        CurrentRenderer?.UpdateTile(e.Tile, flags);
+        Tile tile = e.Tile;
+        ProcessTeleporterChange(flags.HasFlag(DungeonTileFlag.Teleporter), tile, mapObjs);
+        ProcessChuteChange(flags.HasFlag(DungeonTileFlag.Chute), tile, mapObjs.ChuteDepth);
+        CurrentRenderer?.UpdateTile(tile, flags);
     }
 
     private void ProcessTeleporterChange(bool hasTeleporter, Tile tile, MapObjects mapObjects)
     {
-        if (SelectedFloor is null)
-            return;
         if (hasTeleporter)
         {
             int x2;
@@ -214,8 +184,6 @@ public partial class EditMapViewModel : ViewModelBase
 
     private void ProcessChuteChange(bool hasChute, Tile tile, int chuteDepth)
     {
-        if (SelectedFloor is null)
-            return;
         if (hasChute)
         {
             if (SelectedFloor.SaveChute(tile, chuteDepth))
@@ -231,10 +199,10 @@ public partial class EditMapViewModel : ViewModelBase
 
     private void HandleOnSelectedFloorNumChanged(int oldValue, int newValue)
     {
-        if (newValue is < MinFloor or > MaxFloor)
+        if (newValue is < Game.MinFloor or > Game.MaxFloor)
         {
             int actualValue;
-            if (oldValue is >= MinFloor and <= MaxFloor)
+            if (oldValue is >= Game.MinFloor and <= Game.MaxFloor)
             {
                 actualValue = oldValue;
             }
@@ -244,13 +212,12 @@ public partial class EditMapViewModel : ViewModelBase
             }
             _selectedFloorNum = actualValue;
         }
-        SelectedFloor = _cachedDungeonFloors[SelectedFloorNum - 1];
         CurrentRenderer?.RemoveHighlight();
         TileEditor.Clear();
         OnPropertyChanged(nameof(IsTileSelected));
     }
 
-    private static int NormalizeFloorNum(int newValue) => Math.Clamp(newValue, MinFloor, MaxFloor);
+    private static int NormalizeFloorNum(int newValue) => Math.Clamp(newValue, Game.MinFloor, Game.MaxFloor);
 
     public override string Instructions => "Edit the dungeon map. Click on a tile to edit its properties.";
 }

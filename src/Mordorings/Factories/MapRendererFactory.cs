@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace Mordorings.Factories;
+﻿namespace Mordorings.Factories;
 
 public class MapRendererFactory(IServiceProvider services) : IMapRendererFactory
 {

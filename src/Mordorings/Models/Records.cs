@@ -1,6 +1,4 @@
-﻿using Mordorings.Modules;
-
-namespace Mordorings.Models;
+﻿namespace Mordorings.Models;
 
 public record Tile(int X, int Y);
 

@@ -1,12 +1,15 @@
 ﻿global using System.Collections.ObjectModel;
 global using System.ComponentModel.DataAnnotations;
+global using System.Drawing;
 global using Calculations;
 global using CommunityToolkit.Mvvm.ComponentModel;
 global using CommunityToolkit.Mvvm.Input;
+global using Microsoft.Extensions.DependencyInjection;
 global using MordorDataLibrary.Data;
 global using MordorDataLibrary.Models;
 global using Mordorings.Configs;
 global using Mordorings.Controls;
 global using Mordorings.Factories;
 global using Mordorings.Models;
+global using Mordorings.Modules;
 global using Mordorings.ViewModels.Abstractions;

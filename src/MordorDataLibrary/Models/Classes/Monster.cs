@@ -1,6 +1,6 @@
 ﻿namespace MordorDataLibrary.Models;
 
-[DebuggerDisplay( "{Name} ({Id})" )]
+[DebuggerDisplay("{Name} ({Id})")]
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class Monster
 {

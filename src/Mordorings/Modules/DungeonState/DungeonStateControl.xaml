@@ -25,7 +25,8 @@
         <ComboBox Canvas.Left="63" Canvas.Top="10"
                   Width="200"
                   ItemsSource="{Binding Path=Monsters}"
-                  SelectedItem="{Binding Path=Model.SelectedMonster}" />
+                  SelectedItem="{Binding Path=Model.SelectedMonster}"
+                  DisplayMemberPath="Name" />
         <CheckBox Content="Spawn Monster"
                   Canvas.Left="36" Canvas.Top="50"
                   IsChecked="{Binding Path=SpawnMonster}"

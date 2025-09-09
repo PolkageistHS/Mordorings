@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace Mordorings.Controls;
+﻿namespace Mordorings.Controls;
 
 public interface IMapRendererBase
 {

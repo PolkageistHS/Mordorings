@@ -1,6 +1,6 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+﻿using System.Windows.Input;
+using Image = System.Windows.Controls.Image;
+using Point = System.Windows.Point;
 
 namespace Mordorings.Controls;
 

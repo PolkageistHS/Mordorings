@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Mordorings.Messages;
-using Mordorings.Modules;
 
 namespace Mordorings.ViewModels;
 

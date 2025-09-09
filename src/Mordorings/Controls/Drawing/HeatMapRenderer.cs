@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace Mordorings.Controls;
+﻿namespace Mordorings.Controls;
 
 public class HeatMapRenderer : MapRendererBase, IHeatMapRenderer
 {
@@ -11,9 +9,9 @@ public class HeatMapRenderer : MapRendererBase, IHeatMapRenderer
         ReplaceBitmap(floor.Map);
         foreach (AreaSpawnChance spawnRate in floor.SpawnRates)
         {
-            for (int x = 0; x < MapWidthInTiles; x++)
+            for (int x = 0; x < Game.FloorWidth; x++)
             {
-                for (int y = 0; y < MapHeightInTiles; y++)
+                for (int y = 0; y < Game.FloorHeight; y++)
                 {
                     var tile = new Tile(x, y);
                     if (floor.DungeonFloor.GetAreaFromTile(tile) != spawnRate.AreaNum)

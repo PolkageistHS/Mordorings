@@ -1,8 +1,6 @@
 ﻿using System.Windows;
 using Config.Net;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Mordorings.Modules;
 using Mordorings.ViewModels;
 using Mordorings.Windows;
 
@@ -66,7 +64,8 @@ public static class ServiceCollectionExtensions
                                                                                                .AddTransient<IHeatMapRenderer, HeatMapRenderer>();
 
     public static IServiceCollection AddMediators(this IServiceCollection services) => services.AddTransient<IMonsterHeatMapMediator, MonsterHeatMapPresenter>()
-                                                                                               .AddTransient<IEditMapMediator, EditMapPresenter>();
+                                                                                               .AddTransient<IEditMapMediator, EditMapPresenter>()
+                                                                                               .AddTransient<IDungeonStateMediator, DungeonStatePresenter>();
 
     public static IServiceCollection AddOtherServices(this IServiceCollection services)
     {

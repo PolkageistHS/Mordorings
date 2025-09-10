@@ -20,246 +20,108 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Page Update="Windows\MainWindow.xaml">
-            <Generator>MSBuild:Compile</Generator>
-            <XamlRuntime>Wpf</XamlRuntime>
-            <SubType>Designer</SubType>
-        </Page>
-        <Page Update="Modules\DungeonState\DungeonStateControl.xaml">
-            <Generator>MSBuild:Compile</Generator>
-            <XamlRuntime>Wpf</XamlRuntime>
-            <SubType>Designer</SubType>
-        </Page>
-        <Page Update="UserControls\Menus\CalculationsMenu.xaml">
-            <Generator>MSBuild:Compile</Generator>
-        </Page>
-        <Page Update="UserControls\Menus\EditMenu.xaml">
-            <Generator>MSBuild:Compile</Generator>
-        </Page>
-        <Page Update="UserControls\Menus\MapMenu.xaml">
-            <Generator>MSBuild:Compile</Generator>
-        </Page>
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\Calculations\Calculations.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Resource Include="Assets\Antimagic.bmp">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Resource>
-        <Resource Include="Assets\Chute.bmp">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Resource>
-        <Resource Include="Assets\Extinguisher.bmp">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Resource>
-        <Resource Include="Assets\FaceEast.bmp">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Resource>
-        <Resource Include="Assets\FaceNorth.bmp">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Resource>
-        <Resource Include="Assets\FaceSouth.bmp">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Resource>
-        <Resource Include="Assets\FaceWest.bmp">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Resource>
-        <Resource Include="Assets\Fog.bmp">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Resource>
-        <Resource Include="Assets\Pit.bmp">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Resource>
-        <Resource Include="Assets\Quicksand.bmp">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Resource>
-        <Resource Include="Assets\Rock.bmp">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Resource>
-        <Resource Include="Assets\Rotator.bmp">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Resource>
-        <Resource Include="Assets\StairsDown.bmp">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Resource>
-        <Resource Include="Assets\StairsUp.bmp">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Resource>
-        <Resource Include="Assets\Stud.bmp">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Resource>
-        <Resource Include="Assets\Teleporter.bmp">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Resource>
-        <Resource Include="Assets\Water.bmp">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Resource>
-        <None Remove="Assets\Monsters\MON1.jpg" />
+        <Resource Include="Assets\Antimagic.bmp" />
+        <Resource Include="Assets\Chute.bmp" />
+        <Resource Include="Assets\Extinguisher.bmp" />
+        <Resource Include="Assets\FaceEast.bmp" />
+        <Resource Include="Assets\FaceNorth.bmp" />
+        <Resource Include="Assets\FaceSouth.bmp" />
+        <Resource Include="Assets\FaceWest.bmp" />
+        <Resource Include="Assets\Fog.bmp" />
+        <Resource Include="Assets\Pit.bmp" />
+        <Resource Include="Assets\Quicksand.bmp" />
+        <Resource Include="Assets\Rock.bmp" />
+        <Resource Include="Assets\Rotator.bmp" />
+        <Resource Include="Assets\StairsDown.bmp" />
+        <Resource Include="Assets\StairsUp.bmp" />
+        <Resource Include="Assets\Stud.bmp" />
+        <Resource Include="Assets\Teleporter.bmp" />
+        <Resource Include="Assets\Water.bmp" />
         <Resource Include="Assets\Monsters\MON1.jpg" />
-        <None Remove="Assets\Monsters\MON2.jpg" />
         <Resource Include="Assets\Monsters\MON2.jpg" />
-        <None Remove="Assets\Monsters\MON3.jpg" />
         <Resource Include="Assets\Monsters\MON3.jpg" />
-        <None Remove="Assets\Monsters\MON4.jpg" />
         <Resource Include="Assets\Monsters\MON4.jpg" />
-        <None Remove="Assets\Monsters\MON5.jpg" />
         <Resource Include="Assets\Monsters\MON5.jpg" />
-        <None Remove="Assets\Monsters\MON6.jpg" />
         <Resource Include="Assets\Monsters\MON6.jpg" />
-        <None Remove="Assets\Monsters\MON7.jpg" />
         <Resource Include="Assets\Monsters\MON7.jpg" />
-        <None Remove="Assets\Monsters\MON8.jpg" />
         <Resource Include="Assets\Monsters\MON8.jpg" />
-        <None Remove="Assets\Monsters\MON9.jpg" />
         <Resource Include="Assets\Monsters\MON9.jpg" />
-        <None Remove="Assets\Monsters\MON10.jpg" />
         <Resource Include="Assets\Monsters\MON10.jpg" />
-        <None Remove="Assets\Monsters\MON11.jpg" />
         <Resource Include="Assets\Monsters\MON11.jpg" />
-        <None Remove="Assets\Monsters\MON12.jpg" />
         <Resource Include="Assets\Monsters\MON12.jpg" />
-        <None Remove="Assets\Monsters\MON13.jpg" />
         <Resource Include="Assets\Monsters\MON13.jpg" />
-        <None Remove="Assets\Monsters\MON14.jpg" />
         <Resource Include="Assets\Monsters\MON14.jpg" />
-        <None Remove="Assets\Monsters\MON15.jpg" />
         <Resource Include="Assets\Monsters\MON15.jpg" />
-        <None Remove="Assets\Monsters\MON16.jpg" />
         <Resource Include="Assets\Monsters\MON16.jpg" />
-        <None Remove="Assets\Monsters\MON17.jpg" />
         <Resource Include="Assets\Monsters\MON17.jpg" />
-        <None Remove="Assets\Monsters\MON18.jpg" />
         <Resource Include="Assets\Monsters\MON18.jpg" />
-        <None Remove="Assets\Monsters\MON20.jpg" />
         <Resource Include="Assets\Monsters\MON20.jpg" />
-        <None Remove="Assets\Monsters\MON21.jpg" />
         <Resource Include="Assets\Monsters\MON21.jpg" />
-        <None Remove="Assets\Monsters\MON22.jpg" />
         <Resource Include="Assets\Monsters\MON22.jpg" />
-        <None Remove="Assets\Monsters\MON23.jpg" />
         <Resource Include="Assets\Monsters\MON23.jpg" />
-        <None Remove="Assets\Monsters\MON24.jpg" />
         <Resource Include="Assets\Monsters\MON24.jpg" />
-        <None Remove="Assets\Monsters\MON25.jpg" />
         <Resource Include="Assets\Monsters\MON25.jpg" />
-        <None Remove="Assets\Monsters\MON26.jpg" />
         <Resource Include="Assets\Monsters\MON26.jpg" />
-        <None Remove="Assets\Monsters\MON27.jpg" />
         <Resource Include="Assets\Monsters\MON27.jpg" />
-        <None Remove="Assets\Monsters\MON28.jpg" />
         <Resource Include="Assets\Monsters\MON28.jpg" />
-        <None Remove="Assets\Monsters\MON29.jpg" />
         <Resource Include="Assets\Monsters\MON29.jpg" />
-        <None Remove="Assets\Monsters\MON30.jpg" />
         <Resource Include="Assets\Monsters\MON30.jpg" />
-        <None Remove="Assets\Monsters\MON31.jpg" />
         <Resource Include="Assets\Monsters\MON31.jpg" />
-        <None Remove="Assets\Monsters\MON32.jpg" />
         <Resource Include="Assets\Monsters\MON32.jpg" />
-        <None Remove="Assets\Monsters\MON33.jpg" />
         <Resource Include="Assets\Monsters\MON33.jpg" />
-        <None Remove="Assets\Monsters\MON34.jpg" />
         <Resource Include="Assets\Monsters\MON34.jpg" />
-        <None Remove="Assets\Monsters\MON35.jpg" />
         <Resource Include="Assets\Monsters\MON35.jpg" />
-        <None Remove="Assets\Monsters\MON36.jpg" />
         <Resource Include="Assets\Monsters\MON36.jpg" />
-        <None Remove="Assets\Monsters\MON37.jpg" />
         <Resource Include="Assets\Monsters\MON37.jpg" />
-        <None Remove="Assets\Monsters\MON38.jpg" />
         <Resource Include="Assets\Monsters\MON38.jpg" />
-        <None Remove="Assets\Monsters\MON39.jpg" />
         <Resource Include="Assets\Monsters\MON39.jpg" />
-        <None Remove="Assets\Monsters\MON40.jpg" />
         <Resource Include="Assets\Monsters\MON40.jpg" />
-        <None Remove="Assets\Monsters\MON41.jpg" />
         <Resource Include="Assets\Monsters\MON41.jpg" />
-        <None Remove="Assets\Monsters\MON42.jpg" />
         <Resource Include="Assets\Monsters\MON42.jpg" />
-        <None Remove="Assets\Monsters\MON43.jpg" />
         <Resource Include="Assets\Monsters\MON43.jpg" />
-        <None Remove="Assets\Monsters\MON44.jpg" />
         <Resource Include="Assets\Monsters\MON44.jpg" />
-        <None Remove="Assets\Monsters\MON45.jpg" />
         <Resource Include="Assets\Monsters\MON45.jpg" />
-        <None Remove="Assets\Monsters\MON46.jpg" />
         <Resource Include="Assets\Monsters\MON46.jpg" />
-        <None Remove="Assets\Monsters\MON47.jpg" />
         <Resource Include="Assets\Monsters\MON47.jpg" />
-        <None Remove="Assets\Monsters\MON48.jpg" />
         <Resource Include="Assets\Monsters\MON48.jpg" />
-        <None Remove="Assets\Monsters\MON49.jpg" />
         <Resource Include="Assets\Monsters\MON49.jpg" />
-        <None Remove="Assets\Monsters\MON50.jpg" />
         <Resource Include="Assets\Monsters\MON50.jpg" />
-        <None Remove="Assets\Monsters\MON51.jpg" />
         <Resource Include="Assets\Monsters\MON51.jpg" />
-        <None Remove="Assets\Monsters\MON52.jpg" />
         <Resource Include="Assets\Monsters\MON52.jpg" />
-        <None Remove="Assets\Monsters\MON53.jpg" />
         <Resource Include="Assets\Monsters\MON53.jpg" />
-        <None Remove="Assets\Monsters\MON54.jpg" />
         <Resource Include="Assets\Monsters\MON54.jpg" />
-        <None Remove="Assets\Monsters\MON55.jpg" />
         <Resource Include="Assets\Monsters\MON55.jpg" />
-        <None Remove="Assets\Monsters\MON56.jpg" />
         <Resource Include="Assets\Monsters\MON56.jpg" />
-        <None Remove="Assets\Monsters\MON57.jpg" />
         <Resource Include="Assets\Monsters\MON57.jpg" />
-        <None Remove="Assets\Monsters\MON58.jpg" />
         <Resource Include="Assets\Monsters\MON58.jpg" />
-        <None Remove="Assets\Monsters\MON59.jpg" />
         <Resource Include="Assets\Monsters\MON59.jpg" />
-        <None Remove="Assets\Monsters\MON60.jpg" />
         <Resource Include="Assets\Monsters\MON60.jpg" />
-        <None Remove="Assets\Monsters\MON61.jpg" />
         <Resource Include="Assets\Monsters\MON61.jpg" />
-        <None Remove="Assets\Monsters\MON62.jpg" />
         <Resource Include="Assets\Monsters\MON62.jpg" />
-        <None Remove="Assets\Monsters\MON63.jpg" />
         <Resource Include="Assets\Monsters\MON63.jpg" />
-        <None Remove="Assets\Monsters\MON64.jpg" />
         <Resource Include="Assets\Monsters\MON64.jpg" />
-        <None Remove="Assets\Monsters\MON65.jpg" />
         <Resource Include="Assets\Monsters\MON65.jpg" />
-        <None Remove="Assets\Monsters\MON66.jpg" />
         <Resource Include="Assets\Monsters\MON66.jpg" />
-        <None Remove="Assets\Monsters\MON67.jpg" />
         <Resource Include="Assets\Monsters\MON67.jpg" />
-        <None Remove="Assets\Monsters\MON68.jpg" />
         <Resource Include="Assets\Monsters\MON68.jpg" />
-        <None Remove="Assets\Monsters\MON69.jpg" />
         <Resource Include="Assets\Monsters\MON69.jpg" />
-        <None Remove="Assets\Monsters\MON70.jpg" />
         <Resource Include="Assets\Monsters\MON70.jpg" />
-        <None Remove="Assets\Monsters\MON71.jpg" />
         <Resource Include="Assets\Monsters\MON71.jpg" />
-        <None Remove="Assets\Monsters\MON72.jpg" />
         <Resource Include="Assets\Monsters\MON72.jpg" />
-        <None Remove="Assets\Monsters\MON73.jpg" />
         <Resource Include="Assets\Monsters\MON73.jpg" />
-        <None Remove="Assets\Monsters\MON74.jpg" />
         <Resource Include="Assets\Monsters\MON74.jpg" />
-        <None Remove="Assets\Monsters\MON76.jpg" />
         <Resource Include="Assets\Monsters\MON76.jpg" />
-        <None Remove="Assets\Monsters\MON77.jpg" />
         <Resource Include="Assets\Monsters\MON77.jpg" />
-        <None Remove="Assets\Monsters\MON78.jpg" />
         <Resource Include="Assets\Monsters\MON78.jpg" />
-        <None Remove="Assets\Monsters\MON79.jpg" />
         <Resource Include="Assets\Monsters\MON79.jpg" />
-        <None Remove="Assets\Monsters\MON80.jpg" />
         <Resource Include="Assets\Monsters\MON80.jpg" />
-        <None Remove="Assets\Monsters\MON81.jpg" />
         <Resource Include="Assets\Monsters\MON81.jpg" />
-        <None Remove="Assets\Monsters\MON82.jpg" />
         <Resource Include="Assets\Monsters\MON82.jpg" />
-        <None Remove="Assets\Monsters\MON83.jpg" />
         <Resource Include="Assets\Monsters\MON83.jpg" />
-        <None Remove="Assets\Monsters\MON100.jpg" />
         <Resource Include="Assets\Monsters\MON100.jpg" />
     </ItemGroup>
 

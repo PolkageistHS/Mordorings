@@ -8,11 +8,6 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance modules:GuildSpellsViewModel}">
-    <UserControl.Resources>
-        <Style TargetType="Label">
-            <Setter Property="Padding" Value="0" />
-        </Style>
-    </UserControl.Resources>
     <Canvas>
         <Label Content="Guild" Canvas.Left="10" Canvas.Top="13" />
         <ComboBox Canvas.Left="43" Canvas.Top="10" Width="120"

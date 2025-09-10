@@ -1,8 +1,56 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Style x:Key="LabelNoPadding" TargetType="Label">
+    <SolidColorBrush x:Key="BackgroundBrush" Color="#202020" />
+    <SolidColorBrush x:Key="TextBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="SecondaryTextBrush" Color="#B4B4B4" />
+
+    <Style TargetType="Label">
+        <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
         <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <Style TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
+    </Style>
+
+    <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="#3C3C3C" />
+    <SolidColorBrush x:Key="ButtonHoverBrush" Color="#484848" />
+    <SolidColorBrush x:Key="ButtonDisabledBrush" Color="#FF0E0B0B" />
+    <SolidColorBrush x:Key="ButtonDisabledTextBrush" Color="#FF424242" />
+
+    <Style TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource ResourceKey=ButtonBackgroundBrush}" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Margin" Value="2,2,2,2" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Property=Background}"
+                            Padding="{TemplateBinding Property=Padding}">
+                        <ContentPresenter x:Name="contentPresenter"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          TextElement.Foreground="{TemplateBinding Property=Foreground}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="contentPresenter"
+                                    Property="TextElement.Foreground"
+                                    Value="{StaticResource ResourceKey=ButtonDisabledTextBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource ResourceKey=ButtonHoverBrush}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource ResourceKey=ButtonDisabledBrush}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>

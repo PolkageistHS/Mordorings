@@ -10,9 +10,6 @@
 			 d:DataContext="{d:DesignInstance modules:RaceGuildGraphViewModel}">
 	<UserControl.Resources>
 		<BooleanToVisibilityConverter x:Key="VisibilityConverter" />
-		<Style TargetType="Label">
-			<Setter Property="Padding" Value="0" />
-		</Style>
 	</UserControl.Resources>
 	<DockPanel>
 		<Canvas DockPanel.Dock="Left" Width="100">

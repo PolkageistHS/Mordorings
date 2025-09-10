@@ -8,9 +8,6 @@
              xmlns:modules="clr-namespace:Mordorings.Modules"
              mc:Ignorable="d" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance modules:EditMapViewModel}">
-    <UserControl.Resources>
-        <Style TargetType="Label" BasedOn="{StaticResource ResourceKey=LabelNoPadding}" />
-    </UserControl.Resources>
     <DockPanel>
         <StackPanel DockPanel.Dock="Right">
             <Canvas Height="50" Width="300">

@@ -8,7 +8,7 @@
         Height="900" Width="1100"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
-    <Grid>
+    <Grid Background="#FF202020">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
@@ -23,7 +23,7 @@
 				</Grid.RowDefinitions>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition />
-					<ColumnDefinition />
+					<ColumnDefinition Width="110" />
 				</Grid.ColumnDefinitions>
 				<Button Content="Edit"
                         Grid.Row="1" Grid.Column="0"

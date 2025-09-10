@@ -6,7 +6,7 @@
              xmlns:viewModels="clr-namespace:Mordorings.ViewModels"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:MapMenuViewModel}">
-    <DockPanel LastChildFill="False" Width="110">
+    <DockPanel LastChildFill="False">
         <Button Content="Edit Map" DockPanel.Dock="Top"
                 Command="{Binding Path=OpenMapEditorCommand}" />
         <Button Content="Edit Dungeon State" DockPanel.Dock="Top"
@@ -14,6 +14,5 @@
         <Button Content="Reveal AutoMap" DockPanel.Dock="Top" IsEnabled="False" />
         <Button Content="Monster Heatmap" DockPanel.Dock="Top"
                 Command="{Binding Path=OpenMonsterHeatMapCommand}" />
-        <Button Content="Monster Type Heatmap" DockPanel.Dock="Top" IsEnabled="False" />
     </DockPanel>
 </UserControl>

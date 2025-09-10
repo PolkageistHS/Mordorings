@@ -75,7 +75,6 @@ public static class ServiceCollectionExtensions
             settings.DataFileFolder = @"C:\Mordor\Data";
         }
         return services.AddSingleton<IViewModelFactory, ViewModelFactory>()
-                       .AddSingleton(settings)
-            ;
+                       .AddSingleton(settings);
     }
 }

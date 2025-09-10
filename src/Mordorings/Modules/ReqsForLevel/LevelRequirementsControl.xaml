@@ -7,11 +7,6 @@
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="500"
              d:DataContext="{d:DesignInstance modules:LevelRequirementsViewModel}">
-	<UserControl.Resources>
-		<Style TargetType="Label">
-			<Setter Property="Padding" Value="0" />
-		</Style>
-	</UserControl.Resources>
 	<DockPanel LastChildFill="True">
 		<Canvas DockPanel.Dock="Top"
                 Height="130">

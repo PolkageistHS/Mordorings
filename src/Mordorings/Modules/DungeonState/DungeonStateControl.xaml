@@ -10,7 +10,6 @@
              d:DesignWidth="400" d:DesignHeight="270"
              d:DataContext="{d:DesignInstance modules:DungeonStateViewModel}">
     <UserControl.Resources>
-        <Style TargetType="Label" BasedOn="{StaticResource ResourceKey=LabelNoPadding}" />
         <Style TargetType="ComboBox">
             <Setter Property="Width" Value="84" />
         </Style>

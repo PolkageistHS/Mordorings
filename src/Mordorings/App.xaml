@@ -2,12 +2,14 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
-         <ResourceDictionary>
-             <ResourceDictionary.MergedDictionaries>
-                 <ResourceDictionary Source="ResourceDictionaries/ViewModels.xaml" />
-                 <ResourceDictionary Source="ResourceDictionaries/Styles.xaml" />
-                 <ResourceDictionary Source="ResourceDictionaries/Images.xaml" />
-             </ResourceDictionary.MergedDictionaries>
-         </ResourceDictionary>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ResourceDictionaries/ViewModels.xaml" />
+                <ResourceDictionary Source="ResourceDictionaries/Images.xaml" />
+                <ResourceDictionary Source="/WpfDarkMode;component/Themes/Controls.xaml" />
+                <ResourceDictionary Source="/WpfDarkMode;component/Themes/ControlColours.xaml" />
+                <ResourceDictionary Source="/WpfDarkMode;component/Themes/ColourDictionaries/DarkGreyTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

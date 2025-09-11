@@ -21,7 +21,7 @@
                         Canvas.Left="113" Canvas.Top="20"
                         Command="{Binding Path=ResetAllFloorsCommand}" />
             </Canvas>
-            <modules:EditTileControl Width="300" Height="402" />
+            <modules:EditTileControl Width="300" />
         </StackPanel>
         <DockPanel>
         <Grid DockPanel.Dock="Top" Width="{Binding ElementName=ImageMap, Path=ActualWidth}" HorizontalAlignment="Left">

@@ -19,6 +19,8 @@ public interface IMonsterHeatMapMediator
     int GetNextValidFloorNumber(int oldValue, int newValue);
 
     HeatMapTileDetails GetTileDetails(Tile tile);
+
+    List<MonsterSpawnRate> GetSpawnsForTile(Tile tile, int floorNum);
 }
 
-public record HeatMapTileDetails(AreaSpawnChance? SpawnChance, int AreaNumber);
+public record HeatMapTileDetails(AreaSpawnChance? AreaSpawnChance, int AreaNumber);

@@ -11,9 +11,11 @@ public class MonsterHeatMapPresenter(IMordorIoFactory factory, IMapRendererFacto
     private readonly Dictionary<int, Bitmap?> _cachedMaps = [];
     private readonly List<MonsterHeatMapFloor> _cachedFloors = [];
     private MonsterHeatMapFloor? _currentFloor;
+    private MonsterSpawnCalculator? _monsterSpawnCalculator;
 
     public async Task Initialize()
     {
+        _monsterSpawnCalculator = new MonsterSpawnCalculator(_reader);
         await InitializeRenderers();
     }
 
@@ -68,19 +70,19 @@ public class MonsterHeatMapPresenter(IMordorIoFactory factory, IMapRendererFacto
         foreach (IGrouping<int, AreaSpawnChance> grouping in spawnChances)
         {
             Bitmap? bitmap = _cachedMaps[grouping.Key - 1];
-            if (bitmap == null)
-                continue;
-            _cachedFloors.Add(new MonsterHeatMapFloor(grouping.Key, _floors[grouping.Key - 1], bitmap, grouping.ToList()));
+            if (bitmap != null)
+            {
+                _cachedFloors.Add(new MonsterHeatMapFloor(grouping.Key, _floors[grouping.Key - 1], bitmap, grouping.ToList()));
+            }
         }
         return _cachedFloors.OrderBy(floor => floor.FloorNum).First().FloorNum;
-
     }
 
     public int GetNextValidFloorNumber(int oldValue, int newValue)
     {
         if (oldValue == newValue)
             return newValue;
-        int[] floors = _cachedFloors.Select(floor => floor.FloorNum).OrderBy(i => i).ToArray();
+        int[] floors = _cachedFloors.Select(floor => floor.FloorNum).OrderBy(floor => floor).ToArray();
         if (floors.Contains(newValue))
             return newValue;
         int maxFloor = floors.Last();
@@ -92,6 +94,12 @@ public class MonsterHeatMapPresenter(IMordorIoFactory factory, IMapRendererFacto
         if (oldValue > newValue)
             return floors.Last(floor => floor < newValue);
         return floors.First(floor => floor > newValue);
+    }
+
+    public List<MonsterSpawnRate> GetSpawnsForTile(Tile tile, int floorNum)
+    {
+        var spawning = new MonsterSpawning(_reader);
+        return spawning.GetExpectedMonsterSpawnProbabilities(tile.X + 1, tile.Y + 1, floorNum, false);
     }
 
     private async Task InitializeRenderers()
@@ -106,6 +114,12 @@ public class MonsterHeatMapPresenter(IMordorIoFactory factory, IMapRendererFacto
             renderer.DrawDungeonFloorMap();
             _cachedMaps[i] = renderer.GetMapSnapshot();
         }
-        await Task.Run(() => { _cachedMonsterSpawnRates = new MonsterSpawnCalculator(_reader).GetAllMonsterSpawns(); });
+        await Task.Run(() =>
+        {
+            if (_monsterSpawnCalculator != null)
+            {
+                _cachedMonsterSpawnRates = _monsterSpawnCalculator.GetAllMonsterSpawns();
+            }
+        });
     }
 }

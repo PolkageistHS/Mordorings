@@ -107,7 +107,7 @@ public class AutomapRenderer : MapRendererBase, IAutomapRenderer
     private void DrawMapBorders()
     {
         var pen = new Pen(Color.White, 1);
-        MapGraphics.DrawRectangle(pen, LeftGutterWidth, 0, ImagePixelSize.Width, ImagePixelSize.Height - BottomGutterHeight);
+        MapGraphics.DrawRectangle(pen, LeftGutterWidth, 0, MapPixelSize.Width - 1, MapPixelSize.Height);
     }
 
     private void FillGutters()

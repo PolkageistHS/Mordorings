@@ -1,4 +1,6 @@
-﻿namespace Mordorings.Modules;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Mordorings.Modules;
 
 public partial class MonsterHeatMapViewModel : ViewModelBase
 {
@@ -43,14 +45,43 @@ public partial class MonsterHeatMapViewModel : ViewModelBase
     [RelayCommand]
     private void ShowTileDetails(object? args)
     {
-        Tile tile = AutomapEventConversion.GetMapCoordinatesFromEvent(args);
-        if (tile.X < 0 || tile.Y < 0)
+        if (!TryGetDetailsForTile(args, out Tile tile, out HeatMapTileDetails? details))
             return;
-        (AreaSpawnChance? spawnChance, int areaNumber) = _mediator.GetTileDetails(tile);
-        SelectedTileDetails = spawnChance != null ? $"{tile.X + 1},{tile.Y + 1} - Area {areaNumber}\nChance: {spawnChance.SpawnChance:P2}" : null;
+        SelectedTileDetails = details.AreaSpawnChance != null
+            ? $"{tile.X + 1},{tile.Y + 1} - Area {details.AreaNumber}\nChance: {details.AreaSpawnChance.SpawnChance:P2}"
+            : null;
+    }
+
+    [RelayCommand]
+    private void GetImageMouseClick(object? args)
+    {
+        if (TryGetDetailsForTile(args, out Tile tile, out HeatMapTileDetails? details))
+        {
+            SpawnRates = details.AreaSpawnChance != null
+                ? _mediator.GetSpawnsForTile(tile, CurrentFloorNumber)
+                : null;
+        }
+    }
+
+    private bool TryGetDetailsForTile(object? args, out Tile tile, [NotNullWhen(true)] out HeatMapTileDetails? details)
+    {
+        details = null;
+        tile = AutomapEventConversion.GetMapCoordinatesFromEvent(args);
+        if (tile.X is < 0 or >= Game.FloorWidth || tile.Y is < 0 or >= Game.FloorHeight)
+            return false;
+        details = _mediator.GetTileDetails(tile);
+        return true;
     }
 
     public List<MonsterSubtypeIndexed> MonsterTypes { get; private set; }
+
+    private List<MonsterSpawnRate>? _spawnRates;
+
+    public List<MonsterSpawnRate>? SpawnRates
+    {
+        get => _spawnRates;
+        private set => SetProperty(ref _spawnRates, value);
+    }
 
     public ObservableCollection<Monster> Monsters { get; } = [];
 
@@ -72,6 +103,7 @@ public partial class MonsterHeatMapViewModel : ViewModelBase
         SelectedTileDetails = null;
         IncreaseFloorCommand.NotifyCanExecuteChanged();
         DecreaseFloorCommand.NotifyCanExecuteChanged();
+        SpawnRates = null;
     }
 
     private bool _isDataLoaded;
@@ -141,6 +173,7 @@ public partial class MonsterHeatMapViewModel : ViewModelBase
         else
         {
             SelectedTileDetails = null;
+            SpawnRates = null;
             Image = null;
         }
     }

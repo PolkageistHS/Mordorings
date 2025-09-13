@@ -1,11 +1,12 @@
-﻿using System.Globalization;
-using System.Windows.Data;
+﻿using System.Windows.Data;
 
 namespace Mordorings.Controls;
 
 [ValueConversion(typeof(object), typeof(bool))]
 public class NullToBooleanConverter : IValueConverter
 {
+    public static readonly NullToBooleanConverter Instance = new();
+
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         bool retValueIfNull = false;

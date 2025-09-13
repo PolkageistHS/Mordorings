@@ -6,19 +6,29 @@
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:controls="clr-namespace:Mordorings.Controls"
              xmlns:modules="clr-namespace:Mordorings.Modules"
+             xmlns:calculations="clr-namespace:Calculations;assembly=Calculations"
              mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance modules:MonsterHeatMapViewModel}">
+    <UserControl.Resources>
+        <Style x:Key="HighlightedListItem" TargetType="TextBlock" BasedOn="{StaticResource ResourceKey={x:Type TypeName=TextBlock}}">
+            <Style.Triggers>
+                <DataTrigger Value="True">
+                    <DataTrigger.Binding>
+                        <MultiBinding Converter="{x:Static Member=controls:EqualityConverter.Instance}">
+                            <Binding Path="(calculations:MonsterSpawnRate.Monster)" />
+                            <Binding Path="DataContext.SelectedMonster" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                        </MultiBinding>
+                    </DataTrigger.Binding>
+                    <Setter Property="Foreground" Value="Orange" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <DockPanel>
-        <StackPanel DockPanel.Dock="Right" Orientation="Vertical">
-            <Grid DockPanel.Dock="Top" HorizontalAlignment="Center">
-                <Grid.IsEnabled>
-                    <Binding Path="SelectedMonster">
-                        <Binding.Converter>
-                            <controls:NullToBooleanConverter />
-                        </Binding.Converter>
-                    </Binding>
-                </Grid.IsEnabled>
+        <DockPanel DockPanel.Dock="Right" LastChildFill="True">
+            <Grid DockPanel.Dock="Top" HorizontalAlignment="Center" IsEnabled="{Binding Path=SelectedMonster, Converter={x:Static Member=controls:NullToBooleanConverter.Instance}}">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="5, 5, 5, 10">
                     <Label Content="Floor" HorizontalAlignment="Center" />
                     <StackPanel Orientation="Horizontal">
@@ -36,7 +46,7 @@
                     </StackPanel>
                 </StackPanel>
             </Grid>
-            <DockPanel>
+            <DockPanel DockPanel.Dock="Top">
                 <Label DockPanel.Dock="Left" Content="Monster Type" VerticalAlignment="Center" />
                 <ComboBox Margin="5,0,0,0" IsEnabled="{Binding Path=IsDataLoaded}"
                           Width="125"
@@ -45,33 +55,58 @@
                           DisplayMemberPath="Name"
                           d:IsEditable="True" d:Text="Water-Dweller" />
             </DockPanel>
-            <DockPanel>
+            <DockPanel DockPanel.Dock="Top">
                 <Label DockPanel.Dock="Left" Content="Monster" VerticalAlignment="Center" />
                 <ComboBox Margin="5,0,0,0" ItemsSource="{Binding Path=Monsters}"
                           SelectedItem="{Binding Path=SelectedMonster}"
                           DisplayMemberPath="Name"
-                          d:IsEditable="True" d:Text="Destroyer of the Deep">
-                    <ComboBox.IsEnabled>
-                        <Binding Path="SelectedMonsterType">
-                            <Binding.Converter>
-                                <controls:NullToBooleanConverter />
-                            </Binding.Converter>
-                        </Binding>
-                    </ComboBox.IsEnabled>
-                </ComboBox>
+                          IsEnabled="{Binding Path=SelectedMonsterType, Converter={x:Static Member=controls:NullToBooleanConverter.Instance}}"
+                          d:IsEditable="True" d:Text="Destroyer of the Deep" />
             </DockPanel>
-			<TextBlock Margin="0,40,0,0" Text="{Binding Path=SelectedTileDetails}" />
-		</StackPanel>
+			<TextBlock DockPanel.Dock="Top" Margin="0,40,0,0" Text="{Binding Path=SelectedTileDetails}" Height="32" />
+			<ListView ItemsSource="{Binding Path=SpawnRates}" Width="250"
+                      Visibility="{Binding Path=SelectedMonster, Converter={x:Static Member=controls:NullToCollapsedVisibilityConverter.Instance}}"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto">
+				<ListView.View>
+					<GridView>
+                        <GridViewColumn Width="160" Header="Monster">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock d:DataContext="{d:DesignInstance calculations:MonsterSpawnRate}"
+                                               Text="{Binding Path=Monster.Name}"
+                                               Style="{StaticResource ResourceKey=HighlightedListItem}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Spawn %" Width="60">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock d:DataContext="{d:DesignInstance calculations:MonsterSpawnRate}"
+                                               Text="{Binding Path=SpawnChance, StringFormat=' {0:p2}'}"
+                                               Style="{StaticResource ResourceKey=HighlightedListItem}">
+                                    </TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+				</ListView.View>
+			</ListView>
+		</DockPanel>
         <DockPanel>
             <Grid DockPanel.Dock="Left">
-                <Image Source="{Binding Path=Image, FallbackValue={x:Null}}"
-                       MinWidth="421" MinHeight="421"
+                <Image Source="{Binding Path=Image}"
+                       MinWidth="421" MinHeight="421" Margin="0,0,4,0"
                        HorizontalAlignment="Left" VerticalAlignment="Top"
                        d:Source="c:\temp\floor1.png">
                     <b:Interaction.Triggers>
                         <b:EventTrigger EventName="MouseMove">
                             <b:EventTrigger.Actions>
                                 <b:InvokeCommandAction Command="{Binding Path=ShowTileDetailsCommand}" PassEventArgsToCommand="True" />
+                            </b:EventTrigger.Actions>
+                        </b:EventTrigger>
+                        <b:EventTrigger EventName="MouseLeftButtonDown">
+                            <b:EventTrigger.Actions>
+                                <b:InvokeCommandAction Command="{Binding Path=GetImageMouseClickCommand}" PassEventArgsToCommand="True" />
                             </b:EventTrigger.Actions>
                         </b:EventTrigger>
                     </b:Interaction.Triggers>

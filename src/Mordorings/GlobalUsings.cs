@@ -1,6 +1,7 @@
 ﻿global using System.Collections.ObjectModel;
 global using System.ComponentModel.DataAnnotations;
 global using System.Drawing;
+global using System.Globalization;
 global using Calculations;
 global using CommunityToolkit.Mvvm.ComponentModel;
 global using CommunityToolkit.Mvvm.Input;

@@ -31,7 +31,7 @@ public class MonsterSpawning
     /// random MonsterSubtype, even if the SpawnMask does not include that subtype. Set this to True
     /// to include the monsters that can spawn as part of that 1%.</param>
     /// <returns>A collection of monsters that can spawn on the provided tile with their chance of spawning.</returns>
-    public Dictionary<Monster, double> GetExpectedMonsterSpawnProbabilities(int x, int y, int floorNum, bool includeRandom)
+    public List<MonsterSpawnRate> GetExpectedMonsterSpawnProbabilities(int x, int y, int floorNum, bool includeRandom)
     {
         Floor floor = _map.Floors[floorNum - 1];
         DungeonMapTile tile = floor.Tiles[x + (y - 1) * 30 - 1];
@@ -49,9 +49,8 @@ public class MonsterSpawning
         {
             baseFloor = floorNum;
         }
-        Dictionary<int, double> floorRanges = GetPossibleFloorRanges(floorNum, isStud);
         Dictionary<Monster, double> combinedChances = [];
-        foreach ((int floorRange, double probabilityWeight) in floorRanges)
+        foreach ((int floorRange, double probabilityWeight) in GetPossibleFloorRanges(floorNum, isStud))
         {
             Dictionary<Monster, double> perRangeChances = GetMonsterSpawnChancesForFloorRange(area, areaNum, floorNum, baseFloor, floorRange, includeRandom);
             foreach ((Monster monster, double percent) in perRangeChances)
@@ -60,7 +59,12 @@ public class MonsterSpawning
                 combinedChances[monster] += percent * probabilityWeight;
             }
         }
-        return combinedChances.OrderByDescending(pair => pair.Value).ToDictionary();
+        List<MonsterSpawnRate> sortedChances = [];
+        foreach ((Monster monster, double percent) in combinedChances)
+        {
+            sortedChances.Add(new MonsterSpawnRate(monster, percent));
+        }
+        return sortedChances.OrderByDescending(rate => rate.SpawnChance).ToList();
     }
 
     private static Dictionary<int, double> GetPossibleFloorRanges(int floorNum, bool isStud)
@@ -179,3 +183,5 @@ public class MonsterSpawning
         return compare == x;
     }
 }
+
+public record MonsterSpawnRate(Monster Monster, double SpawnChance);

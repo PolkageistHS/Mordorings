@@ -40,15 +40,14 @@
                             </Binding>
                         </TextBox.Text>
                     </TextBox>
-                    <Button Content="&gt;"
-                            Command="{Binding Path=IncreaseFloorCommand}" />
+                    <Button Content="&gt;" Command="{Binding Path=IncreaseFloorCommand}" />
                 </StackPanel>
             </StackPanel>
         </Grid>
         <Grid DockPanel.Dock="Left">
             <Image Name="ImageMap"
                    Source="{Binding Path=Image, FallbackValue={x:Null}}"
-                   MinWidth="421" MinHeight="421"
+                   MinWidth="421" MinHeight="421" Margin="0 0 4 0"
                    d:Source="c:\temp\floor1.png" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="MouseLeftButtonDown">

@@ -16,7 +16,7 @@ public class MonsterSpawnCalculator(MordorRecordReader reader)
                     short area = map.Floors[floor - 1].Tiles[x + y * Game.FloorHeight].Area;
                     foreach ((Monster monster, double chance) in spawning.GetExpectedMonsterSpawnProbabilities(x + 1, y + 1, floor, false))
                     {
-                        double rounded = Math.Round(chance, 3);
+                        double rounded = Math.Round(chance, 4);
                         MonsterSpawnRates? monsterEntry = monsterRates.FirstOrDefault(rates => rates.Monster.Name == monster.Name);
                         if (monsterEntry == null)
                         {

@@ -1,8 +1,8 @@
-﻿using System.Globalization;
-using System.Windows.Data;
+﻿using System.Windows.Data;
 
 namespace Mordorings.Controls;
 
+[ValueConversion(typeof(string), typeof(int))]
 public class StringToIntConverter : IValueConverter
 {
     public int EmptyStringValue { get; set; }

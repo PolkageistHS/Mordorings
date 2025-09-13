@@ -54,6 +54,7 @@ public static class ServiceCollectionExtensions
                                                                                                 .AddTransient<GuildSpellsViewModel>()
                                                                                                 .AddTransient<DungeonStateViewModel>()
                                                                                                 .AddTransient<EditMapViewModel>()
+                                                                                                .AddTransient<EditMapSpawnsViewModel>()
                                                                                                 .AddTransient<MonsterHeatMapViewModel>();
 
     public static IServiceCollection AddFactories(this IServiceCollection services) => services.AddSingleton<IViewModelFactory, ViewModelFactory>()

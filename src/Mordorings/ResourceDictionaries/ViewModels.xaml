@@ -40,4 +40,8 @@
         <modules:MonsterHeatMapControl />
     </DataTemplate>
     
+    <DataTemplate DataType="{x:Type TypeName=modules:EditMapSpawnsViewModel}">
+        <modules:EditMapSpawnsControl />
+    </DataTemplate>
+    
 </ResourceDictionary>

@@ -1,8 +1,8 @@
 ﻿namespace Mordorings.Modules;
 
-public partial class EditTileControl
+public partial class TileEditorControl
 {
-    public EditTileControl()
+    public TileEditorControl()
     {
         InitializeComponent();
     }

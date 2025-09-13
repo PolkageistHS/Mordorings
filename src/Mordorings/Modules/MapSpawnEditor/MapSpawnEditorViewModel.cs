@@ -1,6 +1,6 @@
 ﻿namespace Mordorings.Modules;
 
-public class EditMapSpawnsViewModel
+public class MapSpawnEditorViewModel
 {
     
 }

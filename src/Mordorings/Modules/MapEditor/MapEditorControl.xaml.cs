@@ -1,8 +1,8 @@
 ﻿namespace Mordorings.Modules;
 
-public partial class EditMapSpawnsControl
+public partial class MapEditorControl
 {
-    public EditMapSpawnsControl()
+    public MapEditorControl()
     {
         InitializeComponent();
     }

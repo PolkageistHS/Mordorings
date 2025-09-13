@@ -1,15 +1,15 @@
 ﻿namespace Mordorings.Modules;
 
-public partial class EditMapViewModel : ViewModelBase
+public partial class MapEditorViewModel : ViewModelBase
 {
     private readonly IDialogFactory _dialogFactory;
-    private readonly IEditMapMediator _mediator;
+    private readonly IMapEditorMediator _mapEditorMediator;
 
-    public EditMapViewModel(IEditMapMediator mediator, IDialogFactory dialogFactory)
+    public MapEditorViewModel(IMapEditorMediator mapEditorMediator, IDialogFactory dialogFactory)
     {
-        _mediator = mediator;
+        _mapEditorMediator = mapEditorMediator;
         _dialogFactory = dialogFactory;
-        _mediator.Initialize();
+        _mapEditorMediator.Initialize();
         InitializeRenderers();
         SelectedFloorNum = 1;
     }
@@ -20,7 +20,7 @@ public partial class EditMapViewModel : ViewModelBase
 
     private void InitializeRenderers()
     {
-        foreach (IAutomapRenderer renderer in _mediator.Renderers)
+        foreach (IAutomapRenderer renderer in _mapEditorMediator.Renderers)
         {
             renderer.MapUpdated += (sender, _) =>
             {
@@ -38,11 +38,11 @@ public partial class EditMapViewModel : ViewModelBase
         {
             if (SelectedFloorNum is < Game.MinFloor or > Game.MaxFloor)
                 return null;
-            return _mediator.Renderers[SelectedFloorNum - 1];
+            return _mapEditorMediator.Renderers[SelectedFloorNum - 1];
         }
     }
 
-    private DungeonFloor SelectedFloor => _mediator.DungeonFloors[SelectedFloorNum - 1];
+    private DungeonFloor SelectedFloor => _mapEditorMediator.DungeonFloors[SelectedFloorNum - 1];
 
     private object? _image;
 
@@ -88,7 +88,7 @@ public partial class EditMapViewModel : ViewModelBase
     {
         if (_dialogFactory.ShowYesNoQuestion("Do you want to write your changes to the dungeon file?", "Save all"))
         {
-            _mediator.SaveAll();
+            _mapEditorMediator.SaveAll();
         }
     }
 
@@ -137,7 +137,7 @@ public partial class EditMapViewModel : ViewModelBase
 
     private void ResetFloor(int floorNum)
     {
-        _mediator.ResetFloor(floorNum);
+        _mapEditorMediator.ResetFloor(floorNum);
     }
 
     private void UpdateTile(object? sender, TileFlagChangedEventArgs e)

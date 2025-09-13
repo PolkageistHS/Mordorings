@@ -32,16 +32,16 @@
         <modules:GuildSpellsControl />
     </DataTemplate>
     
-    <DataTemplate DataType="{x:Type TypeName=modules:EditMapViewModel}">
-        <modules:EditMapControl />
+    <DataTemplate DataType="{x:Type TypeName=modules:MapEditorViewModel}">
+        <modules:MapEditorControl />
     </DataTemplate>
     
     <DataTemplate DataType="{x:Type TypeName=modules:MonsterHeatMapViewModel}">
         <modules:MonsterHeatMapControl />
     </DataTemplate>
     
-    <DataTemplate DataType="{x:Type TypeName=modules:EditMapSpawnsViewModel}">
-        <modules:EditMapSpawnsControl />
+    <DataTemplate DataType="{x:Type TypeName=modules:MapSpawnEditorViewModel}">
+        <modules:MapSpawnEditorControl />
     </DataTemplate>
     
 </ResourceDictionary>

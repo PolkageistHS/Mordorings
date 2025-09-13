@@ -14,7 +14,7 @@ public partial class MapMenuViewModel(IViewModelFactory factory)
     [RelayCommand]
     private void OpenMapEditor()
     {
-        WeakReferenceMessenger.Default.Send(new ViewContentChangedMessage(factory.CreateViewModel<EditMapViewModel>()));
+        WeakReferenceMessenger.Default.Send(new ViewContentChangedMessage(factory.CreateViewModel<MapEditorViewModel>()));
     }
 
     [RelayCommand]

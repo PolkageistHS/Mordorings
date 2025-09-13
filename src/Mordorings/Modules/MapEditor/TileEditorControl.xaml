@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Mordorings.Modules.EditTileControl"
+﻿<UserControl x:Class="Mordorings.Modules.TileEditorControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -9,7 +9,7 @@
              IsEnabled="{Binding Path=IsTileSelected}"
              mc:Ignorable="d"
              d:DesignHeight="410" d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance local:EditMapViewModel}">
+             d:DataContext="{d:DesignInstance local:MapEditorViewModel}">
     <StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Tile at " FontSize="14" d:Visibility="Visible">

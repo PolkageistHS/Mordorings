@@ -1,6 +1,6 @@
 ﻿namespace Mordorings.Modules;
 
-public class EditMapPresenter(IMordorIoFactory ioFactory, IMapRendererFactory mapRendererFactory) : IEditMapMediator
+public class MapEditorPresenter(IMordorIoFactory ioFactory, IMapRendererFactory mapRendererFactory) : IMapEditorMediator
 {
     private const string SpriteSheetFile = "Assets/DungeonSprites.bmp";
 

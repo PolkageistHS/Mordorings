@@ -1,6 +1,6 @@
 ﻿namespace Mordorings.Modules;
 
-public interface IEditMapMediator
+public interface IMapEditorMediator
 {
     /// <summary>
     /// Initializes map data and pre-renders all floors.

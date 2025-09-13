@@ -53,8 +53,8 @@ public static class ServiceCollectionExtensions
                                                                                                 .AddTransient<RaceGuildGraphViewModel>()
                                                                                                 .AddTransient<GuildSpellsViewModel>()
                                                                                                 .AddTransient<DungeonStateViewModel>()
-                                                                                                .AddTransient<EditMapViewModel>()
-                                                                                                .AddTransient<EditMapSpawnsViewModel>()
+                                                                                                .AddTransient<MapEditorViewModel>()
+                                                                                                .AddTransient<MapSpawnEditorViewModel>()
                                                                                                 .AddTransient<MonsterHeatMapViewModel>();
 
     public static IServiceCollection AddFactories(this IServiceCollection services) => services.AddSingleton<IViewModelFactory, ViewModelFactory>()
@@ -65,7 +65,7 @@ public static class ServiceCollectionExtensions
                                                                                                .AddTransient<IHeatMapRenderer, HeatMapRenderer>();
 
     public static IServiceCollection AddMediators(this IServiceCollection services) => services.AddTransient<IMonsterHeatMapMediator, MonsterHeatMapPresenter>()
-                                                                                               .AddTransient<IEditMapMediator, EditMapPresenter>()
+                                                                                               .AddTransient<IMapEditorMediator, MapEditorPresenter>()
                                                                                                .AddTransient<IDungeonStateMediator, DungeonStatePresenter>();
 
     public static IServiceCollection AddOtherServices(this IServiceCollection services)
